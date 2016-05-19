@@ -12,16 +12,14 @@ import models.User;
  *
  * @author 15096134
  */
-class Event {
+abstract class Event implements Runnable {
     private final Interactor interactor;
-    private final UserManager manager;
-    
-    private Event(Interactor i, UserManager cm) {
-        interactor = i;
-        manager = cm;
+
+    public Interactor getInteractor() {
+        return interactor;
     }
     
-    public void perform() {
-        
+    public Event(Interactor i) {
+        interactor = i;
     }
 }

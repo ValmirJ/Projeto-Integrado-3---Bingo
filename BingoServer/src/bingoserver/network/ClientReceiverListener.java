@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.network;
 
 /**
  *
  * @author 15096134
  */
-public interface ClientListener {
-    public void onClientDisconnected(Client c);
-    public void onClientMessage(Client c, Message m);
+public interface ClientReceiverListener {
+    public void onClientConnected(Client c);
 }

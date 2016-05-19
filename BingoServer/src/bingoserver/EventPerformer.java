@@ -12,7 +12,6 @@ package bingoserver;
 class EventPerformer {
 
     void process(Event evt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        evt.run();
     }
-    
 }

@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.network;
+
+import bingoserver.messages.Message;
 
 /**
  *
  * @author 15096134
  */
-public class Message {
-    private String message;
-    
-    public Message(String message) {
-        this.message = message;
-    }
+public interface ClientListener {
+    public void onClientDisconnected(Client c);
+    public void onClientMessage(Client c, Message m);
 }

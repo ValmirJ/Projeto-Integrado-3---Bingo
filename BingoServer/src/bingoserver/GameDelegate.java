@@ -5,6 +5,10 @@
  */
 package bingoserver;
 
+import bingoserver.messages.Message;
+import bingoserver.network.ClientListener;
+import bingoserver.network.Client;
+import bingoserver.network.ClientReceiverListener;
 import bingoserver.repositories.RepositoryManager;
 
 /**
@@ -16,9 +20,9 @@ public class GameDelegate implements ClientListener,
         ClockListener
 {
     private RepositoryManager repositoryManager;
-    private ClientsManager cManager;
-    private EventPerformer evtPerformer;
-    private EventBuilder evtBuilder;
+    private final ClientsManager cManager;
+    private final EventPerformer evtPerformer;
+    private final EventBuilder evtBuilder;
     
     public GameDelegate() {
         cManager = new ClientsManager();

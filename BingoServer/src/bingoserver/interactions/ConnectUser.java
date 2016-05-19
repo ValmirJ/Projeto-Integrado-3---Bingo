@@ -10,6 +10,7 @@ import bingoserver.ResponseManager;
 import bingoserver.repositories.RepositoryManager;
 import models.User;
 import bingoserver.UserManager;
+import bingoserver.messages.MessageParameters;
 
 /**
  *
@@ -17,13 +18,12 @@ import bingoserver.UserManager;
  */
 public class ConnectUser extends UserInteractor {
 
-    public ConnectUser(RepositoryManager mgr, ResponseManager responseManager) {
-        super(mgr, responseManager);
+    public ConnectUser() {
+        super();
     }
 
-    
     @Override
-    public void perform(UserManager mgr) {
-        
+    public void perform(MessageParameters params, UserManager mgr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

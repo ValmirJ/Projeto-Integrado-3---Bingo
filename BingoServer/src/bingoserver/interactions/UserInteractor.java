@@ -7,6 +7,7 @@ package bingoserver.interactions;
 
 import bingoserver.ResponseManager;
 import bingoserver.UserManager;
+import bingoserver.messages.MessageParameters;
 import bingoserver.repositories.RepositoryManager;
 
 /**
@@ -15,9 +16,9 @@ import bingoserver.repositories.RepositoryManager;
  */
 public abstract class UserInteractor extends Interactor{
 
-    public UserInteractor(RepositoryManager mgr, ResponseManager responseManager) {
-        super(mgr, responseManager);
+    public UserInteractor() {
+        super();
     }
     
-    public abstract void perform(UserManager mgr);
+    public abstract void perform(MessageParameters params, UserManager mgr);
 }

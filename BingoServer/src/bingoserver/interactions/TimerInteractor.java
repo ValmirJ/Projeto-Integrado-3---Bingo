@@ -14,8 +14,11 @@ import bingoserver.repositories.RepositoryManager;
  */
 public class TimerInteractor extends Interactor {
     
-    public TimerInteractor(RepositoryManager mgr, ResponseManager responseManager) {
-        super(mgr, responseManager);
+    public TimerInteractor() {
+        super();
     }
-   
+    
+   public void perform() {
+       
+   }
 }

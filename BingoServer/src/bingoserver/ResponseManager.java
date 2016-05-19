@@ -5,6 +5,7 @@
  */
 package bingoserver;
 
+import bingoserver.responses.Response;
 import models.User;
 
 /**

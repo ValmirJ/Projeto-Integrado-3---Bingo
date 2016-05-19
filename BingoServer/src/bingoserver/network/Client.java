@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.network;
 
+import bingoserver.messages.Message;
+import bingoserver.responses.Response;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

@@ -5,6 +5,8 @@
  */
 package bingoserver;
 
+import bingoserver.network.Client;
+import bingoserver.responses.Response;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import models.User;

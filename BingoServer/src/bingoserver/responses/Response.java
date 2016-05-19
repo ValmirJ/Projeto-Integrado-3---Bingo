@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.responses;
 
 /**
  *
  * @author 15096134
  */
-public interface ClientReceiverListener {
-    public void onClientConnected(Client c);
+public abstract class Response {
+    public abstract String responseData();
 }

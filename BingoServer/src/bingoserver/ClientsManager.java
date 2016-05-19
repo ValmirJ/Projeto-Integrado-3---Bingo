@@ -13,8 +13,20 @@ import models.User;
  *
  * @author 15096134
  */
-public class ClientManager {
+public class ClientsManager {
     private final HashMap<Client, User> assigns = new HashMap<>();
+    
+    private final ResponseManager responseManager = new ResponseManager() {
+        @Override
+        public void respondToUser(Response resp, User u) {
+            ClientsManager.this.respondToUser(resp, u);
+        }
+
+        @Override
+        public void respondToUsers(Response resp, User[] users) {
+            ClientsManager.this.respondToUsers(resp, users);
+        }
+    };
     
     public void addClient(Client c) {
         assigns.put(c, null);
@@ -44,5 +56,23 @@ public class ClientManager {
         for (User u : users) {
             respondToUser(resp, u);
         }
+    }
+    
+    public UserManager getUserManager(final Client c) {
+        return new UserManager() {
+            @Override
+            public void setUser(User u) {
+                setClientUser(c, u);
+            }
+
+            @Override
+            public User getUser() {
+                return getClientUser(c);
+            }
+        };
+    }
+    
+    public ResponseManager getResponseManager() {
+        return responseManager;
     }
 }

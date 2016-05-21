@@ -94,6 +94,10 @@ public class Client implements Cloneable{
             return false;
         if(!(this.listener.equals(other.listener)))
             return false;
+        if(!(this.input.equals(other.input)))
+            return false;
+        if(!(this.output.equals(other.output)))
+            return false;
         
         return true;
     }

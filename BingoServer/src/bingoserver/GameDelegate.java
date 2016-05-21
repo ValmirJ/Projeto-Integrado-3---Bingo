@@ -5,17 +5,20 @@
  */
 package bingoserver;
 
-import bingoserver.gameEvent.Event;
-import bingoserver.gameEvent.EventBuilder;
-import bingoserver.gameEvent.EventPerformer;
+import bingoserver.interactions.Interactor;
+import bingoserver.interactions.TimerInteractor;
+import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
 import bingoserver.network.ClientListener;
 import bingoserver.network.ClientReceiverListener;
+import bingoserver.network.ClientsManager;
 import bingoserver.repositories.RepositoryManager;
-import bingoserver.responses.ErrorResponse;
 import bingoserver.requests.InteractionRequest;
 import bingoserver.requests.Request;
 import bingoserver.requests.RequestBuilder;
+import bingoserver.responses.ErrorResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,14 +31,10 @@ public class GameDelegate implements ClientListener,
     private final RepositoryManager repositoryManager;
     private final ClientsManager clientsManager;
     private final RequestBuilder requestBuilder;
-    private final EventPerformer evtPerformer;
-    private final EventBuilder evtBuilder;
 
     public GameDelegate() {
         repositoryManager = new RepositoryManager();
         clientsManager = new ClientsManager();
-        evtPerformer = new EventPerformer();
-        evtBuilder = new EventBuilder(repositoryManager, clientsManager);
         requestBuilder = new RequestBuilder();
     }
 
@@ -49,10 +48,19 @@ public class GameDelegate implements ClientListener,
         Request request = requestBuilder.buildRequestForMessage(message);
 
         if (request.valid() && request instanceof InteractionRequest) {
-            Event evt = evtBuilder.createClientEvent(client, (InteractionRequest) request);
+            InteractionRequest interactionReq = (InteractionRequest) request;
 
-            if (evt != null) {
-                evtPerformer.process(evt);
+            try {
+                UserInteractor ui = interactionReq.getInteractorClass().newInstance();
+                setInteractorMamagers(ui);
+
+                ui.setUserClientSession(clientsManager.getUserClientSession(client));
+                ui.perform(interactionReq.getParams());
+                clientsManager.setUserClientSession(ui.getUserClientSession());
+            } catch (InstantiationException ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             client.read();
@@ -69,8 +77,14 @@ public class GameDelegate implements ClientListener,
 
     @Override
     public void onClockTick() {
-        Event evt = evtBuilder.createTickEvent();
-        evtPerformer.process(evt);
+        TimerInteractor timerInteractor = new TimerInteractor();
+        setInteractorMamagers(timerInteractor);
+        timerInteractor.perform();
+    }
+
+    private void setInteractorMamagers(Interactor i) {
+        i.setRepositoryManager(repositoryManager);
+        i.setResponseManager(clientsManager);
     }
 
 }

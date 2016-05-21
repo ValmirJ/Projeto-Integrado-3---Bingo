@@ -5,8 +5,8 @@
  */
 package bingoserver.requests;
 
+import bingoserver.interactions.UserInteractor;
 import bingoserver.parameters.ParamGroups;
-import bingoserver.interactions.Interactor;
 
 /**
  *
@@ -14,20 +14,20 @@ import bingoserver.interactions.Interactor;
  */
 public class InteractionRequest extends Request {
 
-    private Class<? extends Interactor> interactor;
+    private Class<? extends UserInteractor> interactor;
     private ParamGroups params;
 
     protected InteractionRequest(String requestRawData) {
         super(requestRawData);
     }
 
-    protected InteractionRequest(String requestRawData, Class<? extends Interactor> interactor, ParamGroups params) {
+    protected InteractionRequest(String requestRawData, Class<? extends UserInteractor> interactor, ParamGroups params) {
         this(requestRawData);
         this.interactor = interactor;
         this.params = params;
     }
 
-    public Class<? extends Interactor> getInteractorClass() {
+    public Class<? extends UserInteractor> getInteractorClass() {
         return interactor;
     }
 

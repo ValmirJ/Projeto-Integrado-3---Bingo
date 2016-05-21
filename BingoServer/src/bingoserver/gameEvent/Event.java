@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.gameEvent;
 
 import bingoserver.interactions.Interactor;
-import models.User;
 
 /**
  *
  * @author 15096134
  */
-abstract class Event implements Runnable {
+public abstract class Event implements Runnable {
+
     private final Interactor interactor;
 
     public Interactor getInteractor() {
         return interactor;
     }
-    
-    public Event(Interactor i) {
+
+    protected Event(Interactor i) {
         interactor = i;
     }
 }

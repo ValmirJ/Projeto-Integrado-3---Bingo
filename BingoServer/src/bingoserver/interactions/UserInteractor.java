@@ -5,20 +5,18 @@
  */
 package bingoserver.interactions;
 
-import bingoserver.ResponseManager;
 import bingoserver.UserManager;
-import bingoserver.messages.MessageParameters;
-import bingoserver.repositories.RepositoryManager;
+import requests.RequestParams;
 
 /**
  *
  * @author 15096134
  */
-public abstract class UserInteractor extends Interactor{
+public abstract class UserInteractor extends Interactor {
 
     public UserInteractor() {
         super();
     }
-    
-    public abstract void perform(MessageParameters params, UserManager mgr);
+
+    public abstract void perform(RequestParams params, UserManager mgr);
 }

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bingoserver;
+package bingoserver.gameEvent;
 
 /**
  *
  * @author 15096134
  */
-class EventPerformer {
+public class EventPerformer {
 
-    void process(Event evt) {
+    public void process(Event evt) {
         evt.run();
     }
 }

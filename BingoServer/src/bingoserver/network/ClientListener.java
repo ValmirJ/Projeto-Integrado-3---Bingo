@@ -5,13 +5,13 @@
  */
 package bingoserver.network;
 
-import bingoserver.messages.Message;
-
 /**
  *
  * @author 15096134
  */
 public interface ClientListener {
-    public void onClientDisconnected(Client c);
-    public void onClientMessage(Client c, Message m);
+
+    public void onClientDisconnected(Client client);
+
+    public void onClientMessage(Client client, String message);
 }

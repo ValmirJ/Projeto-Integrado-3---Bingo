@@ -5,7 +5,6 @@
  */
 package bingoserver.network;
 
-import bingoserver.messages.Message;
 import bingoserver.responses.Response;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,10 +20,11 @@ import java.util.logging.Logger;
  * @author 15096134
  */
 public class Client {
+
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
-    
+
     private ClientListener listener;
 
     public ClientListener getListener() {
@@ -34,13 +34,13 @@ public class Client {
     public void setListener(ClientListener listener) {
         this.listener = listener;
     }
-    
+
     Client(Socket s) throws IOException {
         socket = s;
         input = new BufferedReader(new InputStreamReader(s.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
     }
-    
+
     public void send(Response resp) {
         try {
             output.write(resp.responseData());
@@ -50,16 +50,21 @@ public class Client {
             listener.onClientDisconnected(this);
         }
     }
-    
-    public Message read() {
+
+    public String read() {
         try {
             String message = input.readLine();
-            return new Message(message);
+
+            if (message != null) {
+                return message;
+            } else {
+                Logger.getLogger(Client.class.getName()).log(Level.WARNING, null, "Received null Client message");
+            }
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             listener.onClientDisconnected(this);
         }
-        
+
         return null;
     }
 }

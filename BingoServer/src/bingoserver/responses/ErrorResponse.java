@@ -5,21 +5,22 @@
  */
 package bingoserver.responses;
 
-import bingoserver.messages.Message;
+import requests.Request;
 
 /**
  *
  * @author 15096134
  */
 public class ErrorResponse extends Response {
-    private final Message m;
-    
-    public ErrorResponse(Message m) {
-        this.m = m;
+
+    private final Request request;
+
+    public ErrorResponse(Request request) {
+        this.request = request;
     }
 
     @Override
     public String responseData() {
-        return "invalid_command<" + m.getMessage() + ">";
-    }   
+        return "invalid_command<" + request.getRawData() + ">";
+    }
 }

@@ -6,7 +6,7 @@
 package bingoserver;
 
 import bingoserver.network.Client;
-import models.User;
+import bingoserver.models.User;
 
 /**
  *

@@ -9,7 +9,7 @@ import bingoserver.network.Client;
 import bingoserver.responses.Response;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import models.User;
+import bingoserver.models.User;
 
 /**
  *
@@ -94,5 +94,9 @@ public class ClientsManager {
 
     public ResponseManager getResponseManager() {
         return responseManager;
+    }
+
+    public int getClientCount() {
+        return assigns.size();
     }
 }

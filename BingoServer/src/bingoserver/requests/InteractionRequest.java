@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package requests;
+package bingoserver.requests;
 
-import parameters.ParamGroups;
+import bingoserver.parameters.ParamGroups;
 import bingoserver.interactions.Interactor;
 
 /**

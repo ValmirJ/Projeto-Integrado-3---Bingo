@@ -6,7 +6,7 @@
 package bingoserver.interactions;
 
 import bingoserver.UserManager;
-import parameters.ParamGroups;
+import bingoserver.parameters.ParamGroups;
 
 /**
  *

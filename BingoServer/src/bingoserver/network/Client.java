@@ -21,24 +21,22 @@ import java.util.logging.Logger;
  */
 public class Client implements Cloneable{
 
-    private Socket socket;
-    private BufferedReader input;
-    private BufferedWriter output;
+    private final Socket socket;
+    private final BufferedReader input;
+    private final BufferedWriter output;
 
-    private ClientListener listener;
+    private final ClientListener listener;
 
     public ClientListener getListener() {
         return listener;
     }
 
-    public void setListener(ClientListener listener) {
+    Client(Socket socket, ClientListener listener) throws IOException {
+        this.socket = socket;
         this.listener = listener;
-    }
 
-    Client(Socket s) throws IOException {
-        socket = s;
-        input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
 
     public void send(Response resp) {
@@ -51,12 +49,12 @@ public class Client implements Cloneable{
         }
     }
 
-    public String read() {
+    public void read() {
         try {
             String message = input.readLine();
 
             if (message != null) {
-                return message;
+                listener.onClientMessage(this, message);
             } else {
                 Logger.getLogger(Client.class.getName()).log(Level.WARNING, null, "Received null Client message");
             }
@@ -64,8 +62,6 @@ public class Client implements Cloneable{
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             listener.onClientDisconnected(this);
         }
-
-        return null;
     }
     
     @Override

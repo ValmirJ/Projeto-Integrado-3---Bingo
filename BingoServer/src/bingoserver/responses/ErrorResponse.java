@@ -5,7 +5,7 @@
  */
 package bingoserver.responses;
 
-import requests.Request;
+import bingoserver.requests.Request;
 
 /**
  *

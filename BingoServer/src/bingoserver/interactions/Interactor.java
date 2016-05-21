@@ -7,7 +7,7 @@ package bingoserver.interactions;
 
 import bingoserver.ResponseManager;
 import bingoserver.repositories.RepositoryManager;
-import models.User;
+import bingoserver.models.User;
 import bingoserver.UserManager;
 
 /**

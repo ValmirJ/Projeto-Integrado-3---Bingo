@@ -13,9 +13,9 @@ import bingoserver.network.ClientListener;
 import bingoserver.network.ClientReceiverListener;
 import bingoserver.repositories.RepositoryManager;
 import bingoserver.responses.ErrorResponse;
-import requests.InteractionRequest;
-import requests.Request;
-import requests.RequestBuilder;
+import bingoserver.requests.InteractionRequest;
+import bingoserver.requests.Request;
+import bingoserver.requests.RequestBuilder;
 
 /**
  *
@@ -25,24 +25,23 @@ public class GameDelegate implements ClientListener,
         ClientReceiverListener,
         ClockListener {
 
-    private RepositoryManager repositoryManager;
-    private final ClientsManager clientManager;
-
+    private final RepositoryManager repositoryManager;
+    private final ClientsManager clientsManager;
     private final RequestBuilder requestBuilder;
-
     private final EventPerformer evtPerformer;
     private final EventBuilder evtBuilder;
 
     public GameDelegate() {
-        clientManager = new ClientsManager();
+        repositoryManager = new RepositoryManager();
+        clientsManager = new ClientsManager();
         evtPerformer = new EventPerformer();
-        evtBuilder = new EventBuilder(repositoryManager, clientManager);
+        evtBuilder = new EventBuilder(repositoryManager, clientsManager);
         requestBuilder = new RequestBuilder();
     }
 
     @Override
     public void onClientDisconnected(Client c) {
-        clientManager.removeClient(c);
+        clientsManager.removeClient(c);
     }
 
     @Override
@@ -55,6 +54,8 @@ public class GameDelegate implements ClientListener,
             if (evt != null) {
                 evtPerformer.process(evt);
             }
+
+            client.read();
         } else {
             client.send(new ErrorResponse(request));
         }
@@ -62,7 +63,8 @@ public class GameDelegate implements ClientListener,
 
     @Override
     public void onClientConnected(Client c) {
-        clientManager.addClient(c);
+        clientsManager.addClient(c);
+        c.read();
     }
 
     @Override

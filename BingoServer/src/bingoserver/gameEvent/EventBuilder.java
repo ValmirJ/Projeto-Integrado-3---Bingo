@@ -16,8 +16,8 @@ import bingoserver.repositories.RepositoryManager;
 import bingoserver.responses.ErrorResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import requests.InteractionRequest;
-import parameters.ParamGroups;
+import bingoserver.requests.InteractionRequest;
+import bingoserver.parameters.ParamGroups;
 
 /**
  *

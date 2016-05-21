@@ -8,9 +8,9 @@ package bingoserver.interactions;
 import bingoserver.UserManager;
 import bingoserver.responses.RaAlreadyInUse;
 import bingoserver.responses.UserConnectedResponse;
-import models.User;
-import parameters.ParamGroup;
-import parameters.ParamGroups;
+import bingoserver.models.User;
+import bingoserver.parameters.ParamGroup;
+import bingoserver.parameters.ParamGroups;
 
 /**
  *

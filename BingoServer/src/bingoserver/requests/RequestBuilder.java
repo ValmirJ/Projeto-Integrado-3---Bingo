@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package requests;
+package bingoserver.requests;
 
 import bingoserver.interactions.ConnectUser;
 import java.util.regex.Matcher;

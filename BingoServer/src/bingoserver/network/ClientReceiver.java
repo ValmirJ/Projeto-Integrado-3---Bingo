@@ -16,40 +16,47 @@ import java.util.logging.Logger;
  * @author 15096134
  */
 public class ClientReceiver {
+
     private final ServerSocket serverSock;
-    private final ClientReceiverListener cList;
+    private final ClientReceiverListener receiverListener;
+    private final ClientListener clientListener;
     private boolean running;
-    
-    public ClientReceiver(int port, ClientReceiverListener listener) throws IOException {
-        serverSock = new ServerSocket(port);
-        cList = listener;
+
+    public ClientReceiver(int port, ClientReceiverListener receiverListener, ClientListener clientListener) throws IOException {
+        this.serverSock = new ServerSocket(port);
+        this.receiverListener = receiverListener;
+        this.clientListener = clientListener;
+
         running = false;
     }
-    
+
     public void start() {
         running = true;
-        
+
         while (running) {
-            Socket s;
-            
+            Socket socket;
+
             try {
-                s = serverSock.accept();
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "Waiting new Client");
+                socket = serverSock.accept();
             } catch (IOException ex) {
-                s = null;
+                socket = null;
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
                 this.stop();
             }
-            
-            if (s != null) {
+
+            if (socket != null) {
                 try {
-                    cList.onClientConnected(new Client(s));
+                    Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
+                    Client c = new Client(socket, clientListener);
+                    receiverListener.onClientConnected(c);
                 } catch (IOException ex) {
                     Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
     }
-    
+
     public void stop() {
         running = false;
     }

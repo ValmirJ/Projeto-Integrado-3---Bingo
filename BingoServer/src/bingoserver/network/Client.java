@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client {
+public class Client implements Cloneable{
 
     private Socket socket;
     private BufferedReader input;
@@ -66,5 +66,62 @@ public class Client {
         }
 
         return null;
+    }
+    
+    @Override
+    public int hashCode() {
+        int r = super.hashCode();
+        r = r * 7 + this.socket.hashCode();
+        r = r * 7 + this.listener.hashCode();
+        r = r * 7 + this.input.hashCode();
+        r = r * 7 + this.output.hashCode();
+       
+        return r;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        
+        if(!(obj instanceof Client))
+            return false;
+        
+        Client other = (Client) obj;
+        if(!(this.socket.equals(other.socket)))
+            return false;
+        if(!(this.listener.equals(other.listener)))
+            return false;
+        
+        return true;
+    }
+    @Override
+    public String toString() {
+        String str = "Socket: " + this.socket.toString();
+        
+        return str;
+    }
+    
+    public Client(Client other) throws Exception{
+        if(other == null)
+            throw new Exception("Objeto não pode ser nulo");
+        
+        this.listener = other.listener;
+        this.socket = other.socket;
+        this.output = other.output;
+        this.input = other.input;
+    }
+    
+    @Override 
+    public Object clone() {
+        Client newClient = null;
+        try {
+            newClient = new Client(this);
+        }
+        catch(Exception e) {}
+        
+        return newClient;
     }
 }

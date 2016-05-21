@@ -6,7 +6,7 @@
 package bingoserver.interactions;
 
 import bingoserver.UserManager;
-import requests.RequestParams;
+import parameters.ParamGroups;
 
 /**
  *
@@ -19,7 +19,7 @@ public class ConnectUser extends UserInteractor {
     }
 
     @Override
-    public void perform(RequestParams params, UserManager mgr) {
+    public void perform(ParamGroups params, UserManager mgr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

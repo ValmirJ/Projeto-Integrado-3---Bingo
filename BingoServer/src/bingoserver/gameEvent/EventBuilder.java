@@ -17,7 +17,7 @@ import bingoserver.responses.ErrorResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import requests.InteractionRequest;
-import requests.RequestParams;
+import parameters.ParamGroups;
 
 /**
  *
@@ -35,7 +35,7 @@ public class EventBuilder {
 
     public Event createClientEvent(final Client c, final InteractionRequest request) {
         final UserManager userManager = clientsManager.getUserManager(c);
-        final RequestParams params = request.getParams();
+        final ParamGroups params = request.getParams();
 
         ResponseManager respMgr = clientsManager.getResponseManager();
         Class<? extends Interactor> interactorClass = request.getInteractorClass();

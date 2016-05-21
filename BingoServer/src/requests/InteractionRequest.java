@@ -5,6 +5,7 @@
  */
 package requests;
 
+import parameters.ParamGroups;
 import bingoserver.interactions.Interactor;
 
 /**
@@ -14,13 +15,13 @@ import bingoserver.interactions.Interactor;
 public class InteractionRequest extends Request {
 
     private Class<? extends Interactor> interactor;
-    private RequestParams params;
+    private ParamGroups params;
 
     protected InteractionRequest(String requestRawData) {
         super(requestRawData);
     }
 
-    protected InteractionRequest(String requestRawData, Class<? extends Interactor> interactor, RequestParams params) {
+    protected InteractionRequest(String requestRawData, Class<? extends Interactor> interactor, ParamGroups params) {
         this(requestRawData);
         this.interactor = interactor;
         this.params = params;
@@ -30,7 +31,7 @@ public class InteractionRequest extends Request {
         return interactor;
     }
 
-    public RequestParams getParams() {
+    public ParamGroups getParams() {
         return params;
     }
 

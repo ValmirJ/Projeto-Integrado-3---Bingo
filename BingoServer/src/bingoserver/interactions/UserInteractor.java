@@ -6,7 +6,7 @@
 package bingoserver.interactions;
 
 import bingoserver.UserManager;
-import requests.RequestParams;
+import parameters.ParamGroups;
 
 /**
  *
@@ -18,5 +18,5 @@ public abstract class UserInteractor extends Interactor {
         super();
     }
 
-    public abstract void perform(RequestParams params, UserManager mgr);
+    public abstract void perform(ParamGroups params, UserManager mgr);
 }

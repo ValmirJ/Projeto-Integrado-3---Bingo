@@ -26,7 +26,7 @@ public class GameDelegate implements ClientListener,
         ClockListener {
 
     private RepositoryManager repositoryManager;
-    private final ClientsManager cManager;
+    private final ClientsManager clientManager;
 
     private final RequestBuilder requestBuilder;
 
@@ -34,15 +34,15 @@ public class GameDelegate implements ClientListener,
     private final EventBuilder evtBuilder;
 
     public GameDelegate() {
-        cManager = new ClientsManager();
+        clientManager = new ClientsManager();
         evtPerformer = new EventPerformer();
-        evtBuilder = new EventBuilder(repositoryManager, cManager);
+        evtBuilder = new EventBuilder(repositoryManager, clientManager);
         requestBuilder = new RequestBuilder();
     }
 
     @Override
     public void onClientDisconnected(Client c) {
-        cManager.removeClient(c);
+        clientManager.removeClient(c);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class GameDelegate implements ClientListener,
 
     @Override
     public void onClientConnected(Client c) {
-        cManager.addClient(c);
+        clientManager.addClient(c);
     }
 
     @Override

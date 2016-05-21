@@ -40,7 +40,17 @@ public class ParamGroups {
         this.paramGroups.addAll(paramGroups);
     }
 
+    public ParamGroups(ParamGroup... paramGroups) {
+        for (ParamGroup g : paramGroups) {
+            this.paramGroups.add(g);
+        }
+    }
+
     public List<ParamGroup> getParamGroups() {
         return paramGroups;
+    }
+
+    public ParamGroup getParamGroup(int i) {
+        return paramGroups.get(i);
     }
 }

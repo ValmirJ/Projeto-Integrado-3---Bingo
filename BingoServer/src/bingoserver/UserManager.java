@@ -5,6 +5,7 @@
  */
 package bingoserver;
 
+import bingoserver.network.Client;
 import models.User;
 
 /**
@@ -12,6 +13,10 @@ import models.User;
  * @author 15096134
  */
 public interface UserManager {
+
+    public abstract Client getClient();
+
     public abstract User getUser();
+
     public abstract void setUser(User u);
 }

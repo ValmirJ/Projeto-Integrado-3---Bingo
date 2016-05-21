@@ -45,12 +45,23 @@ public class ParamGroup {
         this.values.addAll(values);
     }
 
+    public ParamGroup(String... values) {
+        for (String e : values) {
+            this.values.add(e);
+        }
+    }
+
+    public String getParam(int i) {
+        return values.get(i);
+    }
+
     public String toString() {
         // nesse método retornar toda a lista values no formato:
         // 1 elemento:  <?>
         // 2 elementos: <?,?>
         // 3 elementos: <?,?,?>
         // N elementos: <?,?,?,...>
+        // Inclusive o "<" e o ">"
 
         return "";
     }

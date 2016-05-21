@@ -5,6 +5,7 @@
  */
 package bingoserver;
 
+import bingoserver.network.Client;
 import bingoserver.responses.Response;
 import models.User;
 
@@ -13,6 +14,10 @@ import models.User;
  * @author 15096134
  */
 public interface ResponseManager {
-    public void respondToUser(Response resp, User u);        
+
+    public void respondToClient(Response resp, Client c);
+
+    public void respondToUser(Response resp, User u);
+
     public void respondToUsers(Response resp, User[] users);
 }

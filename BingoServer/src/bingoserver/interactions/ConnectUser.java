@@ -55,7 +55,7 @@ public class ConnectUser extends UserInteractor {
 
         // Ja está feito:
         // Avisar o user que ele foi conectado
-        getResponseManager().respondToClient(new UserConnectedResponse(), getUserClientSession().getClient());
+        getResponseManager().respondToUser(new UserConnectedResponse(), getUserClientSession().getUser());
 
         // TODO:
         // Enviar para o client as salas disponíveis,

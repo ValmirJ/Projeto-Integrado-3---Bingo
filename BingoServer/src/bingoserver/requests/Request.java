@@ -46,7 +46,7 @@ public abstract class Request {
     @Override
     public int hashCode() {
         int h = super.hashCode();
-        h = h * requestRawData.hashCode();
+        h = h * 7 + requestRawData.hashCode();
         return h;
     }
 }

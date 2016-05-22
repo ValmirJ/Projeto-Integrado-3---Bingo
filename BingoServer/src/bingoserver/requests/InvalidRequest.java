@@ -28,4 +28,8 @@ public class InvalidRequest extends Request {
 
         return super.equals(another);
     }
+
+    public String toString() {
+        return "Invalid Request: " + getRawData();
+    }
 }

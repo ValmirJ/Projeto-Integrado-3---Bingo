@@ -31,6 +31,14 @@ public class Client implements Cloneable {
     }
 
     Client(Socket socket, ClientListener listener) throws IOException {
+        if (socket == null) {
+            throw new NullPointerException("Socket cannot be null");
+        }
+
+        if (listener == null) {
+            throw new NullPointerException("ClientListener cannot be null");
+        }
+
         this.socket = socket;
         this.listener = listener;
 
@@ -48,7 +56,7 @@ public class Client implements Cloneable {
         }
     }
 
-    public void read() {
+    private void read() {
         try {
             String message = input.readLine();
 
@@ -105,9 +113,9 @@ public class Client implements Cloneable {
         return str;
     }
 
-    public Client(Client other) throws Exception {
+    public Client(Client other) {
         if (other == null) {
-            throw new Exception("Objeto não pode ser nulo");
+            throw new NullPointerException("Client cannot be null");
         }
 
         this.listener = other.listener;

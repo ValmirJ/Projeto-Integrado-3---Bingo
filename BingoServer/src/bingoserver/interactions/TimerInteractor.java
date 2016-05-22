@@ -5,20 +5,21 @@
  */
 package bingoserver.interactions;
 
-import bingoserver.ResponseManager;
-import bingoserver.repositories.RepositoryManager;
+import bingoserver.BingoServer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author 15096134
  */
 public class TimerInteractor extends Interactor {
-    
+
     public TimerInteractor() {
         super();
     }
-    
-   public void perform() {
-       
-   }
+
+    public void perform() {
+        Logger.getLogger(BingoServer.class.getName()).log(Level.INFO, "Clock Tick");
+    }
 }

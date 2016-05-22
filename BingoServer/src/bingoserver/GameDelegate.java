@@ -57,8 +57,6 @@ public class GameDelegate {
             } catch (IllegalAccessException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            client.read();
         } else {
             client.send(new ErrorResponse(request));
         }

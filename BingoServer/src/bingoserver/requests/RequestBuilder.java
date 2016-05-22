@@ -25,6 +25,10 @@ public class RequestBuilder {
         this.messagePattern = Pattern.compile(pattern);
     }
 
+    public String toString() {
+        return "RequestBuilder";
+    }
+
     public Request buildRequestForMessage(String message) {
         // Os valores aceitaveis para message sao todos aqueles que os clientes
         // podem enviar para nosso servidor.

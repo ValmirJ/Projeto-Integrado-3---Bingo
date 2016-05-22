@@ -22,6 +22,10 @@ public class ClientReceiver implements Runnable {
     private final Thread thread;
 
     public ClientReceiver(int port, ClientListener clientListener) throws IOException {
+        if (clientListener == null) {
+            throw new NullPointerException("ClientListener cannot be null");
+        }
+
         this.serverSock = new ServerSocket(port);
         this.clientListener = clientListener;
         this.thread = new Thread(this);

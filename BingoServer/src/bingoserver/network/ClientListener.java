@@ -11,6 +11,8 @@ package bingoserver.network;
  */
 public interface ClientListener {
 
+    public void onClientConnected(Client c);
+
     public void onClientDisconnected(Client client);
 
     public void onClientMessage(Client client, String message);

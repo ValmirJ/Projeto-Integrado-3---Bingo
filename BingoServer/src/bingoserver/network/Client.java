@@ -19,12 +19,11 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client implements Cloneable{
+public class Client implements Cloneable {
 
     private final Socket socket;
     private final BufferedReader input;
     private final BufferedWriter output;
-
     private final ClientListener listener;
 
     public ClientListener getListener() {
@@ -63,7 +62,7 @@ public class Client implements Cloneable{
             listener.onClientDisconnected(this);
         }
     }
-    
+
     @Override
     public int hashCode() {
         int r = super.hashCode();
@@ -71,53 +70,64 @@ public class Client implements Cloneable{
         r = r * 7 + this.listener.hashCode();
         r = r * 7 + this.input.hashCode();
         r = r * 7 + this.output.hashCode();
-       
+
         return r;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        
-        if(!(obj instanceof Client))
+        }
+
+        if (!(obj instanceof Client)) {
             return false;
-        
+        }
+
         Client other = (Client) obj;
-        if(!(this.socket.equals(other.socket)))
+        if (!(this.socket.equals(other.socket))) {
             return false;
-        if(!(this.listener.equals(other.listener)))
+        }
+        if (!(this.listener.equals(other.listener))) {
             return false;
-        
+        }
+
         return true;
     }
+
     @Override
     public String toString() {
         String str = "Socket: " + this.socket.toString();
-        
+
         return str;
     }
-    
-    public Client(Client other) throws Exception{
-        if(other == null)
+
+    public Client(Client other) throws Exception {
+        if (other == null) {
             throw new Exception("Objeto não pode ser nulo");
-        
+        }
+
         this.listener = other.listener;
         this.socket = other.socket;
         this.output = other.output;
         this.input = other.input;
     }
-    
-    @Override 
+
+    @Override
     public Object clone() {
         Client newClient = null;
         try {
             newClient = new Client(this);
+        } catch (Exception e) {
         }
-        catch(Exception e) {}
-        
+
         return newClient;
+    }
+
+    void start() {
+        listener.onClientConnected(this);
     }
 }

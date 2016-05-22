@@ -64,7 +64,9 @@ public class ClientsManager implements ResponseManager {
     }
 
     public void setUserClientSession(UserClientSession session) {
-        setClientUser(session.getClient(), session.getUser());
+        if (assigns.containsKey(session.getClient())) {
+            setClientUser(session.getClient(), session.getUser());
+        }
     }
 
     public ResponseManager getResponseManager() {

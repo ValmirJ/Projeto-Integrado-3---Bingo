@@ -15,49 +15,42 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class ClientReceiver {
+public class ClientReceiver implements Runnable {
 
     private final ServerSocket serverSock;
-    private final ClientReceiverListener receiverListener;
     private final ClientListener clientListener;
-    private boolean running;
+    private final Thread thread;
 
-    public ClientReceiver(int port, ClientReceiverListener receiverListener, ClientListener clientListener) throws IOException {
+    public ClientReceiver(int port, ClientListener clientListener) throws IOException {
         this.serverSock = new ServerSocket(port);
-        this.receiverListener = receiverListener;
         this.clientListener = clientListener;
-
-        running = false;
+        this.thread = new Thread(this);
     }
 
     public void start() {
-        running = true;
+        thread.start();
+    }
 
-        while (running) {
+    public void stop() throws IOException {
+        serverSock.close();
+    }
+
+    @Override
+    public void run() {
+        while (true) {
             Socket socket;
 
             try {
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "Waiting new Client");
                 socket = serverSock.accept();
-            } catch (IOException ex) {
-                socket = null;
-                Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
-                this.stop();
-            }
 
-            if (socket != null) {
-                try {
-                    Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
-                    Client c = new Client(socket, clientListener);
-                    receiverListener.onClientConnected(c);
-                } catch (IOException ex) {
-                    Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
+                Client c = new Client(socket, clientListener);
+                c.start();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
         }
-    }
-
-    public void stop() {
-        running = false;
     }
 }

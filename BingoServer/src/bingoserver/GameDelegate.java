@@ -9,9 +9,8 @@ import bingoserver.interactions.Interactor;
 import bingoserver.interactions.TimerInteractor;
 import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
-import bingoserver.network.ClientListener;
-import bingoserver.network.ClientReceiverListener;
 import bingoserver.network.ClientsManager;
+import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.RepositoryManager;
 import bingoserver.requests.InteractionRequest;
 import bingoserver.requests.Request;
@@ -24,9 +23,7 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class GameDelegate implements ClientListener,
-        ClientReceiverListener,
-        ClockListener {
+public class GameDelegate {
 
     private final RepositoryManager repositoryManager;
     private final ClientsManager clientsManager;
@@ -38,12 +35,10 @@ public class GameDelegate implements ClientListener,
         requestBuilder = new RequestBuilder();
     }
 
-    @Override
-    public void onClientDisconnected(Client c) {
+    public synchronized void onClientDisconnected(Client c) {
         clientsManager.removeClient(c);
     }
 
-    @Override
     public void onClientMessage(Client client, String message) {
         Request request = requestBuilder.buildRequestForMessage(message);
 
@@ -52,10 +47,10 @@ public class GameDelegate implements ClientListener,
 
             try {
                 UserInteractor ui = interactionReq.getInteractorClass().newInstance();
-                setInteractorMamagers(ui);
+                setInteractorManagers(ui);
 
                 ui.setUserClientSession(clientsManager.getUserClientSession(client));
-                ui.perform(interactionReq.getParams());
+                performSync(ui, interactionReq.getParams());
                 clientsManager.setUserClientSession(ui.getUserClientSession());
             } catch (InstantiationException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,22 +64,29 @@ public class GameDelegate implements ClientListener,
         }
     }
 
-    @Override
     public void onClientConnected(Client c) {
         clientsManager.addClient(c);
-        c.read();
     }
 
-    @Override
     public void onClockTick() {
         TimerInteractor timerInteractor = new TimerInteractor();
-        setInteractorMamagers(timerInteractor);
-        timerInteractor.perform();
+        setInteractorManagers(timerInteractor);
+        performSync(timerInteractor, null);
     }
 
-    private void setInteractorMamagers(Interactor i) {
+    private void setInteractorManagers(Interactor i) {
         i.setRepositoryManager(repositoryManager);
         i.setResponseManager(clientsManager);
+    }
+
+    private synchronized void performSync(Interactor i, ParamGroups params) {
+        if (i instanceof TimerInteractor) {
+            ((TimerInteractor) i).perform();
+        }
+
+        if (i instanceof UserInteractor) {
+            ((UserInteractor) i).perform(params);
+        }
     }
 
 }

@@ -26,10 +26,6 @@ public class Client implements Cloneable {
     private final BufferedWriter output;
     private final ClientListener listener;
 
-    public ClientListener getListener() {
-        return listener;
-    }
-
     Client(Socket socket, ClientListener listener) throws IOException {
         if (socket == null) {
             throw new NullPointerException("Socket cannot be null");

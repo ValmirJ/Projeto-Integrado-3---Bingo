@@ -9,18 +9,19 @@ package bingoserver.models;
  *
  * @author valmir.massoni
  */
-public class BingoCard implements Cloneable {
+public class BingoCard {
     private int idCard;
     private int numbers[][] = new int[5][5];
     
-    
-    public void setIdCard(int id) {
-        this.idCard = id;
-    }
     public int getIdCard() {
         return this.idCard;
     }
-    public void setNumbers(int[][] numbers) throws Exception {
+
+    public int[][] getNumbers() {
+        return this.numbers;
+    }
+    
+    public BingoCard(int id, int[][] numbers) throws Exception {
         if(numbers.length < 5 || numbers[0].length < 5)
             throw new Exception("Cartela inválida");
         
@@ -29,14 +30,7 @@ public class BingoCard implements Cloneable {
                 this.numbers[i][j] = numbers[i][j];
             }
         }
-    }
-    public int[][] getNumbers() {
-        return this.numbers;
-    }
-    
-    public BingoCard(int id, int[][] numbers) throws Exception {
-        this.setIdCard(id);
-        this.setNumbers(numbers);
+        this.idCard = id;
     }
     
     @Override
@@ -76,24 +70,5 @@ public class BingoCard implements Cloneable {
                 r = r * 7 + new Integer(n).hashCode();
         }
         return r;
-    }
-
-    public BingoCard(BingoCard another) throws Exception {
-        if(another == null)
-            throw new Exception("Objeto não pode ser nulo");
-         
-        this.idCard = another.idCard;
-        this.setNumbers(another.getNumbers());
-    }
-    
-    @Override
-    public Object clone() {
-        BingoCard newBingoCard = null;
-        try {
-            newBingoCard = new BingoCard(this);
-        }
-        catch(Exception e) {}
-        
-        return newBingoCard;
     }
 }

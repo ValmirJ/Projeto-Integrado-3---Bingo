@@ -5,13 +5,16 @@
  */
 package bingoserver.models;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author valmir
  */
-public class UserCard {
+public class UserCard implements Cloneable {
     private User user;
     private BingoCard card;
+    private ArrayList<Integer> playedNumbers;
     
     public UserCard(User user, BingoCard card) throws Exception {
         if(user == null)
@@ -27,12 +30,19 @@ public class UserCard {
     public BingoCard getCard() {
         return this.card;
     }
+    public void addPlayedNumber(int nr) {
+        this.playedNumbers.add(nr);
+    }
+    public ArrayList<Integer> getPlayedNumbers() {
+        return (ArrayList<Integer>) this.playedNumbers.clone();
+    }
     
     @Override
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + this.user.hashCode();
         r = r * 7 + this.card.hashCode();
+        r = r * 7 + this.playedNumbers.hashCode();
         
         return r;
     }
@@ -50,14 +60,39 @@ public class UserCard {
             return false;
         if(!(this.card.equals(other.card)))
             return false;
+        if(!(this.playedNumbers.equals(other.playedNumbers)))
+            return false;
         
         return true;   
     }
     @Override
     public String toString(){
         String str = this.user.toString();
+        str += "Números Jogados: \n";
+        for(int nr : this.playedNumbers)
+            str += nr + ", ";
+        
         str += this.card.toString();
         
         return str;
+    }
+    
+    public UserCard(UserCard other) throws Exception {
+        if(other == null)
+            throw new Exception("UserCard cannot be null");
+        
+        this.card = other.card;
+        this.user = other.user;
+        this.playedNumbers = (ArrayList<Integer>)other.playedNumbers.clone();
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        UserCard other = null;
+        try {
+            other = new UserCard(this);
+        }
+        catch(Exception e) {}
+        return other;
     }
 }

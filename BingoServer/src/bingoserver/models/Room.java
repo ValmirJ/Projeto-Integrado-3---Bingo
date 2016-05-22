@@ -15,13 +15,12 @@ public class Room implements Cloneable {
     private int id;
     private boolean started;
     private ArrayList<Integer> sortedNumbers;
-    private UserCard[] userCards;
-    private int amountUsers;
+    private ArrayList <UserCard> userCards;
     
     public int getId() {
         return this.id;
     }
-    public boolean getStateRoom() {
+    public boolean isStarted() {
         return this.started;
     }
     public void startRoom() {
@@ -32,29 +31,17 @@ public class Room implements Cloneable {
     }
     
     public void addUserCard(UserCard userCard) {
-        this.userCards[this.amountUsers] = userCard;
-        this.amountUsers++;
+        this.userCards.add(userCard);
     }
     
     public boolean removeUserCard(UserCard userCard) {
-        int i;
-        for(i = 0; i < this.userCards.length || this.userCards[i].equals(userCard); i++)
-        {}
-        if(i == this.userCards.length)
-            return false;
-        
-        for(; i < this.userCards.length; i++) {
-            userCards[i] = userCards[i+1];
-        }
-        this.amountUsers--;
-        return true;
+        return this.userCards.remove(userCard);
     }
  
-    public Room (int id, UserCard userCard, int sizeOfRoom) {
-        this.userCards = new UserCard[sizeOfRoom];
+    public Room (int id, UserCard userCard) {
+        this.id = id;
+        this.userCards.add(userCard);
         this.started = false;
-        this.userCards[0] = userCard;
-        this.amountUsers = 1;
     }
     
     @Override
@@ -76,12 +63,8 @@ public class Room implements Cloneable {
         if(!(this.sortedNumbers.equals(other.sortedNumbers)))
             return false;
         
-        if(this.amountUsers != other.amountUsers)
+        if(!(this.userCards.equals(other.sortedNumbers)))
             return false;
-        
-        for(int i = 0; i < this.amountUsers; i++)
-            if(!(this.userCards[i].equals(other.userCards[i])))
-                return false;
         
         return true;
     }
@@ -103,10 +86,8 @@ public class Room implements Cloneable {
         int r = super.hashCode();
         r = r * 7 + Integer.hashCode(this.id);
         r = r * 7 + Boolean.hashCode(this.started);
-        r = r * 7 + Integer.hashCode(this.amountUsers);
         r = r * 7 + this.sortedNumbers.hashCode();
-        for (UserCard uc : this.userCards)
-            r = r * 7 + uc.hashCode();
+        r = r * 7 + this.userCards.hashCode();
         
         return r;
     }
@@ -117,9 +98,8 @@ public class Room implements Cloneable {
         
         this.id = other.id;
         this.started = other.started;
-        this.amountUsers = other.amountUsers;
         this.sortedNumbers = (ArrayList<Integer>)other.sortedNumbers.clone();
-        this.userCards = other.userCards;    
+        this.userCards = (ArrayList<UserCard>)other.userCards.clone();    
     }
     
     @Override

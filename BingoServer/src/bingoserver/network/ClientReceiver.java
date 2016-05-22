@@ -15,11 +15,10 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class ClientReceiver implements Runnable {
+public class ClientReceiver {
 
     private final ServerSocket serverSock;
     private final ClientListener clientListener;
-    private final Thread thread;
 
     public ClientReceiver(int port, ClientListener clientListener) throws IOException {
         if (clientListener == null) {
@@ -28,19 +27,17 @@ public class ClientReceiver implements Runnable {
 
         this.serverSock = new ServerSocket(port);
         this.clientListener = clientListener;
-        this.thread = new Thread(this);
     }
 
     public void start() {
-        thread.start();
+        waitForClients();
     }
 
     public void stop() throws IOException {
         serverSock.close();
     }
 
-    @Override
-    public void run() {
+    private void waitForClients() {
         while (true) {
             Socket socket;
 
@@ -50,8 +47,17 @@ public class ClientReceiver implements Runnable {
                 socket.setTcpNoDelay(true);
 
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
-                Client c = new Client(socket, clientListener);
-                c.start();
+                try {
+                    Client c = new Client(socket, clientListener);
+                    c.start();
+
+                    // Evitando uso de threads
+                    c.readOneMessage();
+
+                    c.stop();
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
                 break;

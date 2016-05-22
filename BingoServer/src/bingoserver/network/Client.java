@@ -17,12 +17,11 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client implements Cloneable, Runnable {
+public class Client implements Cloneable {
 
     private final Socket socket;
     private final ObjectOutputStream output;
     private final ClientListener listener;
-    private final Thread thread;
 
     Client(Socket socket, ClientListener listener) throws IOException {
         if (socket == null) {
@@ -37,7 +36,6 @@ public class Client implements Cloneable, Runnable {
         this.listener = listener;
 
         output = new ObjectOutputStream(socket.getOutputStream());
-        thread = new Thread(this);
     }
 
     public void send(Response resp) {
@@ -50,18 +48,10 @@ public class Client implements Cloneable, Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        try {
-            ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-
-            while (true) {
-                this.read(input);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            this.stop();
-        }
+    public void readOneMessage() throws IOException {
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        this.read(ois);
+        ois.close();
     }
 
     private void read(ObjectInputStream input) throws IOException {
@@ -125,7 +115,6 @@ public class Client implements Cloneable, Runnable {
         this.listener = other.listener;
         this.socket = other.socket;
         this.output = other.output;
-        this.thread = other.thread;
     }
 
     @Override
@@ -141,7 +130,6 @@ public class Client implements Cloneable, Runnable {
 
     void start() {
         listener.onClientConnected(this);
-        thread.start();
     }
 
     void stop() {

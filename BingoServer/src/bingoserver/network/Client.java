@@ -6,11 +6,9 @@
 package bingoserver.network;
 
 import bingoserver.responses.Response;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +17,12 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client implements Cloneable {
+public class Client implements Cloneable, Runnable {
 
     private final Socket socket;
-    private final BufferedReader input;
-    private final BufferedWriter output;
+    private final ObjectOutputStream output;
     private final ClientListener listener;
+    private final Thread thread;
 
     Client(Socket socket, ClientListener listener) throws IOException {
         if (socket == null) {
@@ -38,13 +36,13 @@ public class Client implements Cloneable {
         this.socket = socket;
         this.listener = listener;
 
-        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        output = new ObjectOutputStream(socket.getOutputStream());
+        thread = new Thread(this);
     }
 
     public void send(Response resp) {
         try {
-            output.write(resp.responseData());
+            output.writeUTF(resp.responseData());
             output.flush();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,18 +50,29 @@ public class Client implements Cloneable {
         }
     }
 
-    private void read() {
+    @Override
+    public void run() {
         try {
-            String message = input.readLine();
+            ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-            if (message != null) {
-                listener.onClientMessage(this, message);
-            } else {
-                Logger.getLogger(Client.class.getName()).log(Level.WARNING, null, "Received null Client message");
+            while (true) {
+                this.read(input);
             }
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            listener.onClientDisconnected(this);
+            this.stop();
+        }
+    }
+
+    private void read(ObjectInputStream input) throws IOException {
+        String message = input.readUTF();
+
+        if (message != null) {
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Received request {0}", message);
+            listener.onClientMessage(this, message);
+        } else {
+            Logger.getLogger(Client.class.getName()).log(Level.WARNING, "Received null Client message");
+            throw new IOException("Null client response");
         }
     }
 
@@ -72,7 +81,6 @@ public class Client implements Cloneable {
         int r = super.hashCode();
         r = r * 7 + this.socket.hashCode();
         r = r * 7 + this.listener.hashCode();
-        r = r * 7 + this.input.hashCode();
         r = r * 7 + this.output.hashCode();
 
         return r;
@@ -117,7 +125,7 @@ public class Client implements Cloneable {
         this.listener = other.listener;
         this.socket = other.socket;
         this.output = other.output;
-        this.input = other.input;
+        this.thread = other.thread;
     }
 
     @Override
@@ -133,5 +141,16 @@ public class Client implements Cloneable {
 
     void start() {
         listener.onClientConnected(this);
+        thread.start();
+    }
+
+    void stop() {
+        listener.onClientDisconnected(this);
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

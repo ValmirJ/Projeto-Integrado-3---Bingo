@@ -47,6 +47,7 @@ public class ClientReceiver implements Runnable {
             try {
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "Waiting new Client");
                 socket = serverSock.accept();
+                socket.setTcpNoDelay(true);
 
                 Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
                 Client c = new Client(socket, clientListener);

@@ -44,9 +44,12 @@ public class GameDelegate {
 
         if (request.valid() && request instanceof InteractionRequest) {
             InteractionRequest interactionReq = (InteractionRequest) request;
+            Class<? extends UserInteractor> interactionClass = interactionReq.getInteractorClass();
+
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Executing {0} interaction", interactionClass.getCanonicalName());
 
             try {
-                UserInteractor ui = interactionReq.getInteractorClass().newInstance();
+                UserInteractor ui = interactionClass.newInstance();
                 setInteractorManagers(ui);
 
                 ui.setUserClientSession(clientsManager.getUserClientSession(client));
@@ -56,8 +59,11 @@ public class GameDelegate {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Invalid request {0}", message);
             client.send(new ErrorResponse(request));
         }
     }

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class BingoServer implements ClientListener {
 
-    private GameDelegate delegate;
+    private final GameDelegate delegate;
     private static final int PORT = 10001;
 
     public BingoServer() {

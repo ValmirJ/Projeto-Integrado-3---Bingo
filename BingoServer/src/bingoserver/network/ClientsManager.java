@@ -5,7 +5,6 @@
  */
 package bingoserver.network;
 
-import bingoserver.ResponseManager;
 import bingoserver.models.User;
 import bingoserver.responses.Response;
 import bingoserver.session.UserClientSession;

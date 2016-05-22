@@ -5,7 +5,7 @@
  */
 package bingoserver.interactions;
 
-import bingoserver.ResponseManager;
+import bingoserver.network.ResponseManager;
 import bingoserver.repositories.RepositoryManager;
 
 /**

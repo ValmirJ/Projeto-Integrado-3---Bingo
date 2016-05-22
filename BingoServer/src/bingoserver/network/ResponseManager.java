@@ -10,13 +10,13 @@ import bingoserver.responses.Response;
 
 /**
  *
- * @author guilherme
+ * @author 15096134
  */
 public interface ResponseManager {
 
+    public void respondToClient(Response resp, Client c);
+
     public void respondToUser(Response resp, User u);
 
-    public void respondToUsers(Response resp, User... users);
-
-    public void respondToClient(Response resp, Client client);
+    public void respondToUsers(Response resp, User[] users);
 }

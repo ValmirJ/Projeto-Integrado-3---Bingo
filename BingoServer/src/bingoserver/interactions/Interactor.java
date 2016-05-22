@@ -5,16 +5,15 @@
  */
 package bingoserver.interactions;
 
-import bingoserver.ResponseManager;
+import bingoserver.network.ResponseManager;
 import bingoserver.repositories.RepositoryManager;
-import models.User;
-import bingoserver.UserManager;
 
 /**
  *
  * @author 15096134
  */
 public abstract class Interactor {
+
     private RepositoryManager repositoryManager;
 
     public ResponseManager getResponseManager() {
@@ -33,7 +32,7 @@ public abstract class Interactor {
     protected RepositoryManager getRepositoryManager() {
         return repositoryManager;
     }
-    
+
     public Interactor() {
     }
 }

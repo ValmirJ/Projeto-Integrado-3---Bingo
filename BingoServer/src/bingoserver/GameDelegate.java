@@ -5,70 +5,92 @@
  */
 package bingoserver;
 
-import bingoserver.gameEvent.Event;
-import bingoserver.gameEvent.EventBuilder;
-import bingoserver.gameEvent.EventPerformer;
+import bingoserver.interactions.Interactor;
+import bingoserver.interactions.TimerInteractor;
+import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
-import bingoserver.network.ClientListener;
-import bingoserver.network.ClientReceiverListener;
+import bingoserver.network.ClientsManager;
+import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.RepositoryManager;
+import bingoserver.requests.InteractionRequest;
+import bingoserver.requests.Request;
+import bingoserver.requests.RequestBuilder;
 import bingoserver.responses.ErrorResponse;
-import requests.InteractionRequest;
-import requests.Request;
-import requests.RequestBuilder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author 15096134
  */
-public class GameDelegate implements ClientListener,
-        ClientReceiverListener,
-        ClockListener {
+public class GameDelegate {
 
-    private RepositoryManager repositoryManager;
-    private final ClientsManager clientManager;
-
+    private final RepositoryManager repositoryManager;
+    private final ClientsManager clientsManager;
     private final RequestBuilder requestBuilder;
 
-    private final EventPerformer evtPerformer;
-    private final EventBuilder evtBuilder;
-
     public GameDelegate() {
-        clientManager = new ClientsManager();
-        evtPerformer = new EventPerformer();
-        evtBuilder = new EventBuilder(repositoryManager, clientManager);
+        repositoryManager = new RepositoryManager();
+        clientsManager = new ClientsManager();
         requestBuilder = new RequestBuilder();
     }
 
-    @Override
-    public void onClientDisconnected(Client c) {
-        clientManager.removeClient(c);
+    public synchronized void onClientDisconnected(Client c) {
+        clientsManager.removeClient(c);
     }
 
-    @Override
     public void onClientMessage(Client client, String message) {
         Request request = requestBuilder.buildRequestForMessage(message);
 
         if (request.valid() && request instanceof InteractionRequest) {
-            Event evt = evtBuilder.createClientEvent(client, (InteractionRequest) request);
+            InteractionRequest interactionReq = (InteractionRequest) request;
+            Class<? extends UserInteractor> interactionClass = interactionReq.getInteractorClass();
 
-            if (evt != null) {
-                evtPerformer.process(evt);
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Executing {0} interaction", interactionClass.getCanonicalName());
+
+            try {
+                UserInteractor ui = interactionClass.newInstance();
+                setInteractorManagers(ui);
+
+                ui.setUserClientSession(clientsManager.getUserClientSession(client));
+                performSync(ui, interactionReq.getParams());
+                clientsManager.setUserClientSession(ui.getUserClientSession());
+            } catch (InstantiationException ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Invalid request {0}", message);
             client.send(new ErrorResponse(request));
         }
     }
 
-    @Override
     public void onClientConnected(Client c) {
-        clientManager.addClient(c);
+        clientsManager.addClient(c);
     }
 
-    @Override
     public void onClockTick() {
-        Event evt = evtBuilder.createTickEvent();
-        evtPerformer.process(evt);
+        TimerInteractor timerInteractor = new TimerInteractor();
+        setInteractorManagers(timerInteractor);
+        performSync(timerInteractor, null);
+    }
+
+    private void setInteractorManagers(Interactor i) {
+        i.setRepositoryManager(repositoryManager);
+        i.setResponseManager(clientsManager);
+    }
+
+    private synchronized void performSync(Interactor i, ParamGroups params) {
+        if (i instanceof TimerInteractor) {
+            ((TimerInteractor) i).perform();
+        }
+
+        if (i instanceof UserInteractor) {
+            ((UserInteractor) i).perform(params);
+        }
     }
 
 }

@@ -16,41 +16,52 @@ import java.util.logging.Logger;
  * @author 15096134
  */
 public class ClientReceiver {
+
     private final ServerSocket serverSock;
-    private final ClientReceiverListener cList;
-    private boolean running;
-    
-    public ClientReceiver(int port, ClientReceiverListener listener) throws IOException {
-        serverSock = new ServerSocket(port);
-        cList = listener;
-        running = false;
+    private final ClientListener clientListener;
+
+    public ClientReceiver(int port, ClientListener clientListener) throws IOException {
+        if (clientListener == null) {
+            throw new NullPointerException("ClientListener cannot be null");
+        }
+
+        this.serverSock = new ServerSocket(port);
+        this.clientListener = clientListener;
     }
-    
+
     public void start() {
-        running = true;
-        
-        while (running) {
-            Socket s;
-            
+        waitForClients();
+    }
+
+    public void stop() throws IOException {
+        serverSock.close();
+    }
+
+    private void waitForClients() {
+        while (true) {
+            Socket socket;
+
             try {
-                s = serverSock.accept();
-            } catch (IOException ex) {
-                s = null;
-                Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
-                this.stop();
-            }
-            
-            if (s != null) {
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "Waiting new Client");
+                socket = serverSock.accept();
+                socket.setTcpNoDelay(true);
+
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.INFO, "New Client Connected");
                 try {
-                    cList.onClientConnected(new Client(s));
+                    Client c = new Client(socket, clientListener);
+                    c.start();
+
+                    // Evitando uso de threads
+                    c.readOneMessage();
+
+                    c.stop();
                 } catch (IOException ex) {
                     Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
         }
-    }
-    
-    public void stop() {
-        running = false;
     }
 }

@@ -6,11 +6,9 @@
 package bingoserver.network;
 
 import bingoserver.responses.Response;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,31 +17,30 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client implements Cloneable{
+public class Client implements Cloneable {
 
-    private Socket socket;
-    private BufferedReader input;
-    private BufferedWriter output;
+    private final Socket socket;
+    private final ObjectOutputStream output;
+    private final ClientListener listener;
 
-    private ClientListener listener;
+    Client(Socket socket, ClientListener listener) throws IOException {
+        if (socket == null) {
+            throw new NullPointerException("Socket cannot be null");
+        }
 
-    public ClientListener getListener() {
-        return listener;
-    }
+        if (listener == null) {
+            throw new NullPointerException("ClientListener cannot be null");
+        }
 
-    public void setListener(ClientListener listener) {
+        this.socket = socket;
         this.listener = listener;
-    }
 
-    Client(Socket s) throws IOException {
-        socket = s;
-        input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+        output = new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void send(Response resp) {
         try {
-            output.write(resp.responseData());
+            output.writeUTF(resp.responseData());
             output.flush();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,81 +48,100 @@ public class Client implements Cloneable{
         }
     }
 
-    public String read() {
-        try {
-            String message = input.readLine();
-
-            if (message != null) {
-                return message;
-            } else {
-                Logger.getLogger(Client.class.getName()).log(Level.WARNING, null, "Received null Client message");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            listener.onClientDisconnected(this);
-        }
-
-        return null;
+    public void readOneMessage() throws IOException {
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        this.read(ois);
+        ois.close();
     }
-    
+
+    private void read(ObjectInputStream input) throws IOException {
+        String message = input.readUTF();
+
+        if (message != null) {
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Received request {0}", message);
+            listener.onClientMessage(this, message);
+        } else {
+            Logger.getLogger(Client.class.getName()).log(Level.WARNING, "Received null Client message");
+            throw new IOException("Null client response");
+        }
+    }
+
     @Override
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + this.socket.hashCode();
         r = r * 7 + this.listener.hashCode();
-        r = r * 7 + this.input.hashCode();
         r = r * 7 + this.output.hashCode();
-       
+
         return r;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        
-        if(!(obj instanceof Client))
+        }
+
+        if (!(obj instanceof Client)) {
             return false;
-        
+        }
+
         Client other = (Client) obj;
-        if(!(this.socket.equals(other.socket)))
+        if (!(this.socket.equals(other.socket))) {
             return false;
-        if(!(this.listener.equals(other.listener)))
+        }
+        if (!(this.listener.equals(other.listener))) {
             return false;
-        if(!(this.input.equals(other.input)))
-            return false;
+        }
+        
         if(!(this.output.equals(other.output)))
             return false;
-        
+
         return true;
     }
+
     @Override
     public String toString() {
         String str = "Socket: " + this.socket.toString();
-        
+
         return str;
     }
-    
-    public Client(Client other) throws Exception{
-        if(other == null)
-            throw new Exception("Objeto não pode ser nulo");
-        
+
+    public Client(Client other) {
+        if (other == null) {
+            throw new NullPointerException("Client cannot be null");
+        }
+
         this.listener = other.listener;
         this.socket = other.socket;
         this.output = other.output;
-        this.input = other.input;
     }
-    
-    @Override 
+
+    @Override
     public Object clone() {
         Client newClient = null;
         try {
             newClient = new Client(this);
+        } catch (Exception e) {
         }
-        catch(Exception e) {}
-        
+
         return newClient;
+    }
+
+    void start() {
+        listener.onClientConnected(this);
+    }
+
+    void stop() {
+        listener.onClientDisconnected(this);
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

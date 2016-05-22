@@ -5,7 +5,7 @@
  */
 package bingoserver.responses;
 
-import parameters.ParamGroups;
+import bingoserver.parameters.ParamGroups;
 
 /**
  *

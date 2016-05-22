@@ -5,12 +5,12 @@
  */
 package bingoserver.interactions;
 
-import bingoserver.UserManager;
+import bingoserver.models.User;
+import bingoserver.parameters.ParamGroup;
+import bingoserver.parameters.ParamGroups;
 import bingoserver.responses.RaAlreadyInUse;
 import bingoserver.responses.UserConnectedResponse;
-import models.User;
-import parameters.ParamGroup;
-import parameters.ParamGroups;
+import bingoserver.session.UserClientSession;
 
 /**
  *
@@ -23,7 +23,7 @@ public class ConnectUser extends UserInteractor {
     }
 
     @Override
-    public void perform(ParamGroups params, UserManager mgr) {
+    public void perform(ParamGroups params) {
         String ra = params.getParamGroup(0).getParam(0);
         User user = new User();
 
@@ -42,7 +42,7 @@ public class ConnectUser extends UserInteractor {
             // Esse é um dos poucos, se não único lugar em que deve ser usado
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
-            getResponseManager().respondToClient(new RaAlreadyInUse(groups), mgr.getClient());
+            getResponseManager().respondToClient(new RaAlreadyInUse(groups), getUserClientSession().getClient());
         }
 
         // TODO:
@@ -51,11 +51,11 @@ public class ConnectUser extends UserInteractor {
         // Isso associa o client dessa requisição com o usuário criado para ele,
         // permitindo que usemos mgr.getUser() nas próximas vezes que esse client
         // fizer requisições.
-        mgr.setUser(user);
+        setUserClientSession(new UserClientSession(getUserClientSession().getClient(), user));
 
         // Ja está feito:
         // Avisar o user que ele foi conectado
-        getResponseManager().respondToUser(new UserConnectedResponse(), mgr.getUser());
+        getResponseManager().respondToUser(new UserConnectedResponse(), getUserClientSession().getUser());
 
         // TODO:
         // Enviar para o client as salas disponíveis,

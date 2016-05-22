@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package bingo;
 
 /**
  *
  * @author guilherme
  */
-public class Main {
+public class Bingo {
 
+    public static void main(String... args) {
+        System.out.println("Teste");
+    }
 }

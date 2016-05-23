@@ -45,7 +45,7 @@ public class ClientsManager implements ResponseManager {
     }
 
     @Override
-    public void respondToUsers(Response resp, User[] users) {
+    public void respondToUsers(Response resp, User... users) {
         for (User u : users) {
             respondToUser(resp, u);
         }

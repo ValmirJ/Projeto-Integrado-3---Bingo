@@ -18,5 +18,5 @@ public interface ResponseManager {
 
     public void respondToUser(Response resp, User u);
 
-    public void respondToUsers(Response resp, User[] users);
+    public void respondToUsers(Response resp, User... users);
 }

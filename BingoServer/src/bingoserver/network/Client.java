@@ -38,7 +38,7 @@ public class Client implements Cloneable {
         output = new ObjectOutputStream(socket.getOutputStream());
     }
 
-    public void send(Response resp) {
+    void send(Response resp) {
         try {
             output.writeUTF(resp.responseData());
             output.flush();
@@ -48,7 +48,7 @@ public class Client implements Cloneable {
         }
     }
 
-    public void readOneMessage() throws IOException {
+    void readOneMessage() throws IOException {
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         this.read(ois);
         ois.close();
@@ -96,9 +96,10 @@ public class Client implements Cloneable {
         if (!(this.listener.equals(other.listener))) {
             return false;
         }
-        
-        if(!(this.output.equals(other.output)))
+
+        if (!(this.output.equals(other.output))) {
             return false;
+        }
 
         return true;
     }

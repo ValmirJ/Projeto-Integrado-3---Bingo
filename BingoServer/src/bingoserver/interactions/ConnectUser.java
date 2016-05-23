@@ -25,17 +25,13 @@ public class ConnectUser extends UserInteractor {
     @Override
     public void perform(ParamGroups params) {
         String ra = params.getParamGroup(0).getParam(0);
-        User user = new User();
+        User user = null;
 
         // TODO:
-        // user.setRa(ra);
-        //
-        // TODO:
-        // boolean userExists = getRepositoryManager().getUserRepository().existUser(user);
+        // user = getRepositoryManager().getUserRepository().findUserWithRa(ra);
         // Como ainda não temos o repositorio de usuarios:
-        boolean userExists = false;
-
-        if (userExists) {
+        if (user != null) {
+            // Já existe um usuário com o RA acima
             ParamGroup group0 = new ParamGroup(ra);
             ParamGroups groups = new ParamGroups(group0);
 
@@ -43,10 +39,11 @@ public class ConnectUser extends UserInteractor {
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
             getResponseManager().respondToClient(new RaAlreadyInUse(groups), getUserClientSession().getClient());
+            return;
         }
 
-        // TODO:
-        // getRepositoryManager().getUserRepository().addUser(user);
+        // Não existe usuário com o RA:
+        // user = getRepositoryManager().getUserRepository().createUserWithRa(ra);
         //
         // Isso associa o client dessa requisição com o usuário criado para ele,
         // permitindo que usemos mgr.getUser() nas próximas vezes que esse client
@@ -54,8 +51,8 @@ public class ConnectUser extends UserInteractor {
         setUserClientSession(new UserClientSession(getUserClientSession().getClient(), user));
 
         // Ja está feito:
-        // Avisar o user que ele foi conectado
-        getResponseManager().respondToUser(new UserConnectedResponse(), getUserClientSession().getUser());
+        // Avisar o client que ele foi conectado
+        getResponseManager().respondToClient(new UserConnectedResponse(), getUserClientSession().getClient());
 
         // TODO:
         // Enviar para o client as salas disponíveis,
@@ -68,11 +65,11 @@ public class ConnectUser extends UserInteractor {
         //
         // ParamGroup groupRooms = new ParamGroup(rooms[0].id, rooms[1].id, ....);
         // ParamGroups groups = new ParamGroups(group0);
-        // getResponseManager().respondToUser(new AvaiableRoomsResponse(groups), mgr.getUser());
+        // getResponseManager().respondToClient(new AvaiableRoomsResponse(groups), getUserClientSession().getClient());
         //
         // ParamGroup roomId = new ParamGroup(rooms[0].id);
         // ParamGroup whoIsInRoom0 = new ParamGroup(rooms[0].users[0].id, rooms[0].users[1].id,....);
         // ParamGroups groups = new ParamGroups(roomId, whoIsInRoom0);
-        // getResponseManager().respondToClient(new WhoIsInRoomResponse(groups), mgr.getUser());
+        // getResponseManager().respondToClient(new WhoIsInRoomResponse(groups), getUserClientSession().getClient());
     }
 }

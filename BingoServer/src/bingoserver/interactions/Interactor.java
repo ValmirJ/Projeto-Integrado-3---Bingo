@@ -15,6 +15,7 @@ import bingoserver.repositories.RepositoryManager;
 public abstract class Interactor {
 
     private RepositoryManager repositoryManager;
+    private ResponseManager responseManager;
 
     public ResponseManager getResponseManager() {
         return responseManager;
@@ -23,13 +24,12 @@ public abstract class Interactor {
     public void setResponseManager(ResponseManager responseManager) {
         this.responseManager = responseManager;
     }
-    private ResponseManager responseManager;
 
     public void setRepositoryManager(RepositoryManager repositoryManager) {
         this.repositoryManager = repositoryManager;
     }
 
-    protected RepositoryManager getRepositoryManager() {
+    public RepositoryManager getRepositoryManager() {
         return repositoryManager;
     }
 

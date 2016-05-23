@@ -64,7 +64,8 @@ public class GameDelegate {
             }
         } else {
             Logger.getLogger(Client.class.getName()).log(Level.INFO, "Invalid request {0}", message);
-            client.send(new ErrorResponse(request));
+            ErrorResponse resp = new ErrorResponse(request);
+            clientsManager.respondToClient(resp, client);
         }
     }
 
@@ -80,7 +81,7 @@ public class GameDelegate {
 
     private void setInteractorManagers(Interactor i) {
         i.setRepositoryManager(repositoryManager);
-        i.setResponseManager(clientsManager);
+        i.setResponseManager(clientsManager.getResponseManager());
     }
 
     private synchronized void performSync(Interactor i, ParamGroups params) {

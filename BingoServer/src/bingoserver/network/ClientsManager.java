@@ -39,7 +39,7 @@ public class ClientsManager implements ResponseManager {
     public void respondToUser(Response resp, User u) {
         for (Entry<Client, User> e : assigns.entrySet()) {
             if (e.getValue().equals(u)) {
-                e.getKey().send(resp);
+                respondToClient(resp, e.getKey());
             }
         }
     }

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +21,69 @@ import java.util.logging.Logger;
  */
 public class Client implements Cloneable {
 
+    private interface ResponderListener {
+
+        void onSendError();
+    }
+
+    private class ClientReponder implements Runnable {
+
+        private final Socket socket;
+        private final ResponderListener listener;
+        private final Queue<String> outputQueue;
+
+        ClientReponder(Socket socket, ResponderListener listener) {
+            this.socket = socket;
+            this.outputQueue = new LinkedBlockingQueue<>();
+            this.listener = listener;
+        }
+
+        void start() {
+            // ....
+        }
+
+        synchronized void send(String data) {
+            outputQueue.add(data);
+            // this.notify();
+            run();
+        }
+
+        private void send(String data, ObjectOutputStream output) throws IOException {
+            output.writeUTF(data);
+        }
+
+        @Override
+        public void run() {
+            ObjectOutputStream output = null;
+
+            try {
+                output = new ObjectOutputStream(socket.getOutputStream());
+                // while (true) {
+                String message = outputQueue.poll();
+
+                if (message != null) {
+                    send(message, output);
+                } else {
+                    // this.wait();
+                }
+                // }
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                listener.onSendError();
+            } finally {
+                try {
+                    if (output != null) {
+                        output.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
     private final Socket socket;
-    private final ObjectOutputStream output;
+    private final ClientReponder responder;
     private final ClientListener listener;
 
     Client(Socket socket, ClientListener listener) throws IOException {
@@ -35,17 +98,17 @@ public class Client implements Cloneable {
         this.socket = socket;
         this.listener = listener;
 
-        output = new ObjectOutputStream(socket.getOutputStream());
+        this.responder = new ClientReponder(socket, new ResponderListener() {
+            @Override
+            public void onSendError() {
+                stop();
+            }
+        });
+
     }
 
     void send(Response resp) {
-        try {
-            output.writeUTF(resp.responseData());
-            output.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            listener.onClientDisconnected(this);
-        }
+        responder.send(resp.responseData());
     }
 
     void readOneMessage() throws IOException {
@@ -71,7 +134,7 @@ public class Client implements Cloneable {
         int r = super.hashCode();
         r = r * 7 + this.socket.hashCode();
         r = r * 7 + this.listener.hashCode();
-        r = r * 7 + this.output.hashCode();
+        r = r * 7 + this.responder.hashCode();
 
         return r;
     }
@@ -97,7 +160,7 @@ public class Client implements Cloneable {
             return false;
         }
 
-        if (!(this.output.equals(other.output))) {
+        if (!(this.responder.equals(other.responder))) {
             return false;
         }
 
@@ -118,7 +181,7 @@ public class Client implements Cloneable {
 
         this.listener = other.listener;
         this.socket = other.socket;
-        this.output = other.output;
+        this.responder = other.responder;
     }
 
     @Override
@@ -134,12 +197,14 @@ public class Client implements Cloneable {
 
     void start() {
         listener.onClientConnected(this);
+        responder.start();
     }
 
     void stop() {
         listener.onClientDisconnected(this);
 
         try {
+            // Vai automaticamente parar o responder nesse momento
             socket.close();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);

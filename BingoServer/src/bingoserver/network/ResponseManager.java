@@ -7,6 +7,7 @@ package bingoserver.network;
 
 import bingoserver.models.User;
 import bingoserver.responses.Response;
+import java.util.List;
 
 /**
  *
@@ -19,4 +20,6 @@ public interface ResponseManager {
     public void respondToUser(Response resp, User u);
 
     public void respondToUsers(Response resp, User... users);
+
+    public void respondToUsers(Response resp, List<User> users);
 }

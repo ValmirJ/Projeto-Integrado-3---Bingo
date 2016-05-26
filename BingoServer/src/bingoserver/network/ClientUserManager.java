@@ -9,6 +9,7 @@ import bingoserver.models.User;
 import bingoserver.responses.Response;
 import bingoserver.session.SessionManager;
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,6 +76,13 @@ public class ClientUserManager implements ResponseManager, SessionManager {
 
     @Override
     public void respondToUsers(Response resp, User... users) {
+        for (User u : users) {
+            respondToUser(resp, u);
+        }
+    }
+
+    @Override
+    public void respondToUsers(Response resp, List<User> users) {
         for (User u : users) {
             respondToUser(resp, u);
         }

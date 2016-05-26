@@ -79,7 +79,12 @@ public class GameDelegate {
     public void onClockTick() {
         TimerInteractor timerInteractor = new TimerInteractor();
         setInteractorManagers(timerInteractor);
-        performSync(timerInteractor, null);
+
+        try {
+            performSync(timerInteractor, null);
+        } catch (Exception ex) {
+            Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setInteractorManagers(Interactor i) {
@@ -87,7 +92,7 @@ public class GameDelegate {
         i.setResponseManager(clientsManager);
     }
 
-    private synchronized void performSync(Interactor i, ParamGroups params) {
+    private synchronized void performSync(Interactor i, ParamGroups params) throws Exception {
         if (i instanceof TimerInteractor) {
             ((TimerInteractor) i).perform();
         }

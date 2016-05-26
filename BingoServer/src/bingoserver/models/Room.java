@@ -12,75 +12,95 @@ import java.util.ArrayList;
  * @author valmir.massoni
  */
 public class Room implements Cloneable {
+
     private int id;
     private boolean started;
     private ArrayList<Integer> sortedNumbers;
-    private ArrayList <UserCard> userCards;
-    
+    private ArrayList<UserCard> userCards;
+
     public int getId() {
         return this.id;
     }
+
     public boolean isStarted() {
         return this.started;
     }
+
     public void startRoom() {
         this.started = true;
     }
+
     public void addSortedNumber(int number) {
         this.sortedNumbers.add(number);
     }
-    
+
     public void addUserCard(UserCard userCard) {
         this.userCards.add(userCard);
     }
-    
+
     public boolean removeUserCard(UserCard userCard) {
         return this.userCards.remove(userCard);
     }
- 
-    public Room (int id, UserCard userCard) {
+
+    public Room(int id, UserCard userCard) {
         this.id = id;
         this.userCards.add(userCard);
         this.started = false;
     }
-    
+
+    public Room(int id, boolean started) {
+        this.id = id;
+        this.started = started;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        if(!(obj instanceof Room))
+        }
+        if (!(obj instanceof Room)) {
             return false;
-        
+        }
+
         Room other = (Room) obj;
-        if(this.id != other.id)
+        if (this.id != other.id) {
             return false;
-        
-        if(this.started != other.started)
+        }
+
+        if (this.started != other.started) {
             return false;
-        
-        if(!(this.sortedNumbers.equals(other.sortedNumbers)))
+        }
+
+        if (!(this.sortedNumbers.equals(other.sortedNumbers))) {
             return false;
-        
-        if(!(this.userCards.equals(other.sortedNumbers)))
+        }
+
+        if (!(this.userCards.equals(other.sortedNumbers))) {
             return false;
-        
+        }
+
         return true;
     }
-    @Override 
+
+    @Override
     public String toString() {
         String str = "Sala " + this.id + "\n\n";
         str += "Numeros Sorteados: \n";
-        for(int nr : this.sortedNumbers)
+        for (int nr : this.sortedNumbers) {
             str += nr + ", ";
-        
+        }
+
         str += "Usuários / Cartela\n";
-        for(UserCard uc : this.userCards)
+        for (UserCard uc : this.userCards) {
             str += uc.toString();
-        
+        }
+
         return str;
     }
+
     @Override
     public int hashCode() {
         int r = super.hashCode();
@@ -88,29 +108,30 @@ public class Room implements Cloneable {
         r = r * 7 + Boolean.hashCode(this.started);
         r = r * 7 + this.sortedNumbers.hashCode();
         r = r * 7 + this.userCards.hashCode();
-        
+
         return r;
     }
-    
+
     public Room(Room other) throws Exception {
-        if(other == null)
+        if (other == null) {
             throw new Exception("Object cannot be null");
-        
+        }
+
         this.id = other.id;
         this.started = other.started;
-        this.sortedNumbers = (ArrayList<Integer>)other.sortedNumbers.clone();
-        this.userCards = (ArrayList<UserCard>)other.userCards.clone();    
+        this.sortedNumbers = (ArrayList<Integer>) other.sortedNumbers.clone();
+        this.userCards = (ArrayList<UserCard>) other.userCards.clone();
     }
-    
+
     @Override
     public Object clone() {
         Room other = null;
         try {
             other = new Room(this);
+        } catch (Exception e) {
         }
-        catch(Exception e){}
-        
+
         return other;
-     }
-    
+    }
+
 }

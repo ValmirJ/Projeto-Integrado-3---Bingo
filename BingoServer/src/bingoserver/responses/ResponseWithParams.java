@@ -13,7 +13,7 @@ import bingoserver.parameters.ParamGroups;
  */
 public abstract class ResponseWithParams extends Response {
 
-    private ParamGroups paramGroups;
+    private final ParamGroups paramGroups;
 
     public ResponseWithParams(ParamGroups paramGroups) {
         this.paramGroups = paramGroups;

@@ -10,4 +10,8 @@ package bingoserver.repositories;
  * @author 15096134
  */
 public class RepositoryManager {
+
+    public RoomRepository getRoomRepository() {
+        return null;
+    }
 }

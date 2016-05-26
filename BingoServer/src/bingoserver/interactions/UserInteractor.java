@@ -47,5 +47,5 @@ public abstract class UserInteractor extends Interactor {
         getSessionManager().setClientUser(currentClient, user);
     }
 
-    public abstract void perform(ParamGroups params);
+    public abstract void perform(ParamGroups params) throws Exception;
 }

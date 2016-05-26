@@ -5,8 +5,10 @@
  */
 package bingoserver.interactions;
 
+import bingoserver.models.User;
+import bingoserver.network.Client;
 import bingoserver.parameters.ParamGroups;
-import bingoserver.session.UserClientSession;
+import bingoserver.session.SessionManager;
 
 /**
  *
@@ -14,18 +16,35 @@ import bingoserver.session.UserClientSession;
  */
 public abstract class UserInteractor extends Interactor {
 
-    private UserClientSession userManager;
+    private SessionManager sessionManager;
+    private Client currentClient;
 
     public UserInteractor() {
         super();
     }
 
-    public UserClientSession getUserClientSession() {
-        return this.userManager;
+    public Client getCurrentClient() {
+        return currentClient;
     }
 
-    public void setUserClientSession(UserClientSession userManager) {
-        this.userManager = userManager;
+    public void setCurrentClient(Client currentClient) {
+        this.currentClient = currentClient;
+    }
+
+    public SessionManager getSessionManager() {
+        return this.sessionManager;
+    }
+
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
+
+    User getSessionUser() {
+        return getSessionManager().getClientUser(currentClient);
+    }
+
+    void setSessionUser(User user) {
+        getSessionManager().setClientUser(currentClient, user);
     }
 
     public abstract void perform(ParamGroups params);

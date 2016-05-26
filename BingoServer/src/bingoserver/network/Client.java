@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client implements Cloneable {
+public class Client {
 
     private interface ResponderListener {
 
@@ -30,11 +30,11 @@ public class Client implements Cloneable {
 
         private final Socket socket;
         private final ResponderListener listener;
-        private final Queue<String> outputQueue;
+        private final BlockingQueue<String> outputQueue;
 
         ClientReponder(Socket socket, ResponderListener listener) {
             this.socket = socket;
-            this.outputQueue = new LinkedBlockingQueue<>();
+            this.outputQueue = new LinkedBlockingDeque<>();
             this.listener = listener;
         }
 
@@ -42,10 +42,17 @@ public class Client implements Cloneable {
             // ....
         }
 
-        synchronized void send(String data) {
-            outputQueue.add(data);
-            // this.notify();
-            run();
+        void send(String data) {
+            if (data == null) {
+                throw new NullPointerException("Data cannot be null");
+            }
+
+            if (!outputQueue.add(data)) {
+                // A Fila está cheia.
+                // Nesse momento algo muito errado está acontecendo.
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, "Send Queue Full");
+                listener.onSendError();
+            }
         }
 
         private void send(String data, ObjectOutputStream output) throws IOException {
@@ -58,16 +65,14 @@ public class Client implements Cloneable {
 
             try {
                 output = new ObjectOutputStream(socket.getOutputStream());
-                // while (true) {
-                String message = outputQueue.poll();
 
-                if (message != null) {
-                    send(message, output);
-                } else {
-                    // this.wait();
-                }
+                // while (true) {
+                send(outputQueue.take(), output);
                 // }
             } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                listener.onSendError();
+            } catch (InterruptedException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 listener.onSendError();
             } finally {
@@ -174,33 +179,13 @@ public class Client implements Cloneable {
         return str;
     }
 
-    public Client(Client other) {
-        if (other == null) {
-            throw new NullPointerException("Client cannot be null");
-        }
-
-        this.listener = other.listener;
-        this.socket = other.socket;
-        this.responder = other.responder;
-    }
-
-    @Override
-    public Object clone() {
-        Client newClient = null;
-        try {
-            newClient = new Client(this);
-        } catch (Exception e) {
-        }
-
-        return newClient;
-    }
-
     void start() {
         listener.onClientConnected(this);
         responder.start();
     }
 
     void stop() {
+        // TODO: Garantir que esse listener seja chamado apenas uma vez.
         listener.onClientDisconnected(this);
 
         try {

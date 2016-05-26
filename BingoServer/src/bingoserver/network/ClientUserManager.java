@@ -7,37 +7,66 @@ package bingoserver.network;
 
 import bingoserver.models.User;
 import bingoserver.responses.Response;
-import bingoserver.session.UserClientSession;
-import java.util.HashMap;
+import bingoserver.session.SessionManager;
+import java.util.AbstractMap;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
  * @author 15096134
  */
-public class ClientsManager implements ResponseManager {
+public class ClientUserManager implements ResponseManager, SessionManager {
 
-    private final HashMap<Client, User> assigns = new HashMap<>();
+    private final AbstractMap<Client, User> assigns = new ConcurrentHashMap<>();
+
+    private class NoUser extends User {
+
+        public NoUser() {
+            super(0, null);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return other instanceof NoUser;
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode() * 23;
+        }
+    };
 
     public void addClient(Client c) {
-        assigns.put(c, null);
+        assigns.put(c, new NoUser());
     }
 
-    public void removeClient(Client c) {
-        assigns.remove(c);
+    public boolean removeClient(Client c) {
+        return assigns.remove(c) != null;
     }
 
+    @Override
     public void setClientUser(Client c, User u) {
         assigns.replace(c, u);
     }
 
+    @Override
     public User getClientUser(Client c) {
-        return assigns.getOrDefault(c, null);
+        User getted = assigns.getOrDefault(c, null);
+
+        if (getted instanceof NoUser) {
+            return null;
+        }
+
+        return getted;
     }
 
     @Override
     public void respondToUser(Response resp, User u) {
-        for (Entry<Client, User> e : assigns.entrySet()) {
+        Set<Entry<Client, User>> entries = assigns.entrySet();
+
+        for (Entry<Client, User> e : entries) {
             if (e.getValue().equals(u)) {
                 respondToClient(resp, e.getKey());
             }
@@ -56,23 +85,5 @@ public class ClientsManager implements ResponseManager {
         if (assigns.containsKey(client)) {
             client.send(resp);
         }
-    }
-
-    public UserClientSession getUserClientSession(final Client client) {
-        return new UserClientSession(client, getClientUser(client));
-    }
-
-    public void setUserClientSession(UserClientSession session) {
-        if (assigns.containsKey(session.getClient())) {
-            setClientUser(session.getClient(), session.getUser());
-        }
-    }
-
-    public ResponseManager getResponseManager() {
-        return this;
-    }
-
-    public int getClientCount() {
-        return assigns.size();
     }
 }

@@ -14,7 +14,7 @@ import bingoserver.responses.Response;
  */
 public interface ResponseManager {
 
-    public void respondToClient(Response resp, Client c);
+    public void respondToClient(Response resp, Client client);
 
     public void respondToUser(Response resp, User u);
 

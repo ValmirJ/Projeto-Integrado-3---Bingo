@@ -10,7 +10,6 @@ import bingoserver.parameters.ParamGroup;
 import bingoserver.parameters.ParamGroups;
 import bingoserver.responses.RaAlreadyInUse;
 import bingoserver.responses.UserConnectedResponse;
-import bingoserver.session.UserClientSession;
 
 /**
  *
@@ -38,7 +37,7 @@ public class ConnectUser extends UserInteractor {
             // Esse é um dos poucos, se não único lugar em que deve ser usado
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
-            getResponseManager().respondToClient(new RaAlreadyInUse(groups), getUserClientSession().getClient());
+            getResponseManager().respondToClient(new RaAlreadyInUse(groups), getCurrentClient());
             return;
         }
 
@@ -48,11 +47,11 @@ public class ConnectUser extends UserInteractor {
         // Isso associa o client dessa requisição com o usuário criado para ele,
         // permitindo que usemos mgr.getUser() nas próximas vezes que esse client
         // fizer requisições.
-        setUserClientSession(new UserClientSession(getUserClientSession().getClient(), user));
+        setSessionUser(user);
 
         // Ja está feito:
         // Avisar o client que ele foi conectado
-        getResponseManager().respondToClient(new UserConnectedResponse(), getUserClientSession().getClient());
+        getResponseManager().respondToUser(new UserConnectedResponse(), getSessionUser());
 
         // TODO:
         // Enviar para o client as salas disponíveis,

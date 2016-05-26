@@ -9,7 +9,7 @@ import bingoserver.interactions.Interactor;
 import bingoserver.interactions.TimerInteractor;
 import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
-import bingoserver.network.ClientsManager;
+import bingoserver.network.ClientUserManager;
 import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.RepositoryManager;
 import bingoserver.requests.InteractionRequest;
@@ -26,16 +26,20 @@ import java.util.logging.Logger;
 public class GameDelegate {
 
     private final RepositoryManager repositoryManager;
-    private final ClientsManager clientsManager;
+    private final ClientUserManager clientsManager;
     private final RequestBuilder requestBuilder;
 
     public GameDelegate() {
         repositoryManager = new RepositoryManager();
-        clientsManager = new ClientsManager();
+        clientsManager = new ClientUserManager();
         requestBuilder = new RequestBuilder();
     }
 
-    public synchronized void onClientDisconnected(Client c) {
+    public void onClientConnected(Client c) {
+        clientsManager.addClient(c);
+    }
+
+    public void onClientDisconnected(Client c) {
         clientsManager.removeClient(c);
     }
 
@@ -51,26 +55,25 @@ public class GameDelegate {
             try {
                 UserInteractor ui = interactionClass.newInstance();
                 setInteractorManagers(ui);
+                ui.setCurrentClient(client);
+                ui.setSessionManager(clientsManager);
 
-                ui.setUserClientSession(clientsManager.getUserClientSession(client));
-                performSync(ui, interactionReq.getParams());
-                clientsManager.setUserClientSession(ui.getUserClientSession());
+                try {
+                    ui.perform(interactionReq.getParams());
+                } catch (Exception ex) {
+                    Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } catch (InstantiationException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+                sendErrorResponse(request, client);
             } catch (IllegalAccessException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+                sendErrorResponse(request, client);
             }
         } else {
             Logger.getLogger(Client.class.getName()).log(Level.INFO, "Invalid request {0}", message);
-            ErrorResponse resp = new ErrorResponse(request);
-            clientsManager.respondToClient(resp, client);
+            sendErrorResponse(request, client);
         }
-    }
-
-    public void onClientConnected(Client c) {
-        clientsManager.addClient(c);
     }
 
     public void onClockTick() {
@@ -81,7 +84,7 @@ public class GameDelegate {
 
     private void setInteractorManagers(Interactor i) {
         i.setRepositoryManager(repositoryManager);
-        i.setResponseManager(clientsManager.getResponseManager());
+        i.setResponseManager(clientsManager);
     }
 
     private synchronized void performSync(Interactor i, ParamGroups params) {
@@ -94,4 +97,8 @@ public class GameDelegate {
         }
     }
 
+    private void sendErrorResponse(Request request, Client client) {
+        ErrorResponse resp = new ErrorResponse(request);
+        clientsManager.respondToClient(resp, client);
+    }
 }

@@ -8,14 +8,15 @@ package bingoserver.interactions;
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
-import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.CardRepository;
 import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserCardRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.CreatedRoomResponse;
+import java.util.HashMap;
 import java.util.List;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -24,11 +25,11 @@ import java.util.List;
 public class CreateRoom extends UserInteractor {
 
     @Override
-    public void perform(ParamGroups params) throws Exception {
+    public void perform(JSONObject params) throws Exception {
         RoomRepository roomRepo = getRepositoryManager().getRoomRepository();
-        CardRepository cardRepo = null;
-        UserCardRepository ucRepo = null;
-        UserRepository userRepo = null;
+        CardRepository cardRepo = getRepositoryManager().getCardRepository();
+        UserCardRepository ucRepo = getRepositoryManager().getUserCardRepository();
+        UserRepository userRepo = getRepositoryManager().getUserRepository();
 
         User user = getSessionUser();
 
@@ -40,14 +41,14 @@ public class CreateRoom extends UserInteractor {
         BingoCard card = cardRepo.getRandomCard();
 
         if (card == null) {
-            throw new Exception("No cards available");
+            throw new Exception(">>>>>>>> BEWARE!!!!! No cards available");
         }
 
         ucRepo.addUserToRoomWithCard(user, createdRoom, card);
 
         getResponseManager().respondToUser(new CreatedRoomResponse(createdRoom.getId()), user);
 
-        List<Room> rooms = roomRepo.currentOpenRooms();
+        HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
     }
 

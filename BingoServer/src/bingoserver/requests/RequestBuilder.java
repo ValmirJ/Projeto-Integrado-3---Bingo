@@ -5,9 +5,14 @@
  */
 package bingoserver.requests;
 
+import bingoserver.interactions.AssignUserToRoom;
 import bingoserver.interactions.ConnectUser;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import bingoserver.interactions.CreateRoom;
+import bingoserver.interactions.UnassignUserFromRoom;
+import bingoserver.interactions.UserInteractor;
+import java.util.HashMap;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -15,14 +20,14 @@ import java.util.regex.Pattern;
  */
 public class RequestBuilder {
 
-    private final Pattern messagePattern;
+    private HashMap<Object, Class<? extends UserInteractor>> mappings;
 
     public RequestBuilder() {
-        // Apenas uma ideia.
-        // Nao testei, isso pode estar errado.
-        String pattern = "\\A(\\w+(<([^>]+))?)+\\z";
-
-        this.messagePattern = Pattern.compile(pattern);
+        mappings = new HashMap<>();
+        mappings.put("conectar-com-ra", ConnectUser.class);
+        mappings.put("cria-sala", CreateRoom.class);
+        mappings.put("entrar-na-sala", AssignUserToRoom.class);
+        mappings.put("sair-da-sala", UnassignUserFromRoom.class);
     }
 
     public String toString() {
@@ -33,14 +38,9 @@ public class RequestBuilder {
         // Os valores aceitaveis para message sao todos aqueles que os clientes
         // podem enviar para nosso servidor.
         //
-        // TODO:
         // 1. Verificar a sintaxe da mensagem.
         //
-        // 2. Obter a lista de parametros:
-        // 2.1 Criar um ParamGroup para cada <id> ou <ra,ra,ra...>
-        // 2.2 Criar um ParamGroups com todos os ParamGroup encontrados.
-        //
-        // 3. Identificar a classe do Interactor correspondente.
+        // 2. Identificar a classe do Interactor correspondente.
         //
         // Retornar um InteractionRequest se houve sucesso nos passos acima.
         // OU
@@ -48,10 +48,13 @@ public class RequestBuilder {
         // Se houve alguma falha.
 
         // Exemplo:
-        Matcher m = messagePattern.matcher(message);
+        JSONObject object = (JSONObject) JSONValue.parse(message);
 
-        if (m.matches()) {
-            return new InteractionRequest(message, ConnectUser.class, null);
+        Object type = object.get("type");
+        if (mappings.containsKey(type)) {
+            Class<? extends UserInteractor> interactor = mappings.get(type);
+
+            return new InteractionRequest(message, interactor, object);
         }
 
         return new InvalidRequest(message);

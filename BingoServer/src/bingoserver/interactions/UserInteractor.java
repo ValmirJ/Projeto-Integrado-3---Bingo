@@ -7,8 +7,8 @@ package bingoserver.interactions;
 
 import bingoserver.models.User;
 import bingoserver.network.Client;
-import bingoserver.parameters.ParamGroups;
 import bingoserver.session.SessionManager;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -47,5 +47,5 @@ public abstract class UserInteractor extends Interactor {
         getSessionManager().setClientUser(currentClient, user);
     }
 
-    public abstract void perform(ParamGroups params) throws Exception;
+    public abstract void perform(JSONObject params) throws Exception;
 }

@@ -14,4 +14,16 @@ public class RepositoryManager {
     public RoomRepository getRoomRepository() {
         return null;
     }
+
+    public CardRepository getCardRepository() {
+        return null;
+    }
+
+    public UserCardRepository getUserCardRepository() {
+        return null;
+    }
+
+    public UserRepository getUserRepository() {
+        return null;
+    }
 }

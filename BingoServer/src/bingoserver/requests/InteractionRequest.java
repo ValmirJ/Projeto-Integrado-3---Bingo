@@ -6,7 +6,7 @@
 package bingoserver.requests;
 
 import bingoserver.interactions.UserInteractor;
-import bingoserver.parameters.ParamGroups;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -15,24 +15,24 @@ import bingoserver.parameters.ParamGroups;
 public class InteractionRequest extends Request {
 
     private Class<? extends UserInteractor> interactor;
-    private ParamGroups params;
+    private JSONObject requestJson;
 
-    protected InteractionRequest(String requestRawData) {
+    InteractionRequest(String requestRawData) {
         super(requestRawData);
     }
 
-    protected InteractionRequest(String requestRawData, Class<? extends UserInteractor> interactor, ParamGroups params) {
-        this(requestRawData);
+    InteractionRequest(String requestRawData, Class<? extends UserInteractor> interactor, JSONObject object) {
+        super(requestRawData);
         this.interactor = interactor;
-        this.params = params;
+        this.requestJson = object;
     }
 
     public Class<? extends UserInteractor> getInteractorClass() {
         return interactor;
     }
 
-    public ParamGroups getParams() {
-        return params;
+    public JSONObject getRequestJson() {
+        return requestJson;
     }
 
     @Override

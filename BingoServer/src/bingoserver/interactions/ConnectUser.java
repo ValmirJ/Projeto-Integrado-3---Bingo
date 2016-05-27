@@ -6,9 +6,9 @@
 package bingoserver.interactions;
 
 import bingoserver.models.User;
-import bingoserver.parameters.ParamGroups;
 import bingoserver.responses.RaAlreadyInUse;
 import bingoserver.responses.UserConnectedResponse;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -21,8 +21,8 @@ public class ConnectUser extends UserInteractor {
     }
 
     @Override
-    public void perform(ParamGroups params) {
-        String ra = params.getParamGroup(0).getParam(0);
+    public void perform(JSONObject params) throws Exception {
+        String ra = (String) params.get("ra");
         User user = null;
 
         // TODO:

@@ -8,15 +8,18 @@ package bingoserver.interactions;
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
-import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.CardRepository;
 import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserCardRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
+import bingoserver.responses.RoomIsFullResponse;
+import bingoserver.responses.RoomIsUnavailable;
 import bingoserver.responses.UserAcceptedInRoom;
 import bingoserver.responses.UsersInRoomChangedResponse;
+import java.util.HashMap;
 import java.util.List;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -25,11 +28,17 @@ import java.util.List;
 public class AssignUserToRoom extends UserInteractor {
 
     @Override
-    public void perform(ParamGroups params) throws Exception {
+    public void perform(JSONObject params) throws Exception {
+        Integer roomId = (Integer) params.get("id-sala");
+
+        if (roomId == null) {
+            throw new NullPointerException("Param id-sala inavlid!");
+        }
+
         RoomRepository roomRepo = getRepositoryManager().getRoomRepository();
-        CardRepository cardRepo = null;
-        UserCardRepository ucRepo = null;
-        UserRepository userRepo = null;
+        CardRepository cardRepo = getRepositoryManager().getCardRepository();
+        UserCardRepository ucRepo = getRepositoryManager().getUserCardRepository();
+        UserRepository userRepo = getRepositoryManager().getUserRepository();
 
         User user = getSessionUser();
 
@@ -37,19 +46,25 @@ public class AssignUserToRoom extends UserInteractor {
             throw new Exception("User already assigned to a room");
         }
 
-        Room desiredRoom = roomRepo.findRoomById(params.getParamGroup(0).getParam(0));
+        Room desiredRoom = roomRepo.findRoomById(roomId);
+
+        if (desiredRoom == null || desiredRoom.isStarted()) {
+            getResponseManager().respondToUser(new RoomIsUnavailable(), user);
+            throw new Exception("User tried to get in a started or unavalable room");
+        }
+
         BingoCard card = cardRepo.getRandomCardAvailableForRoom(desiredRoom);
 
         if (card == null) {
+            getResponseManager().respondToUser(new RoomIsFullResponse(), user);
             throw new Exception("No cards available to desired room");
-            // TODO: Warn the user that the room is full
         }
 
         ucRepo.addUserToRoomWithCard(user, desiredRoom, card);
 
         getResponseManager().respondToUser(new UserAcceptedInRoom(), user);
 
-        List<Room> rooms = roomRepo.currentOpenRooms();
+        HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
 
         List<User> usersInRoom = roomRepo.usersInRoom(desiredRoom);

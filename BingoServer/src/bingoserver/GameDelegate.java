@@ -10,7 +10,6 @@ import bingoserver.interactions.TimerInteractor;
 import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
 import bingoserver.network.ClientUserManager;
-import bingoserver.parameters.ParamGroups;
 import bingoserver.repositories.RepositoryManager;
 import bingoserver.requests.InteractionRequest;
 import bingoserver.requests.Request;
@@ -18,6 +17,7 @@ import bingoserver.requests.RequestBuilder;
 import bingoserver.responses.ErrorResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -59,7 +59,7 @@ public class GameDelegate {
                 ui.setSessionManager(clientsManager);
 
                 try {
-                    ui.perform(interactionReq.getParams());
+                    ui.perform(interactionReq.getRequestJson());
                 } catch (Exception ex) {
                     Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -92,7 +92,7 @@ public class GameDelegate {
         i.setResponseManager(clientsManager);
     }
 
-    private synchronized void performSync(Interactor i, ParamGroups params) throws Exception {
+    private synchronized void performSync(Interactor i, JSONObject params) throws Exception {
         if (i instanceof TimerInteractor) {
             ((TimerInteractor) i).perform();
         }

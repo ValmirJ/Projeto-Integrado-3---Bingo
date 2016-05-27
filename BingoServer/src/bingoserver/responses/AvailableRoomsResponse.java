@@ -7,7 +7,9 @@ package bingoserver.responses;
 
 import bingoserver.models.Room;
 import bingoserver.models.User;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -17,9 +19,9 @@ import org.json.simple.JSONObject;
  */
 public class AvailableRoomsResponse extends Response {
 
-    private final List<Room> rooms;
+    private final HashMap<Room, List<User>> rooms;
 
-    public AvailableRoomsResponse(List<Room> rooms) {
+    public AvailableRoomsResponse(HashMap<Room, List<User>> rooms) {
         this.rooms = rooms;
     }
 
@@ -30,13 +32,16 @@ public class AvailableRoomsResponse extends Response {
         obj.put("type", "salas-disponiveis");
         JSONArray roomsJson = new JSONArray();
 
-        for (Room room : rooms) {
+        for (Entry<Room, List<User>> entry : rooms.entrySet()) {
+            Room room = entry.getKey();
+            List<User> users = entry.getValue();
+
             JSONObject roomJson = new JSONObject();
             roomJson.put("id", room.getId());
 
             JSONArray usersArray = new JSONArray();
 
-            for (User user : room.getUsers()) {
+            for (User user : users) {
                 usersArray.add(user.asJson());
             }
 

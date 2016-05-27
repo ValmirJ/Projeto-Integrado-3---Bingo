@@ -12,6 +12,7 @@ import com.mysql.jdbc.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,12 +56,15 @@ public class RoomRepository {
         return null;
     }
 
-    public List<Room> currentOpenRooms() {
-        return null;
-    }
-
     public List<User> usersInRoom(Room room) {
         return null;
     }
 
+    public HashMap<Room, List<User>> currentOpenRoomsWithUsers() {
+        return null;
+    }
+
+    public void removeRoom(Room room) {
+
+    }
 }

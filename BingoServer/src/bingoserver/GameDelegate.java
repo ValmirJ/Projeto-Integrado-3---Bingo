@@ -62,6 +62,7 @@ public class GameDelegate {
                     ui.perform(interactionReq.getRequestJson());
                 } catch (Exception ex) {
                     Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+                    sendErrorResponse(request, client);
                 }
             } catch (InstantiationException ex) {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);

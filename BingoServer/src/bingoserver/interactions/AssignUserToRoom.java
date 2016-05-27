@@ -5,6 +5,7 @@
  */
 package bingoserver.interactions;
 
+import bingoserver.GameDelegate;
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
@@ -14,11 +15,12 @@ import bingoserver.repositories.UserCardRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.RoomIsFullResponse;
-import bingoserver.responses.RoomIsUnavailable;
 import bingoserver.responses.UserAcceptedInRoom;
 import bingoserver.responses.UsersInRoomChangedResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 
 /**
@@ -49,7 +51,6 @@ public class AssignUserToRoom extends UserInteractor {
         Room desiredRoom = roomRepo.findRoomById(roomId);
 
         if (desiredRoom == null || desiredRoom.isStarted()) {
-            getResponseManager().respondToUser(new RoomIsUnavailable(), user);
             throw new Exception("User tried to get in a started or unavalable room");
         }
 
@@ -57,7 +58,8 @@ public class AssignUserToRoom extends UserInteractor {
 
         if (card == null) {
             getResponseManager().respondToUser(new RoomIsFullResponse(), user);
-            throw new Exception("No cards available to desired room");
+            Logger.getLogger(GameDelegate.class.getName()).log(Level.INFO, "User tried to get in a full room. No more cards available.");
+            return;
         }
 
         ucRepo.addUserToRoomWithCard(user, desiredRoom, card);

@@ -11,15 +11,14 @@ import org.json.simple.JSONObject;
  *
  * @author guilherme
  */
-public class RoomIsUnavailable extends Response {
+public class AlreadyUsedRa extends Response {
 
     @Override
     public JSONObject responseJson() {
         JSONObject obj = new JSONObject();
-        obj.put("type", "sala-indisponivel");
+        obj.put("type", "ra-em-uso");
         obj.put("erro", true);
 
         return obj;
     }
-
 }

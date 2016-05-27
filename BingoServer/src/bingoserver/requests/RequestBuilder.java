@@ -5,12 +5,15 @@
  */
 package bingoserver.requests;
 
+import bingoserver.GameDelegate;
 import bingoserver.interactions.AssignUserToRoom;
 import bingoserver.interactions.ConnectUser;
 import bingoserver.interactions.CreateRoom;
 import bingoserver.interactions.UnassignUserFromRoom;
 import bingoserver.interactions.UserInteractor;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -47,14 +50,17 @@ public class RequestBuilder {
         // return new InvalidRequest(message);
         // Se houve alguma falha.
 
-        // Exemplo:
-        JSONObject object = (JSONObject) JSONValue.parse(message);
+        try {
+            JSONObject object = (JSONObject) JSONValue.parse(message);
 
-        Object type = object.get("type");
-        if (mappings.containsKey(type)) {
-            Class<? extends UserInteractor> interactor = mappings.get(type);
+            Object type = object.get("type");
+            if (mappings.containsKey(type)) {
+                Class<? extends UserInteractor> interactor = mappings.get(type);
 
-            return new InteractionRequest(message, interactor, object);
+                return new InteractionRequest(message, interactor, object);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return new InvalidRequest(message);

@@ -6,8 +6,12 @@
 package bingoserver.interactions;
 
 import bingoserver.models.User;
+import bingoserver.network.Client;
+import bingoserver.responses.AlreadyUsedRa;
 import bingoserver.responses.InvalidRa;
 import bingoserver.responses.UserConnectedResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 
 /**
@@ -26,7 +30,8 @@ public class ConnectUser extends UserInteractor {
 
         if (ra == null || ra.isEmpty()) {
             getResponseManager().respondToClient(new InvalidRa(), getCurrentClient());
-            throw new Exception("Param ra cannot be null or empty!");
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "User sent invalid RA");
+            return;
         }
 
         User user = null;
@@ -40,7 +45,8 @@ public class ConnectUser extends UserInteractor {
             // Esse é um dos poucos, se não único lugar em que deve ser usado
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
-            getResponseManager().respondToClient(new InvalidRa(), getCurrentClient());
+            getResponseManager().respondToClient(new AlreadyUsedRa(), getCurrentClient());
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "User sent already used RA");
             return;
         }
 

@@ -6,6 +6,7 @@
 package bingoserver.responses;
 
 import bingoserver.requests.Request;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -20,7 +21,12 @@ public class ErrorResponse extends Response {
     }
 
     @Override
-    public String responseData() {
-        return "invalid_command<" + request.getRawData() + ">";
+    public JSONObject responseJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("type", "erro-ao-processar-comando");
+        obj.put("erro", true);
+        obj.put("comando-recebido", request.getRawData());
+
+        return obj;
     }
 }

@@ -5,10 +5,17 @@
  */
 package bingoserver.responses;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author 15096134
  */
 public abstract class Response {
-    public abstract String responseData();
+
+    public abstract JSONObject responseJson();
+
+    public String responseData() {
+        return responseJson().toJSONString();
+    }
 }

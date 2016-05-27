@@ -40,7 +40,7 @@ public class UnassignUserFromRoom extends UserInteractor {
         getResponseManager().respondToUser(new UserRemovedFromRoomResponse(), user);
 
         List<User> usersInRoom = roomRepo.usersInRoom(room);
-        getResponseManager().respondToUsers(new UsersInRoomChangedResponse(room, usersInRoom), usersInRoom);
+        getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);
 
         List<Room> rooms = roomRepo.currentOpenRooms();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());

@@ -53,6 +53,6 @@ public class AssignUserToRoom extends UserInteractor {
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
 
         List<User> usersInRoom = roomRepo.usersInRoom(desiredRoom);
-        getResponseManager().respondToUsers(new UsersInRoomChangedResponse(desiredRoom, usersInRoom), usersInRoom);
+        getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);
     }
 }

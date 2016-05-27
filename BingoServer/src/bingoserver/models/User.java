@@ -5,58 +5,75 @@
  */
 package bingoserver.models;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author valmir.massoni
  */
 public class User {
+
     private int id;
     private String ra;
-    
+
     public User(int id, String ra) {
         this.id = id;
         this.ra = ra;
     }
-    
+
     public int getId() {
         return this.id;
     }
+
     public String getRa() {
         return this.ra;
     }
-            
+
     @Override
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + this.ra.hashCode();
-        r = r * 7 +  Integer.hashCode(id);
-        
+        r = r * 7 + Integer.hashCode(id);
+
         return r;
     }
-    @Override 
+
+    @Override
     public String toString() {
         String str = "Usuário: " + this.id + "\n";
         str += "RA: " + this.ra;
-        
+
         return str;
     }
+
+    public JSONObject asJson() {
+        JSONObject json = new JSONObject();
+        json.put("ra", this.getRa());
+        return json;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        if(!(obj instanceof User))
+        }
+        if (!(obj instanceof User)) {
             return false;
-        
+        }
+
         User other = (User) obj;
-        
-        if(this.id != other.id)
+
+        if (this.id != other.id) {
             return false;
-        if(!this.ra.equals(other.ra))
+        }
+        if (!this.ra.equals(other.ra)) {
             return false;
-        
+        }
+
         return true;
     }
-        
+
 }

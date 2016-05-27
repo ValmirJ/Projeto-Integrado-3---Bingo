@@ -5,21 +5,21 @@
  */
 package bingoserver.responses;
 
-import bingoserver.parameters.ParamGroups;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author guilherme
  */
-public class RaAlreadyInUse extends ResponseWithParams {
-
-    public RaAlreadyInUse(ParamGroups paramGroups) {
-        super(paramGroups);
-    }
+public class RaAlreadyInUse extends Response {
 
     @Override
-    public String responseData() {
-        return "ra" + getParamGroups().getParamGroup(0).toString() + "already_in_use";
+    public JSONObject responseJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("type", "ra-em-uso");
+        obj.put("erro", true);
+
+        return obj;
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package bingoserver.responses;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author guilherme
@@ -12,8 +14,11 @@ package bingoserver.responses;
 public class UserRemovedFromRoomResponse extends Response {
 
     @Override
-    public String responseData() {
-        return "removido_da_sala";
+    public JSONObject responseJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("type", "removido-da-sala");
+
+        return obj;
     }
 
 }

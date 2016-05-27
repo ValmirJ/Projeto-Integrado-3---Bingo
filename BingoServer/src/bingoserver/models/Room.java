@@ -6,6 +6,7 @@
 package bingoserver.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,6 +41,16 @@ public class Room implements Cloneable {
 
     public boolean removeUserCard(UserCard userCard) {
         return this.userCards.remove(userCard);
+    }
+
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+
+        for (UserCard userCard : userCards) {
+            users.add(userCard.getUser());
+        }
+
+        return users;
     }
 
     public Room(int id, UserCard userCard) {

@@ -6,7 +6,6 @@
 package bingoserver.interactions;
 
 import bingoserver.models.User;
-import bingoserver.parameters.ParamGroup;
 import bingoserver.parameters.ParamGroups;
 import bingoserver.responses.RaAlreadyInUse;
 import bingoserver.responses.UserConnectedResponse;
@@ -31,13 +30,11 @@ public class ConnectUser extends UserInteractor {
         // Como ainda não temos o repositorio de usuarios:
         if (user != null) {
             // Já existe um usuário com o RA acima
-            ParamGroup group0 = new ParamGroup(ra);
-            ParamGroups groups = new ParamGroups(group0);
-
+            //
             // Esse é um dos poucos, se não único lugar em que deve ser usado
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
-            getResponseManager().respondToClient(new RaAlreadyInUse(groups), getCurrentClient());
+            getResponseManager().respondToClient(new RaAlreadyInUse(), getCurrentClient());
             return;
         }
 

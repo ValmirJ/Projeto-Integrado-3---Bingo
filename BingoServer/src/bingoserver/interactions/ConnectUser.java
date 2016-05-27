@@ -6,7 +6,7 @@
 package bingoserver.interactions;
 
 import bingoserver.models.User;
-import bingoserver.responses.RaAlreadyInUse;
+import bingoserver.responses.InvalidRa;
 import bingoserver.responses.UserConnectedResponse;
 import org.json.simple.JSONObject;
 
@@ -23,6 +23,12 @@ public class ConnectUser extends UserInteractor {
     @Override
     public void perform(JSONObject params) throws Exception {
         String ra = (String) params.get("ra");
+
+        if (ra == null || ra.isEmpty()) {
+            getResponseManager().respondToClient(new InvalidRa(), getCurrentClient());
+            throw new Exception("Param ra cannot be null or empty!");
+        }
+
         User user = null;
 
         // TODO:
@@ -34,7 +40,7 @@ public class ConnectUser extends UserInteractor {
             // Esse é um dos poucos, se não único lugar em que deve ser usado
             // getResponseManager().respondToClient()
             // Isso ocorre porque o client ainda não esta associado a um user.
-            getResponseManager().respondToClient(new RaAlreadyInUse(), getCurrentClient());
+            getResponseManager().respondToClient(new InvalidRa(), getCurrentClient());
             return;
         }
 

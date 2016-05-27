@@ -11,12 +11,12 @@ import org.json.simple.JSONObject;
  *
  * @author guilherme
  */
-public class RaAlreadyInUse extends Response {
+public class InvalidRa extends Response {
 
     @Override
     public JSONObject responseJson() {
         JSONObject obj = new JSONObject();
-        obj.put("type", "ra-em-uso");
+        obj.put("type", "ra-invalido");
         obj.put("erro", true);
 
         return obj;

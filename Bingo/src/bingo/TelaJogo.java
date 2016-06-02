@@ -115,7 +115,8 @@ public class TelaJogo extends javax.swing.JFrame {
         jButton25.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jButton25.setFocusPainted(false);
 
-        jButton26.setText("jButton26");
+        jButton26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton26.setText("BINGO!");
         jButton26.setFocusPainted(false);
 
         jTextArea1.setColumns(20);

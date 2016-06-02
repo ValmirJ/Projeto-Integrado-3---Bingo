@@ -52,6 +52,14 @@ public class Room implements Cloneable {
 
         return users;
     }
+    public List<BingoCard> getCards() {
+        List<BingoCard> cards = new ArrayList<>();
+        
+        for(UserCard userCard : userCards) {
+            cards.add(userCard.getCard());
+        }
+        return cards;
+    }
 
     public Room(int id, UserCard userCard) {
         this.id = id;

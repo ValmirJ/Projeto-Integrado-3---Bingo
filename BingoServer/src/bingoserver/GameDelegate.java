@@ -17,7 +17,6 @@ import bingoserver.requests.RequestBuilder;
 import bingoserver.responses.ErrorResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -82,7 +81,7 @@ public class GameDelegate {
         setInteractorManagers(timerInteractor);
 
         try {
-            performSync(timerInteractor, null);
+            timerInteractor.perform();
         } catch (Exception ex) {
             Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,16 +90,6 @@ public class GameDelegate {
     private void setInteractorManagers(Interactor i) {
         i.setRepositoryManager(repositoryManager);
         i.setResponseManager(clientsManager);
-    }
-
-    private synchronized void performSync(Interactor i, JSONObject params) throws Exception {
-        if (i instanceof TimerInteractor) {
-            ((TimerInteractor) i).perform();
-        }
-
-        if (i instanceof UserInteractor) {
-            ((UserInteractor) i).perform(params);
-        }
     }
 
     private void sendErrorResponse(Request request, Client client) {

@@ -67,7 +67,7 @@ public class AssignUserToRoom extends UserInteractor {
         getResponseManager().respondToUser(new UserAcceptedInRoom(), user);
 
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
-        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
 
         List<User> usersInRoom = roomRepo.usersInRoom(desiredRoom);
         getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);

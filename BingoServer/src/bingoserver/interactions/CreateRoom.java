@@ -51,7 +51,7 @@ public class CreateRoom extends UserInteractor {
         getResponseManager().respondToUser(new CreatedRoomResponse(createdRoom.getId()), user);
 
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
-        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 
 }

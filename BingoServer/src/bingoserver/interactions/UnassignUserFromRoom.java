@@ -49,7 +49,7 @@ public class UnassignUserFromRoom extends UserInteractor {
         }
 
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
-        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom());
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 
 }

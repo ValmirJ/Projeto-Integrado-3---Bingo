@@ -16,7 +16,12 @@ import java.util.List;
 public class UserRepository {
     ArrayList<User> users;
 
-    public List<User> usersWithoutRoom() {
-        return null;
+    public List<User> usersWithoutRoom(List<User> usersWithRoom) {
+        List<User> usersWithoutRoom = null;
+        for(User u: users) {
+            if(!usersWithRoom.contains(u))
+                usersWithoutRoom.add(u);
+        }
+        return usersWithoutRoom;
     }
 }

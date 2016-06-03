@@ -80,4 +80,12 @@ public class RoomRepository {
         
         rooms.remove(room);
     }
+    
+    public List<User> getUsersInAnyRoom() {
+        List<User> usersWithRoom = null;
+        for(Room r : rooms) {
+            usersWithRoom.addAll(r.getUsers());
+        }
+        return usersWithRoom;
+    }
 }

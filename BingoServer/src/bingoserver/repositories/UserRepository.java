@@ -6,6 +6,7 @@
 package bingoserver.repositories;
 
 import bingoserver.models.User;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
  * @author guilherme
  */
 public class UserRepository {
+    ArrayList<User> users;
 
     public List<User> usersWithoutRoom() {
         return null;

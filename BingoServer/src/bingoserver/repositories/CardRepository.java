@@ -44,12 +44,48 @@ public class CardRepository {
         return countResult;
     }
 
-    public BingoCard getRandomCard() {
-        //Quando vai usar esse método??
-        return null;
+    public BingoCard getRandomCard() throws SQLException {
+        int idCard;
+        int[][] card = new int[5][5];
+        BingoCard resultBingoCard = null;
+        
+        String sql = "SELECT(cartelas.nr) "
+                    +"FROM cartelas"
+                    + "ORDER BY RAND()"
+                    + "LIMIT 1;";
+        
+        PreparedStatement stmt = dbConnection.clientPrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.closeOnCompletion();
+        ResultSet result = stmt.executeQuery();
+        result.first();
+        idCard = result.getInt("nr");
+        result.close();
+        
+        String sql2 = "SELECT * "
+                + "FROM combinacoes"
+                + "WHERE idCartela = ?";
+        
+        stmt = dbConnection.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
+        stmt.setInt(1, idCard);
+        stmt.closeOnCompletion();
+        result = stmt.executeQuery();
+        
+        while(result.next()) {
+            card[result.getInt("linha")][result.getInt("coluna")] = result.getInt("coluna");
+        }
+        result.close();
+        try {
+            resultBingoCard = new BingoCard(idCard, card);
+        } catch (Exception ex) {
+            Logger.getLogger(CardRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultBingoCard;
     }
 
-    public BingoCard getRandomCardAvailableForRoom(Room room) throws SQLException {
+    public BingoCard getRandomCardAvailableForRoom(Room room) throws SQLException, Exception {
+        if(room == null)
+            throw new Exception("Room cannot be null");
         
         List<BingoCard> cardsInUse = room.getCards();
         int idCard;

@@ -7,11 +7,8 @@ package bingoserver.repositories;
 
 import bingoserver.models.Room;
 import bingoserver.models.User;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import bingoserver.models.UserCard;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,50 +18,66 @@ import java.util.List;
  */
 public class RoomRepository {
 
-    private final Connection dbConnection;
+    ArrayList<Room> rooms;
 
-    public RoomRepository(Connection dbConnection) {
-        this.dbConnection = dbConnection;
+    public Room createRoom(UserCard us) throws Exception {
+        if(us == null)
+            throw new Exception("UserCard cannot be null");
+
+        Room newRoom = new Room(rooms.size(), us);
+        rooms.add(newRoom);
+        return newRoom;
     }
 
-    public Room createRoom() throws SQLException {
-        PreparedStatement stmt = dbConnection
-                .clientPrepareStatement("INSERT INTO rooms (started) VALUES (0);", Statement.RETURN_GENERATED_KEYS);
-
-        stmt.closeOnCompletion();
-        stmt.executeUpdate();
-
-        ResultSet rs = stmt.getGeneratedKeys();
-        rs.next();
-
-        int roomId = rs.getInt(0);
-
-        rs.close();
-
-        return new Room(roomId, false);
-    }
-
-    public Room findRoomByUser(User user) throws SQLException {
+    public Room findRoomByUser(User user) throws Exception {
+        if(user == null)
+            throw new Exception("User cannot be null");
+        
+        for(Room r: rooms) {
+            List<User> usersInRoom = r.getUsers();
+            if(usersInRoom.contains(user)) {
+                return r;
+            }
+        }
         return null;
     }
 
     public Room findRoomById(int roomId) {
+        for(Room r: rooms) {
+            if(r.getId() == roomId)
+                return r;
+        }
         return null;
     }
 
-    public Room findRoomById(String roomId) {
-        return null;
+    public Room findRoomById(String roomId) throws Exception{
+        if(roomId == null)
+            throw new Exception("String RoomId cannot be null");
+        
+        int ri = Integer.parseInt(roomId);
+        
+        return findRoomById(ri);
     }
 
-    public List<User> usersInRoom(Room room) {
-        return null;
+    public List<User> usersInRoom(Room room) throws Exception {
+        if(room == null)
+            throw new Exception("Room cannot be null");
+        
+        return room.getUsers();
     }
 
     public HashMap<Room, List<User>> currentOpenRoomsWithUsers() {
-        return null;
+        HashMap<Room, List<User>> openRooms = null;
+        for(Room r : rooms) {
+            openRooms.put(r, r.getUsers());
+        }
+        return openRooms;
     }
 
-    public void removeRoom(Room room) {
-
+    public void removeRoom(Room room) throws Exception {
+        if(room == null)
+            throw new Exception("Room cannot be null");
+        
+        rooms.remove(room);
     }
 }

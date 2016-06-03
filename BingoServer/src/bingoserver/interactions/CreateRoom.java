@@ -8,6 +8,7 @@ package bingoserver.interactions;
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
+import bingoserver.models.UserCard;
 import bingoserver.repositories.CardRepository;
 import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserCardRepository;
@@ -37,12 +38,13 @@ public class CreateRoom extends UserInteractor {
             throw new Exception("User already assigned to a room");
         }
 
-        Room createdRoom = roomRepo.createRoom();
         BingoCard card = cardRepo.getRandomCard();
+        UserCard us = new UserCard(user, card);
+        Room createdRoom = roomRepo.createRoom(us);
 
-        if (card == null) {
+        /*if (card == null) {
             throw new Exception(">>>>>>>> BEWARE!!!!! No cards available");
-        }
+        }*/ // NEVER WILL HAPPEN HU3
 
         ucRepo.addUserToRoomWithCard(user, createdRoom, card);
 

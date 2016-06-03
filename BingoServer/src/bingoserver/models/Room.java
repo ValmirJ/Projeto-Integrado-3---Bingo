@@ -42,6 +42,15 @@ public class Room implements Cloneable {
     public boolean removeUserCard(UserCard userCard) {
         return this.userCards.remove(userCard);
     }
+    public boolean removeUserCardByUser(User u) {
+        for(UserCard us : this.userCards) {
+            if(u.equals(us.getUser())) {
+                this.userCards.remove(us);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();

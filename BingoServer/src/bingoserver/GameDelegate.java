@@ -43,6 +43,7 @@ public class GameDelegate {
     }
 
     public void onClientMessage(Client client, String message) {
+        // Todo: verificar se o client ainda esta ativo 
         Request request = requestBuilder.buildRequestForMessage(message);
 
         if (request.valid() && request instanceof InteractionRequest) {

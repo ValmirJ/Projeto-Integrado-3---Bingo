@@ -50,11 +50,7 @@ public class ClientReceiver {
                 try {
                     Client c = new Client(socket, clientListener);
                     c.start();
-
-                    // Evitando uso de threads
-                    c.readOneMessage();
-
-                    c.stop();
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(ClientReceiver.class.getName()).log(Level.SEVERE, null, ex);
                 }

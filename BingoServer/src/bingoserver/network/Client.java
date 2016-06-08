@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class Client {
+public class Client implements Runnable {
 
     private interface ResponderListener {
 
@@ -90,6 +90,7 @@ public class Client {
     private final Socket socket;
     private final ClientReponder responder;
     private final ClientListener listener;
+    private boolean isStoped = false;
 
     Client(Socket socket, ClientListener listener) throws IOException {
         if (socket == null) {
@@ -112,14 +113,24 @@ public class Client {
 
     }
 
+    @Override
+    public void run() {
+        try {
+            this.readMessages();
+        } catch (IOException ex) {
+            this.stop();
+        }
+    }   
+    
     void send(Response resp) {
         responder.send(resp.responseData());
     }
 
-    void readOneMessage() throws IOException {
+    private void readMessages() throws IOException {
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        this.read(ois);
-        ois.close();
+        for(;;) {
+            this.read(ois);
+        } 
     }
 
     private void read(ObjectInputStream input) throws IOException {
@@ -182,11 +193,15 @@ public class Client {
     void start() {
         listener.onClientConnected(this);
         responder.start();
+        new Thread(this).start();
     }
 
-    void stop() {
-        // TODO: Garantir que esse listener seja chamado apenas uma vez.
-        listener.onClientDisconnected(this);
+    synchronized void stop() {
+        // Garante que esse listener seja chamado apenas uma vez.
+        if(!this.isStoped) {
+            listener.onClientDisconnected(this);
+            this.isStoped = true;
+        }
 
         try {
             // Vai automaticamente parar o responder nesse momento

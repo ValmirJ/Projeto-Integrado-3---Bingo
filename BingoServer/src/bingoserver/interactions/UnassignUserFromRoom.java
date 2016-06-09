@@ -35,6 +35,11 @@ public class UnassignUserFromRoom extends UserInteractor {
         if (room == null) {
             throw new Exception("User not assigned in a room");
         }
+        
+        if (room.getState() == Room.RoomState.initialized) {
+            // Ignore
+            return;
+        }
 
         ucRepo.removeUserFromRoom(user, room);
 

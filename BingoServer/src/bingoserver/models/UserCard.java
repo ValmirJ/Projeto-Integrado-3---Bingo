@@ -15,6 +15,15 @@ public class UserCard implements Cloneable {
     private User user;
     private BingoCard card;
     private ArrayList<Integer> playedNumbers;
+    private boolean roomOwner;
+
+    public boolean isRoomOwner() {
+        return roomOwner;
+    }
+
+    public void setRoomOwner(boolean roomOwner) {
+        this.roomOwner = roomOwner;
+    }
     
     public UserCard(User user, BingoCard card) throws Exception {
         if(user == null)
@@ -23,6 +32,7 @@ public class UserCard implements Cloneable {
             throw new Exception("BingoCard cannot be null");
         this.user = user;
         this.card = card;
+        this.roomOwner = false;
     }
     public User getUser() {
         return this.user;

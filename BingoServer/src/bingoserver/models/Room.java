@@ -14,21 +14,26 @@ import java.util.List;
  */
 public class Room implements Cloneable {
 
+    public void setState(RoomState state) {
+        this.state = state;
+    }
+
+    public enum RoomState {
+        initialized,
+        prestarted
+    }
+    
     private int id;
-    private boolean started;
     private ArrayList<Integer> sortedNumbers;
     private ArrayList<UserCard> userCards;
+    private RoomState state;
+
+    public RoomState getState() {
+        return state;
+    }
 
     public int getId() {
         return this.id;
-    }
-
-    public boolean isStarted() {
-        return this.started;
-    }
-
-    public void startRoom() {
-        this.started = true;
     }
 
     public void addSortedNumber(int number) {
@@ -50,6 +55,16 @@ public class Room implements Cloneable {
             }
         }
         return false;
+    }
+    
+    public User getRoomOwner() {
+        for (UserCard uc : this.userCards) {
+            if (uc.isRoomOwner()) {
+                return uc.getUser();
+            }
+        }
+        
+        return null;
     }
 
     public List<User> getUsers() {
@@ -73,12 +88,11 @@ public class Room implements Cloneable {
     public Room(int id, UserCard userCard) {
         this.id = id;
         this.userCards.add(userCard);
-        this.started = false;
+        this.state = RoomState.initialized;
     }
 
-    public Room(int id, boolean started) {
+    public Room(int id) {
         this.id = id;
-        this.started = started;
     }
 
     @Override
@@ -98,7 +112,7 @@ public class Room implements Cloneable {
             return false;
         }
 
-        if (this.started != other.started) {
+        if (this.state != other.state) {
             return false;
         }
 
@@ -133,7 +147,7 @@ public class Room implements Cloneable {
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + Integer.hashCode(this.id);
-        r = r * 7 + Boolean.hashCode(this.started);
+        r = r * 7 + this.state.hashCode();
         r = r * 7 + this.sortedNumbers.hashCode();
         r = r * 7 + this.userCards.hashCode();
 
@@ -146,7 +160,7 @@ public class Room implements Cloneable {
         }
 
         this.id = other.id;
-        this.started = other.started;
+        this.state = other.state;
         this.sortedNumbers = (ArrayList<Integer>) other.sortedNumbers.clone();
         this.userCards = (ArrayList<UserCard>) other.userCards.clone();
     }

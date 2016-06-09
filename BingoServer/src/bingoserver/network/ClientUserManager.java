@@ -9,10 +9,10 @@ import bingoserver.models.User;
 import bingoserver.responses.Response;
 import bingoserver.session.SessionManager;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ClientUserManager implements ResponseManager, SessionManager {
 
-    private final AbstractMap<Client, User> assigns = new ConcurrentHashMap<>();
+    private final AbstractMap<Client, User> assigns = new HashMap<>();
 
     private class NoUser extends User {
 

@@ -90,7 +90,16 @@ public class BingoServer implements ClientListener {
 
     @Override
     public void onClientConnected(final Client c) {
-        delegate.onClientConnected(c);
+        boolean enqueued = taskQueue.offer(new Runnable() {
+            @Override
+            public void run() {
+                delegate.onClientConnected(c);
+            }
+        });
+        
+        if (!enqueued) {
+            Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, "Failed to enqueue a client connection task.");
+        }
     }
 
     @Override

@@ -21,21 +21,14 @@ import java.util.logging.Logger;
  */
 public class Client implements Runnable {
 
-    private interface ResponderListener {
-
-        void onSendError();
-    }
-
     private class ClientReponder implements Runnable {
 
         private final Socket socket;
-        private final ResponderListener listener;
         private final BlockingQueue<String> outputQueue;
 
-        ClientReponder(Socket socket, ResponderListener listener) {
+        ClientReponder(Socket socket) {
             this.socket = socket;
             this.outputQueue = new LinkedBlockingDeque<>();
-            this.listener = listener;
         }
 
         void start() {
@@ -51,7 +44,12 @@ public class Client implements Runnable {
                 // A Fila está cheia.
                 // Nesse momento algo muito errado está acontecendo.
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, "Send Queue Full");
-                listener.onSendError();
+                
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 
@@ -71,10 +69,8 @@ public class Client implements Runnable {
                 // }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                listener.onSendError();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                listener.onSendError();
             } finally {
                 try {
                     if (output != null) {
@@ -90,7 +86,6 @@ public class Client implements Runnable {
     private final Socket socket;
     private final ClientReponder responder;
     private final ClientListener listener;
-    private boolean isStoped = false;
 
     Client(Socket socket, ClientListener listener) throws IOException {
         if (socket == null) {
@@ -103,14 +98,7 @@ public class Client implements Runnable {
 
         this.socket = socket;
         this.listener = listener;
-
-        this.responder = new ClientReponder(socket, new ResponderListener() {
-            @Override
-            public void onSendError() {
-                stop();
-            }
-        });
-
+        this.responder = new ClientReponder(socket);
     }
 
     @Override
@@ -118,6 +106,8 @@ public class Client implements Runnable {
         try {
             this.readMessages();
         } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             this.stop();
         }
     }   
@@ -196,12 +186,8 @@ public class Client implements Runnable {
         new Thread(this).start();
     }
 
-    synchronized void stop() {
-        // Garante que esse listener seja chamado apenas uma vez.
-        if(!this.isStoped) {
-            listener.onClientDisconnected(this);
-            this.isStoped = true;
-        }
+    void stop() {
+        listener.onClientDisconnected(this);
 
         try {
             // Vai automaticamente parar o responder nesse momento

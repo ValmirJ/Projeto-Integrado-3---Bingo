@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author 15096134
+ * @author 14023691
  */
 public class Client implements Runnable {
 
@@ -32,7 +33,8 @@ public class Client implements Runnable {
         }
 
         void start() {
-            // ....
+            responder.start();
+            new Thread(this).start();
         }
 
         void send(String data) {
@@ -60,13 +62,12 @@ public class Client implements Runnable {
         @Override
         public void run() {
             ObjectOutputStream output = null;
-
             try {
                 output = new ObjectOutputStream(socket.getOutputStream());
 
-                // while (true) {
+                while (true) {
                 send(outputQueue.take(), output);
-                // }
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {

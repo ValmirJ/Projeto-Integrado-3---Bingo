@@ -5,31 +5,65 @@
  */
 package bingo;
 
+import bingo.network.Client;
+import bingo.network.ClientListener;
+import bingo.network.ClientManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author guilherme
  */
-public class Bingo {
+public class Bingo implements ClientListener {
 
+    private FormManager formController;
+    private ClientManager clientManager;
+    
+    public Bingo() {
+        this.formController = new FormManager();
+     
+    }
+    
     public static void main(String... args) throws IOException, ClassNotFoundException {
         System.out.println("Teste");
         Socket socket = new Socket("127.0.0.1", 10001);
         socket.setTcpNoDelay(true);
 
-        ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+        new Bingo().execute();
+        
+      
+    }
+    
+    private void execute() {
+        try {  
+            final Socket socket = new Socket("127.0.0.1", 10001);
+            this.clientManager = new ClientManager(socket, this);
+        } catch (IOException ex) {
+            Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(Exception e) {
+            Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+    }
 
-        output.writeUTF("teste");
-        output.flush();
-        System.out.println(input.readUTF());
+    @Override
+    public void onClientConnected(Client client) {
+        this.formController.getTelaInicial().setVisible(true);
+    }
 
-        output.close();
-        input.close();
-        socket.close();
+    @Override
+    public void onClientDisconnected(Client client) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onClientMessage(Client client, String message) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -9,6 +9,12 @@ package bingo.network;
  *
  * @author 15174782
  */
-public class ClientListener {
+public interface ClientListener {
     
+    public void onClientConnected(Client client);
+
+    public void onClientDisconnected(Client client);
+
+    public void onClientMessage(Client client, String message);
+      
 }

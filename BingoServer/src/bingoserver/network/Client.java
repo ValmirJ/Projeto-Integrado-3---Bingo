@@ -73,9 +73,7 @@ public class Client implements Runnable {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
-                    if (output != null) {
-                        output.close();
-                    }
+                    socket.close();
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }

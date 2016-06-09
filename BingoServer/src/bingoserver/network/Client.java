@@ -110,8 +110,8 @@ public class Client implements Runnable {
         }
     }   
     
-    void send(Response resp) {
-        responder.send(resp.responseData());
+    void send(String resp) {
+        responder.send(resp);
     }
 
     private void readMessages() throws IOException {

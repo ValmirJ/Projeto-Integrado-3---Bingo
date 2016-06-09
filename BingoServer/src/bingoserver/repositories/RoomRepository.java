@@ -42,13 +42,22 @@ public class RoomRepository {
         return null;
     }
     
-    public Room roomOwnedBy(User user) {
-        // TODO
+    public Room roomOwnedBy(User user) throws Exception {
+        Room room = findRoomByUser(user);
+        
+        if (room.getRoomOwner() == user) {
+            return room;
+        }
+        
         return null;
     }
 
     public void startRoom(Room room) {
-        
+        for (Room r : rooms) {
+            if (r.equals(room)) {
+                r.setState(Room.RoomState.prestarted);
+            }
+        }
     }
     
     public Room findRoomById(int roomId) {

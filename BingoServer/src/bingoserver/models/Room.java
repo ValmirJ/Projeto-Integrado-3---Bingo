@@ -14,8 +14,13 @@ import java.util.List;
  */
 public class Room implements Cloneable {
 
+    public void setState(RoomState state) {
+        this.state = state;
+    }
+
     public enum RoomState {
-        initialized
+        initialized,
+        prestarted
     }
     
     private int id;
@@ -50,6 +55,16 @@ public class Room implements Cloneable {
             }
         }
         return false;
+    }
+    
+    public User getRoomOwner() {
+        for (UserCard uc : this.userCards) {
+            if (uc.isRoomOwner()) {
+                return uc.getUser();
+            }
+        }
+        
+        return null;
     }
 
     public List<User> getUsers() {

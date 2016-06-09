@@ -91,7 +91,7 @@ public class ClientUserManager implements ResponseManager, SessionManager {
     @Override
     public void respondToClient(Response resp, Client client) {
         if (assigns.containsKey(client)) {
-            client.send(resp);
+            client.send(resp.responseData());
         }
     }
 }

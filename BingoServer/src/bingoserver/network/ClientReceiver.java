@@ -15,7 +15,9 @@ import java.util.logging.Logger;
  *
  * @author 15096134
  */
-public class ClientReceiver {
+public class ClientReceiver implements Runnable {
+    
+    
 
     private final ServerSocket serverSock;
     private final ClientListener clientListener;
@@ -30,14 +32,15 @@ public class ClientReceiver {
     }
 
     public void start() {
-        waitForClients();
+        //waitForClients();
+        new Thread(this).start();
     }
 
     public void stop() throws IOException {
         serverSock.close();
     }
 
-    private void waitForClients() {
+    public void run() {
         while (true) {
             Socket socket;
 

@@ -40,7 +40,6 @@ public class StartRoom extends UserInteractor {
         
         roomRepo.startRoom(owned);
         
-        
         Response resp = new GameStartResponse();
         getResponseManager().respondToUsers(resp, users);
     }

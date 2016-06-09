@@ -33,7 +33,6 @@ public class Client implements Runnable {
         }
 
         void start() {
-            responder.start();
             new Thread(this).start();
         }
 

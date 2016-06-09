@@ -41,7 +41,16 @@ public class RoomRepository {
         }
         return null;
     }
+    
+    public Room roomOwnedBy(User user) {
+        // TODO
+        return null;
+    }
 
+    public void startRoom(Room room) {
+        
+    }
+    
     public Room findRoomById(int roomId) {
         for(Room r: rooms) {
             if(r.getId() == roomId)

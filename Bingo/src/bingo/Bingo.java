@@ -30,19 +30,16 @@ public class Bingo implements ClientListener {
     }
     
     public static void main(String... args) throws IOException, ClassNotFoundException {
-        System.out.println("Teste");
-        Socket socket = new Socket("127.0.0.1", 10001);
-        socket.setTcpNoDelay(true);
-
         new Bingo().execute();
-        
       
     }
     
     private void execute() {
         try {  
             final Socket socket = new Socket("127.0.0.1", 10001);
+            socket.setTcpNoDelay(true);
             this.clientManager = new ClientManager(socket, this);
+            
         } catch (IOException ex) {
             Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, ex);
         }

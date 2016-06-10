@@ -23,6 +23,7 @@ public class ClientManager {
             throw new Exception("ClientListener cannot be null");
         
         oneClient = new Client(socket, cl);
+        oneClient.start();
     }
     
     public void sendMessage(Response res) {

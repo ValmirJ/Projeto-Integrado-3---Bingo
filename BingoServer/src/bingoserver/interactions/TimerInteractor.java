@@ -6,6 +6,9 @@
 package bingoserver.interactions;
 
 import bingoserver.BingoServer;
+import bingoserver.models.Room;
+import bingoserver.repositories.RoomRepository;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +23,12 @@ public class TimerInteractor extends Interactor {
     }
 
     public void perform() {
-        Logger.getLogger(BingoServer.class.getName()).log(Level.INFO, "Clock Tick");
+        RoomRepository roomRepo = getRepositoryManager().getRoomRepository();
+        
+        List<Room> preStartedrooms = roomRepo.getPrestartedRooms();
+    }
+    
+    private void processPrestarted(List<Room> rooms) {
+        
     }
 }

@@ -106,4 +106,15 @@ public class RoomRepository {
         }
         return usersWithRoom;
     }
+
+    public List<Room> getPrestartedRooms() {
+        List<Room> rooms = new ArrayList<>();
+        
+        for (Room r : this.rooms) {
+            if (r.getState() == Room.RoomState.prestarted)
+                rooms.add(r);
+        }
+        
+        return rooms;
+    }
 }

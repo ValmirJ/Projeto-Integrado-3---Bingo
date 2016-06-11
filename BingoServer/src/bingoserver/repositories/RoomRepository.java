@@ -117,4 +117,31 @@ public class RoomRepository {
         
         return rooms;
     }
+    
+    public void updateRoomState(Room room, Room.RoomState state, int time) {
+        for (Room r : this.rooms) {
+            if (r.equals(room)) {
+                r.setState(state);
+                r.setTime(time);
+            }
+        }
+    }
+
+    public List<Room> getIntervalRooms() {
+        List<Room> rooms = new ArrayList<>();
+        
+        for (Room r : this.rooms) {
+            if (r.getState() == Room.RoomState.interval)
+                rooms.add(r);
+        }
+        
+        return rooms;
+    }
+    
+    public void addRandomToRoom(Room room, int number) {
+        for (Room r : this.rooms) {
+            if (r.equals(room))
+                r.addSortedNumber(number);
+        }
+    }
 }

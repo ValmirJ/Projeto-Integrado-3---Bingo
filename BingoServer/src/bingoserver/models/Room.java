@@ -20,13 +20,24 @@ public class Room implements Cloneable {
 
     public enum RoomState {
         initialized,
-        prestarted
+        prestarted,
+        interval,
+        prefinish
     }
     
     private int id;
     private ArrayList<Integer> sortedNumbers;
     private ArrayList<UserCard> userCards;
     private RoomState state;
+    private int time;
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 
     public RoomState getState() {
         return state;
@@ -47,6 +58,7 @@ public class Room implements Cloneable {
     public boolean removeUserCard(UserCard userCard) {
         return this.userCards.remove(userCard);
     }
+    
     public boolean removeUserCardByUser(User u) {
         for(UserCard us : this.userCards) {
             if(u.equals(us.getUser())) {
@@ -175,5 +187,8 @@ public class Room implements Cloneable {
 
         return other;
     }
-
+    
+    public List<Integer> getSortedNumbers() {
+        return (List<Integer>) sortedNumbers.clone();
+    }
 }

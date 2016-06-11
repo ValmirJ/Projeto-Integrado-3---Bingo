@@ -5,6 +5,7 @@
  */
 package bingo;
 
+import bingo.network.ClientManager;
 import javax.swing.JFrame;
 
 /**
@@ -16,10 +17,11 @@ public class FormManager {
     private TelaJogo telaJogo;
     private TelaResultado telaResultado;
     private TelaSalas telaSalas;
+    private ClientManager clientManager;
 
     public JFrame getTelaInicial() {
         if(this.telaInicial == null)
-            this.telaInicial = new TelaInicial();
+            this.telaInicial = new TelaInicial(clientManager);
         
         return telaInicial;
     }
@@ -43,5 +45,9 @@ public class FormManager {
             this.telaSalas = new TelaSalas();
         
         return telaSalas;
+    }
+    
+    public FormManager(ClientManager cl) {
+        this.clientManager = cl;
     }
 }

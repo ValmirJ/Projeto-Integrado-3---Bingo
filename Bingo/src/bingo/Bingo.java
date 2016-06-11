@@ -5,9 +5,12 @@
  */
 package bingo;
 
+import bingo.interactions.Interactor;
 import bingo.network.Client;
 import bingo.network.ClientListener;
 import bingo.network.ClientManager;
+import bingo.requests.InteractionRequest;
+import bingo.requests.RequestBuilder;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,9 +26,10 @@ public class Bingo implements ClientListener {
 
     private FormManager formController;
     private ClientManager clientManager;
+    private final RequestBuilder requestBuilder = new RequestBuilder();
     
     public Bingo() {
-        this.formController = new FormManager();
+        this.formController = new FormManager(clientManager);
      
     }
     
@@ -61,6 +65,9 @@ public class Bingo implements ClientListener {
 
     @Override
     public void onClientMessage(Client client, String message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
+        if(requestResponse.valid() && !requestResponse.equals(null)) {
+            Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
+        }
     }
 }

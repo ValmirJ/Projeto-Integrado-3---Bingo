@@ -5,10 +5,23 @@
  */
 package bingoserver.responses;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author 15096134
  */
-public class FinalIntervalResponse {
-    
+public class FinalIntervalResponse extends TimeProgressResponse {
+
+    public FinalIntervalResponse(int time) {
+        super(time);
+    }
+
+    @Override
+    public JSONObject responseJson() {
+        JSONObject base = super.responseJson();
+        base.put("type", "final-interval-begin");
+        return base;
+    }
+
 }

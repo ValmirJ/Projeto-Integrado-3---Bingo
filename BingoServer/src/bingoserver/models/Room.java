@@ -32,7 +32,8 @@ public class Room implements Cloneable {
         initialized,
         prestarted,
         interval,
-        prefinish
+        sorting,
+        finalInterval,
     }
 
     private int id;

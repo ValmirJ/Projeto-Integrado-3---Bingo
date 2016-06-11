@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class RoomRepository {
 
-    ArrayList<Room> rooms;
+    List<Room> rooms = new ArrayList<>();
 
     public Room createRoom(UserCard us) throws Exception {
         if (us == null) {
@@ -157,5 +157,29 @@ public class RoomRepository {
                 r.addSortedNumber(number);
             }
         }
+    }
+
+    public List<Room> getSortIntervalRooms() {
+        List<Room> rooms = new ArrayList<>();
+
+        for (Room r : this.rooms) {
+            if (r.getState() == Room.RoomState.sorting) {
+                rooms.add(r);
+            }
+        }
+
+        return rooms;
+    }
+
+    public List<Room> getFinalIntervalRooms() {
+        List<Room> rooms = new ArrayList<>();
+
+        for (Room r : this.rooms) {
+            if (r.getState() == Room.RoomState.finalInterval) {
+                rooms.add(r);
+            }
+        }
+
+        return rooms;
     }
 }

@@ -11,7 +11,9 @@ package bingoserver.repositories;
  */
 public class RepositoryManager {
 
-    private RoomRepository roomRepo = new RoomRepository();
+    private final RoomRepository roomRepo = new RoomRepository();
+    private final UserRepository userRepo = new UserRepository();
+    private final UserCardRepository userCardRepo = new UserCardRepository();
 
     public RepositoryManager() {
 
@@ -26,10 +28,10 @@ public class RepositoryManager {
     }
 
     public UserCardRepository getUserCardRepository() {
-        return null;
+        return userCardRepo;
     }
 
     public UserRepository getUserRepository() {
-        return null;
+        return userRepo;
     }
 }

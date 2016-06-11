@@ -37,7 +37,7 @@ public class StartRoom extends UserInteractor {
 
         List<User> users = roomRepo.usersInRoom(owned);
 
-        if (users.size() < 2) {
+        if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
             getResponseManager().respondToUser(new TooLessUsersInRoomResponse(), requester);
             return;
         }

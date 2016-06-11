@@ -7,6 +7,7 @@ package bingoserver;
 
 import bingoserver.interactions.Interactor;
 import bingoserver.interactions.TimerInteractor;
+import bingoserver.interactions.UserDisconnected;
 import bingoserver.interactions.UserInteractor;
 import bingoserver.network.Client;
 import bingoserver.network.ClientUserManager;
@@ -38,8 +39,19 @@ public class GameDelegate {
         clientsManager.addClient(c);
     }
 
-    public void onClientDisconnected(Client c) {
-        clientsManager.removeClient(c);
+    public void onClientDisconnected(Client client) {
+        UserInteractor disc = new UserDisconnected();
+        setInteractorManagers(disc);
+        disc.setCurrentClient(client);
+        disc.setSessionManager(clientsManager);
+
+        try {
+            disc.perform(null);
+        } catch (Exception ex) {
+            Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        clientsManager.removeClient(client);
     }
 
     public void onClientMessage(Client client, String message) {

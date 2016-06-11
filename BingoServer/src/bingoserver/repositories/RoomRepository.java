@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class RoomRepository {
 
+    private int idCount = 0;
     List<Room> rooms = new ArrayList<>();
 
     public Room createRoom(UserCard us) throws Exception {
@@ -26,7 +27,7 @@ public class RoomRepository {
             throw new Exception("UserCard cannot be null");
         }
 
-        Room newRoom = new Room(rooms.size(), us);
+        Room newRoom = new Room(idCount++, us);
         rooms.add(newRoom);
         return newRoom;
     }
@@ -69,6 +70,7 @@ public class RoomRepository {
                 return r;
             }
         }
+
         return null;
     }
 

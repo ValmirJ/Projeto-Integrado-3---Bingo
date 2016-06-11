@@ -5,11 +5,17 @@
  */
 package bingoserver.interactions;
 
+import bingoserver.models.Room;
 import bingoserver.models.User;
 import bingoserver.network.Client;
+import bingoserver.repositories.RoomRepository;
+import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AlreadyUsedRa;
+import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.InvalidRa;
 import bingoserver.responses.UserConnectedResponse;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONObject;
@@ -34,11 +40,11 @@ public class ConnectUser extends UserInteractor {
             return;
         }
 
-        User user = null;
+        UserRepository userRepo = getRepositoryManager().getUserRepository();
+        RoomRepository roomRepo = getRepositoryManager().getRoomRepository();
 
-        // TODO:
-        // user = getRepositoryManager().getUserRepository().findUserWithRa(ra);
-        // Como ainda não temos o repositorio de usuarios:
+        User user = userRepo.findUserWithRa(ra);
+
         if (user != null) {
             // Já existe um usuário com o RA acima
             //
@@ -51,33 +57,20 @@ public class ConnectUser extends UserInteractor {
         }
 
         // Não existe usuário com o RA:
-        // user = getRepositoryManager().getUserRepository().createUserWithRa(ra);
+        user = userRepo.createUserWithRa(ra);
+
         //
         // Isso associa o client dessa requisição com o usuário criado para ele,
         // permitindo que usemos mgr.getUser() nas próximas vezes que esse client
         // fizer requisições.
         setSessionUser(user);
 
-        // Ja está feito:
-        // Avisar o client que ele foi conectado
+        // Avisa o client que ele foi conectado
         getResponseManager().respondToUser(new UserConnectedResponse(), getSessionUser());
 
-        // TODO:
-        // Enviar para o client as salas disponíveis,
+        // Envia para o client as salas disponíveis,
         // bem como os usuários que estão nelas.
-        //
-        // Note que no exemplo abaixo ainda terá que ser feita a iteração, bem como
-        // as classes AvaiableRoomsResponse e WhoIsInRoomResponse
-        //
-        // Room[] rooms = getRepositoryManager().getRooms();
-        //
-        // ParamGroup groupRooms = new ParamGroup(rooms[0].id, rooms[1].id, ....);
-        // ParamGroups groups = new ParamGroups(group0);
-        // getResponseManager().respondToClient(new AvaiableRoomsResponse(groups), getUserClientSession().getClient());
-        //
-        // ParamGroup roomId = new ParamGroup(rooms[0].id);
-        // ParamGroup whoIsInRoom0 = new ParamGroup(rooms[0].users[0].id, rooms[0].users[1].id,....);
-        // ParamGroups groups = new ParamGroups(roomId, whoIsInRoom0);
-        // getResponseManager().respondToClient(new WhoIsInRoomResponse(groups), getUserClientSession().getClient());
+        HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 }

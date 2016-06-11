@@ -25,15 +25,6 @@ import java.util.logging.Logger;
  */
 public class TimerInteractor extends Interactor {
 
-    // 3 clocks for interval
-    private static final int INTERVAL_TIME = 3;
-    // 7 clocks for sorting
-    private static final int SORT_TIME = 7;
-    // 5 clocks for final extra time
-    private static final int FINAL_INTERVAL = 5;
-
-    private static final int LAST_NUMBER = 75;
-
     private final Random rand;
 
     public TimerInteractor() {
@@ -57,7 +48,7 @@ public class TimerInteractor extends Interactor {
 
     private void setToIntervalBegin(RoomRepository roomRepo, List<Room> rooms) {
         for (Room room : rooms) {
-            roomRepo.updateRoomState(room, Room.RoomState.interval, INTERVAL_TIME);
+            roomRepo.updateRoomState(room, Room.RoomState.interval, Settings.INTERVAL_TIME);
 
             try {
                 List<User> users = roomRepo.usersInRoom(room);
@@ -89,9 +80,9 @@ public class TimerInteractor extends Interactor {
 
     private void randomNextNumber(RoomRepository roomRepo, Room room) {
         List<Integer> blackList = room.getSortedNumbers();
-        List<Integer> possibles = new ArrayList<>(LAST_NUMBER);
+        List<Integer> possibles = new ArrayList<>(Settings.LAST_NUMBER);
 
-        for (int i = 1; i <= LAST_NUMBER; i++) {
+        for (int i = 1; i <= Settings.LAST_NUMBER; i++) {
             if (blackList.indexOf(i) < 0) {
                 possibles.add(i);
             }
@@ -101,7 +92,7 @@ public class TimerInteractor extends Interactor {
         int sorted = possibles.get(random);
 
         roomRepo.addRandomToRoom(room, sorted);
-        roomRepo.updateRoomState(room, Room.RoomState.sorting, SORT_TIME);
+        roomRepo.updateRoomState(room, Room.RoomState.sorting, Settings.SORT_TIME);
 
         try {
             List<User> users = roomRepo.usersInRoom(room);
@@ -126,7 +117,7 @@ public class TimerInteractor extends Interactor {
                 } catch (Exception ex) {
                     Logger.getLogger(TimerInteractor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else if (room.getSortedNumbers().size() >= LAST_NUMBER) {
+            } else if (room.getSortedNumbers().size() >= Settings.LAST_NUMBER) {
                 setToFinalInterval(roomRepo, room);
             } else {
                 toInterval.add(room);
@@ -137,7 +128,7 @@ public class TimerInteractor extends Interactor {
     }
 
     private void setToFinalInterval(RoomRepository roomRepo, Room room) {
-        roomRepo.updateRoomState(room, Room.RoomState.finalInterval, FINAL_INTERVAL);
+        roomRepo.updateRoomState(room, Room.RoomState.finalInterval, Settings.FINAL_INTERVAL);
 
         try {
             List<User> users = roomRepo.usersInRoom(room);

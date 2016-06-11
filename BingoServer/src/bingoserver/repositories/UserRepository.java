@@ -14,14 +14,34 @@ import java.util.List;
  * @author guilherme
  */
 public class UserRepository {
-    ArrayList<User> users;
+
+    private final List<User> users = new ArrayList<>();
+    private int idCount = 0;
 
     public List<User> usersWithoutRoom(List<User> usersWithRoom) {
-        List<User> usersWithoutRoom = null;
-        for(User u: users) {
-            if(!usersWithRoom.contains(u))
+        List<User> usersWithoutRoom = new ArrayList<>();
+
+        for (User u : users) {
+            if (!usersWithRoom.contains(u)) {
                 usersWithoutRoom.add(u);
+            }
         }
         return usersWithoutRoom;
+    }
+
+    public User findUserWithRa(String ra) {
+        for (User u : users) {
+            if (u.getRa().equals(ra)) {
+                return u;
+            }
+        }
+
+        return null;
+    }
+
+    public User createUserWithRa(String ra) {
+        User u = new User(idCount++, ra);
+        users.add(u);
+        return u;
     }
 }

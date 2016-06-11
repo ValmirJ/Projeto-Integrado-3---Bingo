@@ -5,6 +5,7 @@
  */
 package bingoserver.responses;
 
+import bingoserver.models.BingoCard;
 import org.json.simple.JSONObject;
 
 /**
@@ -13,12 +14,19 @@ import org.json.simple.JSONObject;
  */
 public class GameStartResponse extends Response {
 
+    private BingoCard card;
+
+    public GameStartResponse(BingoCard card) {
+        this.card = card;
+    }
+
     @Override
     public JSONObject responseJson() {
         JSONObject obj = new JSONObject();
         obj.put("type", "inicio-de-jogo");
+        obj.put("card", card.asJson());
 
         return obj;
     }
-    
+
 }

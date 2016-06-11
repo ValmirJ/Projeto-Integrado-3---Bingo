@@ -5,14 +5,18 @@
  */
 package bingoserver.models;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author valmir.massoni
  */
 public class BingoCard {
+
     private int idCard;
     private int numbers[][] = new int[5][5];
-    
+
     public int getIdCard() {
         return this.idCard;
     }
@@ -20,55 +24,82 @@ public class BingoCard {
     public int[][] getNumbers() {
         return this.numbers;
     }
-    
+
     public BingoCard(int id, int[][] numbers) throws Exception {
-        if(numbers.length < 5 || numbers[0].length < 5)
+        if (numbers.length < 5 || numbers[0].length < 5) {
             throw new Exception("Cartela inválida");
-        
-        for(int i = 0; i < numbers.length; i++) {
-            for(int j = 0; j < numbers[0].length; i++) {
+        }
+
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = 0; j < numbers[0].length; i++) {
                 this.numbers[i][j] = numbers[i][j];
             }
         }
         this.idCard = id;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        if(!(obj instanceof BingoCard))
+        }
+        if (!(obj instanceof BingoCard)) {
             return false;
-        
+        }
+
         BingoCard another = (BingoCard) obj;
-        if(this.idCard != another.idCard)
+        if (this.idCard != another.idCard) {
             return false;
-        
+        }
+
         return true;
     }
-    
+
     @Override
     public String toString() {
-       String str = "";
-        for(int[] line : numbers){
-            for(int n : line) {
+        String str = "";
+        for (int[] line : numbers) {
+            for (int n : line) {
                 str += n + " ";
             }
             str += "\n";
-        } 
+        }
         return str;
     }
+
     @Override
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + new Integer(this.idCard).hashCode();
-        
-        for(int[] line : this.numbers) {
-            for(int n : line)
+
+        for (int[] line : this.numbers) {
+            for (int n : line) {
                 r = r * 7 + new Integer(n).hashCode();
+            }
         }
         return r;
+    }
+
+    public JSONArray asJson() {
+        JSONArray json = new JSONArray();
+
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = 0; j < numbers[0].length; i++) {
+                if (i != 2 && j != 2) {
+                    JSONObject numberJson = new JSONObject();
+
+                    numberJson.put("row", i);
+                    numberJson.put("col", j);
+                    numberJson.put("value", numbers[i][j]);
+
+                    json.add(numberJson);
+                }
+            }
+        }
+
+        return json;
     }
 }

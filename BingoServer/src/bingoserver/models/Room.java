@@ -18,13 +18,23 @@ public class Room implements Cloneable {
         this.state = state;
     }
 
+    public BingoCard getCard(User user) {
+        for (UserCard uc : userCards) {
+            if (uc.getUser().equals(user)) {
+                return uc.getCard();
+            }
+        }
+
+        return null;
+    }
+
     public enum RoomState {
         initialized,
         prestarted,
         interval,
         prefinish
     }
-    
+
     private int id;
     private ArrayList<Integer> sortedNumbers;
     private ArrayList<UserCard> userCards;
@@ -58,24 +68,24 @@ public class Room implements Cloneable {
     public boolean removeUserCard(UserCard userCard) {
         return this.userCards.remove(userCard);
     }
-    
+
     public boolean removeUserCardByUser(User u) {
-        for(UserCard us : this.userCards) {
-            if(u.equals(us.getUser())) {
+        for (UserCard us : this.userCards) {
+            if (u.equals(us.getUser())) {
                 this.userCards.remove(us);
                 return true;
             }
         }
         return false;
     }
-    
+
     public User getRoomOwner() {
         for (UserCard uc : this.userCards) {
             if (uc.isRoomOwner()) {
                 return uc.getUser();
             }
         }
-        
+
         return null;
     }
 
@@ -88,10 +98,11 @@ public class Room implements Cloneable {
 
         return users;
     }
+
     public List<BingoCard> getCards() {
         List<BingoCard> cards = new ArrayList<>();
-        
-        for(UserCard userCard : userCards) {
+
+        for (UserCard userCard : userCards) {
             cards.add(userCard.getCard());
         }
         return cards;
@@ -187,7 +198,7 @@ public class Room implements Cloneable {
 
         return other;
     }
-    
+
     public List<Integer> getSortedNumbers() {
         return (List<Integer>) sortedNumbers.clone();
     }

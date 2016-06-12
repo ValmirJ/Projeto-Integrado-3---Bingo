@@ -16,13 +16,14 @@ public class InteractionRequest {
 
     private Class<? extends Interactor> interactor;
     private JSONObject requestJson;
+    String requestData;
 
-    InteractionRequest(String requestRawData) {
-        //super(requestRawData);
+    InteractionRequest(String requestData) {
+        this.requestData = requestData;
     }
 
-    protected InteractionRequest(String requestRawData, Class<? extends Interactor> interactor, JSONObject object) {
-        //super(requestRawData);
+    protected InteractionRequest(String requestData, Class<? extends Interactor> interactor, JSONObject object) {
+        this.requestData = requestData;
         this.interactor = interactor;
         this.requestJson = object;
     }
@@ -33,10 +34,5 @@ public class InteractionRequest {
 
     public JSONObject getRequestJson() {
         return requestJson;
-    }
-
-    //@Override
-    public boolean valid() {
-        return true;
     }
 }

@@ -6,7 +6,6 @@
 package bingo;
 
 import bingo.network.ClientManager;
-import javax.swing.JFrame;
 
 /**
  *
@@ -19,30 +18,30 @@ public class FormManager {
     private TelaSalas telaSalas;
     private ClientManager clientManager;
 
-    public JFrame getTelaInicial() {
+    public TelaInicial getTelaInicial() {
         if(this.telaInicial == null)
             this.telaInicial = new TelaInicial(clientManager);
         
         return telaInicial;
     }
 
-    public JFrame getTelaJogo() {
+    public TelaJogo getTelaJogo() {
         if(this.telaJogo == null)
             this.telaJogo = new TelaJogo();
         
         return telaJogo;
     }
 
-    public JFrame getTelaResultado() {
+    public TelaResultado getTelaResultado() {
         if(this.telaResultado == null)
             this.telaResultado = new TelaResultado();
         
         return telaResultado;
     }
 
-    public JFrame getTelaSalas() {
+    public TelaSalas getTelaSalas() {
         if(this.telaSalas == null)
-            this.telaSalas = new TelaSalas();
+            this.telaSalas = new TelaSalas(this.telaInicial.getRa());
         
         return telaSalas;
     }

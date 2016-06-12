@@ -6,12 +6,17 @@
 package bingo.requests;
 
 //import bingoserver.interactions.AssignUserToRoom;
+import bingo.GameDelegate;
 import bingo.interactions.ConnectWithRa;
 import bingo.interactions.Interactor;
 //import bingoserver.interactions.CreateRoom;
 //import bingoserver.interactions.UnassignUserFromRoom;
 //import bingoserver.interactions.UserInteractor;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -32,8 +37,8 @@ public class RequestBuilder {
     public String toString() {
         return "RequestBuilder";
     }
-    /*
-    public Request buildRequestForMessage(String message) {
+
+    public InteractionRequest buildRequestForMessage(String message) {
         // Os valores aceitaveis para message sao todos aqueles que os clientes
         // podem enviar para nosso servidor.
         //
@@ -60,5 +65,5 @@ public class RequestBuilder {
         }
 
         return null; //Se o servidor enviar algo muitooo errado!
-    }*/
+    }
 }

@@ -24,6 +24,18 @@ public class TelaInicial extends javax.swing.JFrame {
         initComponents();
         this.clientManager = clientManager;
     }
+    
+    public void showRaAlreadyUsed() {
+        JOptionPane.showMessageDialog(null, "RA já está em uso, tente novamente");
+    }
+    
+    public void showInvalidRa() {
+        JOptionPane.showMessageDialog(null, "Digite um RA válido!");
+    }
+    
+    public String getRa() {
+        return TXT_Ra.getText();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,14 +97,14 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BUT_ProxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUT_ProxActionPerformed
-        String ra = TXT_Ra.getText();
-        if (!ra.isEmpty()) {
+        String ra = this.getRa();
+        if(!ra.isEmpty()){
             ConnectResponse response = new ConnectResponse(ra);
             this.clientManager.sendMessage(response);
-        } else {
-            JOptionPane.showMessageDialog(null, "Digite um RA válido!");
         }
-
+        else {
+            this.showInvalidRa();
+        }     
     }//GEN-LAST:event_BUT_ProxActionPerformed
 
     /**

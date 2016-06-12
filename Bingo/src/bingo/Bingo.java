@@ -5,9 +5,11 @@
  */
 package bingo;
 
+import bingo.interactions.Interactor;
 import bingo.network.Client;
 import bingo.network.ClientListener;
 import bingo.network.ClientManager;
+import bingo.requests.InteractionRequest;
 import bingo.requests.RequestBuilder;
 import java.io.IOException;
 import java.net.Socket;
@@ -55,9 +57,20 @@ public class Bingo implements ClientListener {
 
     @Override
     public void onClientMessage(Client client, String message) {
-        //InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
-        //if(requestResponse.valid() && !requestResponse.equals(null)) {
-        //    Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
-        //}
+        InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
+        if(!requestResponse.equals(null)) {
+            Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
+            try {
+                Interactor interactor = interactionClass.newInstance();
+                interactor.setFormManager(formController);
+                interactor.perform(requestResponse.getRequestJson());
+            }
+            catch (InstantiationException ex) {
+                //erro ao instanciar
+            }
+            catch(Exception e) {
+                
+            }
+        }
     }
 }

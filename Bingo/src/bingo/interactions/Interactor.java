@@ -6,15 +6,22 @@
 package bingo.interactions;
 
 import bingo.FormManager;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author valmir
  */
-public class Interactor {
+public abstract class Interactor {
     private FormManager formManager;
     
     public void setFormManager(FormManager fm) {
         this.formManager = fm;
     }
+    
+    public FormManager getFormManager() {
+        return this.formManager;
+    }
+    
+    public abstract void perform(JSONObject params) throws Exception;
 }

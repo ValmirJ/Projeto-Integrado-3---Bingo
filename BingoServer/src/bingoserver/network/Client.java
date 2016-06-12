@@ -50,6 +50,7 @@ public class Client implements Runnable {
 
         private void send(String data, ObjectOutputStream output) throws IOException {
             output.writeUTF(data);
+            output.flush();
         }
 
         @Override

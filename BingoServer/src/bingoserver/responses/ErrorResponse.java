@@ -17,6 +17,10 @@ public class ErrorResponse extends Response {
     private final Request request;
 
     public ErrorResponse(Request request) {
+        if (request == null) {
+            throw new NullPointerException("request cannot be null");
+        }
+
         this.request = request;
     }
 

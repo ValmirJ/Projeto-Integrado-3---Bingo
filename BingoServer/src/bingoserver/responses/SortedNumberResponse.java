@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
  */
 public class SortedNumberResponse extends TimeProgressResponse {
 
-    private int number;
+    private final int number;
 
     public SortedNumberResponse(int time, int number) {
         super(time);

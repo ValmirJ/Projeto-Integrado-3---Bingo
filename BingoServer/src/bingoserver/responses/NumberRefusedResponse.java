@@ -16,6 +16,7 @@ public class NumberRefusedResponse extends Response {
     private final Integer number;
 
     public NumberRefusedResponse(Integer number) {
+        // Beware! number CAN BE NULL!
         this.number = number;
     }
 

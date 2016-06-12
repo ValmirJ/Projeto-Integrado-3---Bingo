@@ -76,7 +76,8 @@ class DbConnectionBuilder {
                     + path + ".sample\n"
                     + " para \n"
                     + path + "\n"
-                    + "e coloque as informaçoes de conexao."
+                    + "e coloque as informaçoes de conexao.\n"
+                    + "Se você ainda não possui as cartelas no DB, crie um schema e carregue o dump incluso na pasta sql."
                     + "\n\n-----------------------------------------------------------------------\n";
 
             Logger.getLogger(DbConnectionBuilder.class.getName()).log(Level.WARNING, log);

@@ -8,12 +8,14 @@ package bingoserver.interactions;
 import bingoserver.models.Room;
 import bingoserver.models.User;
 import bingoserver.repositories.RoomRepository;
+import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.FinalIntervalResponse;
 import bingoserver.responses.IntervalBeginResponse;
 import bingoserver.responses.IntervalDecraseResponse;
 import bingoserver.responses.SortedNumberResponse;
 import bingoserver.responses.YouLoseResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -155,11 +157,18 @@ public class TimerInteractor extends Interactor {
                 try {
                     List<User> users = roomRepo.usersInRoom(room);
                     roomRepo.removeRoom(room);
-                    getResponseManager().respondToUsers(new YouLoseResponse(), users);
+                    sendLoseResponse(roomRepo, users);
                 } catch (Exception ex) {
                     Logger.getLogger(TimerInteractor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
+    }
+
+    private void sendLoseResponse(RoomRepository roomRepo, List<User> users) {
+        getResponseManager().respondToUsers(new YouLoseResponse(), users);
+
+        HashMap<Room, List<User>> openRooms = roomRepo.currentOpenRoomsWithUsers();
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(openRooms), getRepositoryManager().getUserRepository().usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 }

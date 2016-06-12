@@ -79,7 +79,8 @@ public class BingoServer implements ClientListener {
         ClientUserManager clientManager = new ClientUserManager();
         ClientReceiver clientReceiver = new ClientReceiver(PORT, this);
 
-        repoManager.getCardRepository().countCards();
+        int count = repoManager.getCardRepository().countCards();
+        Logger.getLogger(BingoServer.class.getName()).log(Level.INFO, "Foram encontradas " + count + " cartelas");
 
         delegate = new GameDelegate(repoManager, clientManager);
 

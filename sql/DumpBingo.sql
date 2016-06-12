@@ -1,10 +1,10 @@
--- CREATE DATABASE  IF NOT EXISTS `heroku_77d53be3fbce14e` /*!40100 DEFAULT CHARACTER SET utf8 */;
--- USE `heroku_77d53be3fbce14e`;
+-- CREATE DATABASE  IF NOT EXISTS `bingo` /*!40100 DEFAULT CHARACTER SET utf8 */;
+-- USE `bingo`;
 -- MySQL dump 10.13  Distrib 5.5.49, for debian-linux-gnu (x86_64)
 --
--- Host: us-cdbr-iron-east-04.cleardb.net    Database: heroku_77d53be3fbce14e
+-- Host: localhost    Database: bingo
 -- ------------------------------------------------------
--- Server version	5.5.46-log
+-- Server version	5.5.49-0ubuntu0.14.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,7 +26,6 @@ DROP TABLE IF EXISTS `cartelas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cartelas` (
   `nr` int(11) NOT NULL AUTO_INCREMENT,
-  `estadoCartela` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`nr`)
 ) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -37,7 +36,7 @@ CREATE TABLE `cartelas` (
 
 LOCK TABLES `cartelas` WRITE;
 /*!40000 ALTER TABLE `cartelas` DISABLE KEYS */;
-INSERT INTO `cartelas` VALUES (262,0),(272,0),(282,0),(292,0),(302,0),(312,0),(322,0),(332,0),(342,0),(352,0);
+INSERT INTO `cartelas` VALUES (262),(272),(282),(292),(302),(312),(322),(332),(342),(352);
 /*!40000 ALTER TABLE `cartelas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +71,7 @@ INSERT INTO `combinacoes` VALUES (5052,0,0,11,262),(5062,1,0,1,262),(5072,2,0,15
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'heroku_77d53be3fbce14e'
+-- Dumping events for database 'bingo'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -84,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-11 19:33:09
+-- Dump completed on 2016-06-11 22:20:05

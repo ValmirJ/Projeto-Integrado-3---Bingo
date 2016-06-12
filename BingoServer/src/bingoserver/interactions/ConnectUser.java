@@ -32,7 +32,13 @@ public class ConnectUser extends UserInteractor {
 
     @Override
     public void perform(JSONObject params) throws Exception {
-        String ra = (String) params.get("ra");
+        String ra;
+
+        try {
+            ra = (String) params.get("ra");
+        } catch (ClassCastException ex) {
+            ra = null;
+        }
 
         if (ra == null || ra.isEmpty()) {
             getResponseManager().respondToClient(new InvalidRa(), getCurrentClient());

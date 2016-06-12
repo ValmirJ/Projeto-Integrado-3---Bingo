@@ -94,4 +94,12 @@ public class ClientUserManager implements ResponseManager, SessionManager {
             client.send(resp.responseData());
         }
     }
+
+    public void stopAll() {
+        Set<Entry<Client, User>> entries = assigns.entrySet();
+
+        for (Entry<Client, User> e : entries) {
+            e.getKey().stopSilent();
+        }
+    }
 }

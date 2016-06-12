@@ -18,11 +18,11 @@ public class InteractionRequest {
     private JSONObject requestJson;
 
     InteractionRequest(String requestRawData) {
-        super(requestRawData);
+        //super(requestRawData);
     }
 
     protected InteractionRequest(String requestRawData, Class<? extends Interactor> interactor, JSONObject object) {
-        super(requestRawData);
+        //super(requestRawData);
         this.interactor = interactor;
         this.requestJson = object;
     }
@@ -35,7 +35,7 @@ public class InteractionRequest {
         return requestJson;
     }
 
-    @Override
+    //@Override
     public boolean valid() {
         return true;
     }

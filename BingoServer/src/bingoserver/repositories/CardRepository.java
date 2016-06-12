@@ -7,8 +7,7 @@ package bingoserver.repositories;
 
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,24 +20,26 @@ import java.util.logging.Logger;
  * @author guilherme
  */
 public class CardRepository {
+
     private final Connection dbConnection;
-    
+
     public CardRepository(Connection dbConnection) throws Exception {
-        if(dbConnection == null)
+        if (dbConnection == null) {
             throw new Exception("Connection is null");
+        }
         this.dbConnection = dbConnection;
     }
-    
+
     public int countCards() throws SQLException {
         int countResult = 0;
-        String sql = "SELECT COUNT(cartelas.nr)"
-                   + "FROM cartelas";
-        
-        PreparedStatement stmt = dbConnection.clientPrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        String sql = "SELECT COUNT(cartelas.nr) AS count "
+                + "FROM cartelas";
+
+        PreparedStatement stmt = dbConnection.prepareStatement(sql);
         stmt.closeOnCompletion();
         ResultSet result = stmt.executeQuery();
         result.next();
-        
+
         countResult = result.getInt("count");
         result.close();
         return countResult;
@@ -46,87 +47,84 @@ public class CardRepository {
 
     public BingoCard getRandomCard() throws SQLException {
         int idCard;
-        int[][] card = new int[5][5];
-        BingoCard resultBingoCard = null;
-        
+
         String sql = "SELECT(cartelas.nr) "
-                    +"FROM cartelas"
-                    + "ORDER BY RAND()"
-                    + "LIMIT 1;";
-        
-        PreparedStatement stmt = dbConnection.clientPrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                + "FROM cartelas "
+                + "ORDER BY RAND() "
+                + "LIMIT 1;";
+
+        PreparedStatement stmt = dbConnection.prepareStatement(sql);
         stmt.closeOnCompletion();
         ResultSet result = stmt.executeQuery();
         result.first();
         idCard = result.getInt("nr");
         result.close();
-        
-        String sql2 = "SELECT * "
-                + "FROM combinacoes"
-                + "WHERE idCartela = ?";
-        
-        stmt = dbConnection.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
-        stmt.setInt(1, idCard);
-        stmt.closeOnCompletion();
-        result = stmt.executeQuery();
-        
-        while(result.next()) {
-            card[result.getInt("linha")][result.getInt("coluna")] = result.getInt("coluna");
-        }
-        result.close();
-        try {
-            resultBingoCard = new BingoCard(idCard, card);
-        } catch (Exception ex) {
-            Logger.getLogger(CardRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return resultBingoCard;
+
+        return getBingoCard(idCard);
     }
 
     public BingoCard getRandomCardAvailableForRoom(Room room) throws SQLException, Exception {
-        if(room == null)
+        if (room == null) {
             throw new Exception("Room cannot be null");
-        
-        List<BingoCard> cardsInUse = room.getCards();
-        int idCard;
-        int[][] card = new int[5][5];
-        BingoCard resultBingoCard = null;
-        
-        String sql = "SELECT(cartelas.nr) "
-                    + "FROM cartelas "
-                    + "WHERE nr NOT LIKE " + cardsInUse.get(0);
-        
-        for(int i = 1; i < cardsInUse.size(); i++) {
-            sql += "AND nr NOT LIKE " + cardsInUse.get(i);
         }
-        sql += "ORDER BY RAND()"
-              + "LIMIT 1;" ;
-                
-        PreparedStatement stmt = dbConnection.clientPrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        
+
+        List<Integer> inUse = room.getCardsIds();
+
+        if (inUse.isEmpty()) {
+            return getRandomCard();
+        }
+
+        DbUtils.MultipleBinder binder = DbUtils.buildBinder(inUse);
+
+        String sql = "SELECT(cartelas.nr) "
+                + "FROM cartelas "
+                + "WHERE nr NOT IN " + binder.questionMarkString() + " "
+                + "ORDER BY RAND() "
+                + "LIMIT 1;";
+
+        PreparedStatement stmt = dbConnection.prepareStatement(sql);
         stmt.closeOnCompletion();
+        binder.setValuesAsInt(stmt);
         ResultSet result = stmt.executeQuery();
         result.first();
-        idCard = result.getInt("nr");
+        int idCard = result.getInt("nr");
         result.close();
-        String sql2 = "SELECT * "
-                + "FROM combinacoes"
-                + "WHERE idCartela = ?";
-        
-        stmt = dbConnection.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
-        stmt.setInt(1, idCard);
+
+        return getBingoCard(idCard);
+    }
+
+    private BingoCard getBingoCard(int nrCartela) throws SQLException {
+        String sql = "SELECT * "
+                + "FROM combinacoes "
+                + "WHERE nrCartela = ?";
+
+        PreparedStatement stmt = dbConnection.prepareStatement(sql);
+        stmt.setInt(1, nrCartela);
         stmt.closeOnCompletion();
-        result = stmt.executeQuery();
-        
-        while(result.next()) {
-            card[result.getInt("linha")][result.getInt("coluna")] = result.getInt("coluna");
+        ResultSet result = stmt.executeQuery();
+
+        int cardNumbers[][] = new int[5][5];
+
+        while (result.next()) {
+            int lin = result.getInt("linha");
+            int col = result.getInt("coluna");
+            int val = result.getInt("valor");
+
+            if (lin < 5 && col < 5) {
+                cardNumbers[lin][col] = val;
+            }
         }
+
         result.close();
+
+        BingoCard card = null;
+
         try {
-            resultBingoCard = new BingoCard(idCard, card);
+            card = new BingoCard(nrCartela, cardNumbers);
         } catch (Exception ex) {
             Logger.getLogger(CardRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return resultBingoCard;
+
+        return card;
     }
 }

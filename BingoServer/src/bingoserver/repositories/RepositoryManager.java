@@ -5,6 +5,11 @@
  */
 package bingoserver.repositories;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author 15096134
@@ -14,9 +19,12 @@ public class RepositoryManager {
     private final RoomRepository roomRepo = new RoomRepository();
     private final UserRepository userRepo = new UserRepository();
     private final UserCardRepository userCardRepo = new UserCardRepository();
+    private final CardRepository cardRepository;
+    private final Connection dbConnection;
 
-    public RepositoryManager() {
-
+    public RepositoryManager() throws Exception {
+        dbConnection = DbConnectionBuilder.getNewConnection();
+        cardRepository = new CardRepository(dbConnection);
     }
 
     public RoomRepository getRoomRepository() {
@@ -24,7 +32,7 @@ public class RepositoryManager {
     }
 
     public CardRepository getCardRepository() {
-        return null;
+        return cardRepository;
     }
 
     public UserCardRepository getUserCardRepository() {
@@ -33,5 +41,13 @@ public class RepositoryManager {
 
     public UserRepository getUserRepository() {
         return userRepo;
+    }
+
+    public void close() {
+        try {
+            dbConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RepositoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

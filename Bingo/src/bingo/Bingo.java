@@ -5,15 +5,11 @@
  */
 package bingo;
 
-import bingo.interactions.Interactor;
 import bingo.network.Client;
 import bingo.network.ClientListener;
 import bingo.network.ClientManager;
-import bingo.requests.InteractionRequest;
 import bingo.requests.RequestBuilder;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,30 +23,29 @@ public class Bingo implements ClientListener {
     private FormManager formController;
     private ClientManager clientManager;
     private final RequestBuilder requestBuilder = new RequestBuilder();
-    
+
     public Bingo() {
         this.formController = new FormManager(clientManager);
-     
+
     }
-    
+
     public static void main(String... args) throws IOException, ClassNotFoundException {
         new Bingo().execute();
-      
+
     }
-    
+
     private void execute() {
-        try {  
+        try {
             final Socket socket = new Socket("127.0.0.1", 10001);
             socket.setTcpNoDelay(true);
             this.clientManager = new ClientManager(socket, this);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, e);
         }
-        
+
     }
 
     @Override
@@ -65,9 +60,9 @@ public class Bingo implements ClientListener {
 
     @Override
     public void onClientMessage(Client client, String message) {
-        InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
-        if(requestResponse.valid() && !requestResponse.equals(null)) {
-            Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
-        }
+        //InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
+        //if(requestResponse.valid() && !requestResponse.equals(null)) {
+        //    Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
+        //}
     }
 }

@@ -8,6 +8,8 @@ package bingoserver;
 import bingoserver.network.Client;
 import bingoserver.network.ClientListener;
 import bingoserver.network.ClientReceiver;
+import bingoserver.network.ClientUserManager;
+import bingoserver.repositories.RepositoryManager;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -20,13 +22,12 @@ import java.util.logging.Logger;
  */
 public class BingoServer implements ClientListener {
 
-    private final GameDelegate delegate;
+    private GameDelegate delegate;
     private static final int PORT = 10001;
 
     private final BlockingQueue<Runnable> taskQueue;
-    
+
     public BingoServer() {
-        this.delegate = new GameDelegate();
         this.taskQueue = new LinkedBlockingDeque<>();
     }
 
@@ -42,11 +43,11 @@ public class BingoServer implements ClientListener {
                             BingoServer.this.delegate.onClockTick();
                         }
                     });
-                    
+
                     if (!enqueued) {
                         Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, "Failed to enqueue clock tick task");
                     }
-                    
+
                     // O onClockTick será enfileirado.
                     // Por isso pode existir uma latência até a tarefa ser executada.
                     // Consideramos a latência como 5ms
@@ -57,7 +58,7 @@ public class BingoServer implements ClientListener {
             }
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -67,14 +68,23 @@ public class BingoServer implements ClientListener {
             (new BingoServer()).execute();
         } catch (IOException ex) {
             Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void execute() throws IOException {
+    public void execute() throws IOException, Exception {
+        Clock clock = new Clock();
+        RepositoryManager repoManager = new RepositoryManager();
+        ClientUserManager clientManager = new ClientUserManager();
         ClientReceiver clientReceiver = new ClientReceiver(PORT, this);
+
+        repoManager.getCardRepository().countCards();
+
+        delegate = new GameDelegate(repoManager, clientManager);
+
         clientReceiver.start();
-        
-        new Clock().start();
+        clock.start();
 
         try {
             while (true) {
@@ -84,8 +94,10 @@ public class BingoServer implements ClientListener {
         } catch (InterruptedException ex) {
             Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         clientReceiver.stop();
+        clientManager.stopAll();
+        repoManager.close();
     }
 
     @Override
@@ -96,7 +108,7 @@ public class BingoServer implements ClientListener {
                 delegate.onClientConnected(c);
             }
         });
-        
+
         if (!enqueued) {
             Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, "Failed to enqueue a client connection task.");
         }
@@ -110,7 +122,7 @@ public class BingoServer implements ClientListener {
                 delegate.onClientDisconnected(client);
             }
         });
-        
+
         if (!enqueued) {
             Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, "Failed to enqueue a client disconnect task.");
         }
@@ -124,8 +136,7 @@ public class BingoServer implements ClientListener {
                 delegate.onClientMessage(client, message);
             }
         });
-        
-                
+
         if (!enqueued) {
             Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, "Failed to enqueue client message task.");
         }

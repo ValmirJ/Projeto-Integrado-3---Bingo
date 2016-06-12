@@ -19,9 +19,10 @@ public class TelaInicial extends javax.swing.JFrame {
      * Creates new form TelaInicial
      */
     private ClientManager clientManager;
-    
+
     public TelaInicial(ClientManager clientManager) {
         initComponents();
+        this.clientManager = clientManager;
     }
 
     /**
@@ -85,21 +86,18 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void BUT_ProxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUT_ProxActionPerformed
         String ra = TXT_Ra.getText();
-        if(!ra.isEmpty()){
+        if (!ra.isEmpty()) {
             ConnectResponse response = new ConnectResponse(ra);
             this.clientManager.sendMessage(response);
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(null, "Digite um RA válido!");
         }
-        
+
     }//GEN-LAST:event_BUT_ProxActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BUT_Prox;
     private javax.swing.JLabel LBL_Nome;

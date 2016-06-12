@@ -37,8 +37,8 @@ public class Room implements Cloneable {
     }
 
     private int id;
-    private ArrayList<Integer> sortedNumbers;
-    private ArrayList<UserCard> userCards;
+    private ArrayList<Integer> sortedNumbers = new ArrayList<>();
+    private ArrayList<UserCard> userCards = new ArrayList<>();
     private RoomState state;
     private int time;
 
@@ -100,13 +100,14 @@ public class Room implements Cloneable {
         return users;
     }
 
-    public List<BingoCard> getCards() {
-        List<BingoCard> cards = new ArrayList<>();
+    public List<Integer> getCardsIds() {
+        List<Integer> ids = new ArrayList<>();
 
         for (UserCard userCard : userCards) {
-            cards.add(userCard.getCard());
+            ids.add(userCard.getCard().getIdCard());
         }
-        return cards;
+
+        return ids;
     }
 
     public Room(int id, UserCard userCard) {

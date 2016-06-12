@@ -31,7 +31,13 @@ public class AssignUserToRoom extends UserInteractor {
 
     @Override
     public void perform(JSONObject params) throws Exception {
-        Integer roomId = (Integer) params.get("id-sala");
+        Integer roomId;
+
+        try {
+            roomId = (Integer) params.get("id-sala");
+        } catch (ClassCastException ex) {
+            roomId = null;
+        }
 
         if (roomId == null) {
             throw new NullPointerException("Param id-sala inavlid!");

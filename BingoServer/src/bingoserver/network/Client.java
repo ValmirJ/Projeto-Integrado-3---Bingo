@@ -5,7 +5,6 @@
  */
 package bingoserver.network;
 
-import bingoserver.responses.Response;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,12 +44,7 @@ public class Client implements Runnable {
                 // A Fila está cheia.
                 // Nesse momento algo muito errado está acontecendo.
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, "Send Queue Full");
-                
-                try {
-                    socket.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                stopSilent();
             }
         }
 
@@ -65,18 +59,14 @@ public class Client implements Runnable {
                 output = new ObjectOutputStream(socket.getOutputStream());
 
                 while (true) {
-                send(outputQueue.take(), output);
+                    send(outputQueue.take(), output);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
-                try {
-                    socket.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                stopSilent();
             }
         }
     }
@@ -108,17 +98,17 @@ public class Client implements Runnable {
         } finally {
             this.stop();
         }
-    }   
-    
+    }
+
     void send(String resp) {
         responder.send(resp);
     }
 
     private void readMessages() throws IOException {
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        for(;;) {
+        for (;;) {
             this.read(ois);
-        } 
+        }
     }
 
     private void read(ObjectInputStream input) throws IOException {
@@ -186,7 +176,10 @@ public class Client implements Runnable {
 
     void stop() {
         listener.onClientDisconnected(this);
+        stopSilent();
+    }
 
+    void stopSilent() {
         try {
             // Vai automaticamente parar o responder nesse momento
             socket.close();

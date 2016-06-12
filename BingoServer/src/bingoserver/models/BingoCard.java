@@ -14,27 +14,29 @@ import org.json.simple.JSONObject;
  */
 public class BingoCard {
 
-    private int idCard;
-    private int numbers[][] = new int[5][5];
+    private final int idCard;
+    private final int numbers[][];
 
     public int getIdCard() {
         return this.idCard;
     }
 
     public int[][] getNumbers() {
-        return this.numbers;
+        return this.numbers.clone();
     }
 
     public BingoCard(int id, int[][] numbers) throws Exception {
-        if (numbers.length < 5 || numbers[0].length < 5) {
+        if (numbers.length != 5) {
             throw new Exception("Cartela inválida");
         }
 
         for (int i = 0; i < numbers.length; i++) {
-            for (int j = 0; j < numbers[0].length; i++) {
-                this.numbers[i][j] = numbers[i][j];
+            if (numbers[i].length != 5) {
+                throw new Exception("Cartela inválida");
             }
         }
+
+        this.numbers = numbers.clone();
         this.idCard = id;
     }
 
@@ -60,10 +62,15 @@ public class BingoCard {
 
     @Override
     public String toString() {
-        String str = "";
+        String str = "BingoCard id: " + this.idCard + "\n";
+
         for (int[] line : numbers) {
             for (int n : line) {
-                str += n + " ";
+                if (n < 10) {
+                    str += n + "  ";
+                } else {
+                    str += n + " ";
+                }
             }
             str += "\n";
         }
@@ -87,7 +94,7 @@ public class BingoCard {
         JSONArray json = new JSONArray();
 
         for (int i = 0; i < numbers.length; i++) {
-            for (int j = 0; j < numbers[0].length; i++) {
+            for (int j = 0; j < numbers[0].length; j++) {
                 if (i != 2 && j != 2) {
                     JSONObject numberJson = new JSONObject();
 

@@ -29,9 +29,9 @@ public class GameDelegate {
     private final ClientUserManager clientsManager;
     private final RequestBuilder requestBuilder;
 
-    public GameDelegate() {
-        repositoryManager = new RepositoryManager();
-        clientsManager = new ClientUserManager();
+    public GameDelegate(RepositoryManager repositoryManager, ClientUserManager clientsManager) {
+        this.repositoryManager = repositoryManager;
+        this.clientsManager = clientsManager;
         requestBuilder = new RequestBuilder();
     }
 

@@ -9,6 +9,8 @@ import bingoserver.GameDelegate;
 import bingoserver.interactions.AssignUserToRoom;
 import bingoserver.interactions.ConnectUser;
 import bingoserver.interactions.CreateRoom;
+import bingoserver.interactions.MarkNumber;
+import bingoserver.interactions.StartRoom;
 import bingoserver.interactions.UnassignUserFromRoom;
 import bingoserver.interactions.UserInteractor;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public class RequestBuilder {
         mappings.put("cria-sala", CreateRoom.class);
         mappings.put("entrar-na-sala", AssignUserToRoom.class);
         mappings.put("sair-da-sala", UnassignUserFromRoom.class);
+        mappings.put("iniciar-sala", StartRoom.class);
+        mappings.put("marca-numero", MarkNumber.class);
     }
 
     public String toString() {

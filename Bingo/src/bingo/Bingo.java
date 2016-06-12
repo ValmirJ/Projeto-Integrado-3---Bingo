@@ -24,14 +24,8 @@ public class Bingo implements ClientListener {
     private ClientManager clientManager;
     private final RequestBuilder requestBuilder = new RequestBuilder();
 
-    public Bingo() {
-        this.formController = new FormManager(clientManager);
-
-    }
-
     public static void main(String... args) throws IOException, ClassNotFoundException {
         new Bingo().execute();
-
     }
 
     private void execute() {
@@ -39,7 +33,8 @@ public class Bingo implements ClientListener {
             final Socket socket = new Socket("127.0.0.1", 10001);
             socket.setTcpNoDelay(true);
             this.clientManager = new ClientManager(socket, this);
-
+            this.formController = new FormManager(clientManager);
+            this.clientManager.start();
         } catch (IOException ex) {
             Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {

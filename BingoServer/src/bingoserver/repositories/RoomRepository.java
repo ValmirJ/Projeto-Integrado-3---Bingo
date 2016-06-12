@@ -93,7 +93,7 @@ public class RoomRepository {
     }
 
     public HashMap<Room, List<User>> currentOpenRoomsWithUsers() {
-        HashMap<Room, List<User>> openRooms = null;
+        HashMap<Room, List<User>> openRooms = new HashMap<>();
         for (Room r : rooms) {
             openRooms.put(r, r.getUsers());
         }
@@ -109,7 +109,7 @@ public class RoomRepository {
     }
 
     public List<User> getUsersInAnyRoom() {
-        List<User> usersWithRoom = null;
+        List<User> usersWithRoom = new ArrayList<>();
         for (Room r : rooms) {
             usersWithRoom.addAll(r.getUsers());
         }

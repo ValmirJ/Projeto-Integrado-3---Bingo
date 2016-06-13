@@ -58,7 +58,7 @@ public class Bingo implements ClientListener {
     @Override
     public void onClientMessage(Client client, String message) {
         InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
-//        if(!requestResponse.equals(null)) {
+        if(requestResponse != null) {
             Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
             try {
                 Interactor interactor = (Interactor) interactionClass.newInstance();
@@ -66,8 +66,8 @@ public class Bingo implements ClientListener {
                 interactor.perform(requestResponse.getRequestJson());
             }
             catch(Exception e) {
-                System.err.print(e);
+                Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, e);
             }
-      //  }
+       }
     }
 }

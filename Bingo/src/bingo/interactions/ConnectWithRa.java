@@ -16,8 +16,7 @@ import org.json.simple.JSONObject;
  */
 public class ConnectWithRa extends Interactor{
    
-    private FormManager fm = this.getFormManager();
-    private TelaInicial telaInicial = this.fm.getTelaInicial();
+    private TelaInicial telaInicial;
     private TelaSalas telaSalas;
     
     public ConnectWithRa() {
@@ -25,6 +24,7 @@ public class ConnectWithRa extends Interactor{
     }
     
     public void perform(JSONObject params ) throws Exception {
+        telaInicial = this.getFormManager().getTelaInicial();
         String typeReturned = (String) params.get("type");
         if(typeReturned.equals("ra-em-uso"))
             telaInicial.showRaAlreadyUsed();
@@ -33,7 +33,7 @@ public class ConnectWithRa extends Interactor{
                 telaInicial.showInvalidRa();
             else {
                     telaInicial.setVisible(false);
-                    this.telaSalas = fm.getTelaSalas();
+                    this.telaSalas = this.getFormManager().getTelaSalas();
                     this.telaSalas.setVisible(true);
             }
         }

@@ -5,8 +5,6 @@
  */
 package bingoserver.models;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author valmir
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 public class UserCard implements Cloneable {
     private User user;
     private BingoCard card;
-    private ArrayList<Integer> playedNumbers;
     private boolean roomOwner;
 
     public boolean isRoomOwner() {
@@ -40,19 +37,12 @@ public class UserCard implements Cloneable {
     public BingoCard getCard() {
         return this.card;
     }
-    public void addPlayedNumber(int nr) {
-        this.playedNumbers.add(nr);
-    }
-    public ArrayList<Integer> getPlayedNumbers() {
-        return (ArrayList<Integer>) this.playedNumbers.clone();
-    }
     
     @Override
     public int hashCode() {
         int r = super.hashCode();
         r = r * 7 + this.user.hashCode();
         r = r * 7 + this.card.hashCode();
-        r = r * 7 + this.playedNumbers.hashCode();
         
         return r;
     }
@@ -70,20 +60,13 @@ public class UserCard implements Cloneable {
             return false;
         if(!(this.card.equals(other.card)))
             return false;
-        if(!(this.playedNumbers.equals(other.playedNumbers)))
-            return false;
         
         return true;   
     }
     @Override
     public String toString(){
         String str = this.user.toString();
-        str += "Números Jogados: \n";
-        for(int nr : this.playedNumbers)
-            str += nr + ", ";
-        
         str += this.card.toString();
-        
         return str;
     }
     
@@ -93,7 +76,6 @@ public class UserCard implements Cloneable {
         
         this.card = other.card;
         this.user = other.user;
-        this.playedNumbers = (ArrayList<Integer>)other.playedNumbers.clone();
     }
     
     @Override

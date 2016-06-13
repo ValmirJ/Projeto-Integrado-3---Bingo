@@ -21,4 +21,5 @@ public class Settings {
     public static final int FINAL_INTERVAL = 5;
 
     public static final int LAST_NUMBER = 75;
+    public static final int MINIMUM_CORRECT_NUMBERS = 24;
 }

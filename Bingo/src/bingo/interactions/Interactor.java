@@ -23,5 +23,9 @@ public abstract class Interactor {
         return this.formManager;
     }
     
+    public Interactor() {
+        
+    }
+    
     public abstract void perform(JSONObject params) throws Exception;
 }

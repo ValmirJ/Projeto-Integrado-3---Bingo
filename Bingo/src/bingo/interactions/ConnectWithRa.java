@@ -20,6 +20,10 @@ public class ConnectWithRa extends Interactor{
     private TelaInicial telaInicial = this.fm.getTelaInicial();
     private TelaSalas telaSalas;
     
+    public ConnectWithRa() {
+        super();
+    }
+    
     public void perform(JSONObject params ) throws Exception {
         String typeReturned = (String) params.get("type");
         if(typeReturned.equals("ra-em-uso"))
@@ -28,11 +32,9 @@ public class ConnectWithRa extends Interactor{
             if(typeReturned.equals("ra-invalido"))
                 telaInicial.showInvalidRa();
             else {
-                if(typeReturned.equals("logado-no-jogo")) {
                     telaInicial.setVisible(false);
                     this.telaSalas = fm.getTelaSalas();
                     this.telaSalas.setVisible(true);
-                }
             }
         }
     }

@@ -52,25 +52,22 @@ public class Bingo implements ClientListener {
 
     @Override
     public void onClientDisconnected(Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void onClientMessage(Client client, String message) {
         InteractionRequest requestResponse = (InteractionRequest) this.requestBuilder.buildRequestForMessage(message);
-        if(!requestResponse.equals(null)) {
+//        if(!requestResponse.equals(null)) {
             Class<? extends Interactor> interactionClass = requestResponse.getInteractorClass();
             try {
-                Interactor interactor = interactionClass.newInstance();
+                Interactor interactor = (Interactor) interactionClass.newInstance();
                 interactor.setFormManager(formController);
                 interactor.perform(requestResponse.getRequestJson());
             }
-            catch (InstantiationException ex) {
-                //erro ao instanciar
-            }
             catch(Exception e) {
-                
+                System.err.print(e);
             }
-        }
+      //  }
     }
 }

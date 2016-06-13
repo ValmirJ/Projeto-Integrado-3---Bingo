@@ -117,7 +117,11 @@ public class Client implements Runnable {
 
         if (message != null) {
             Logger.getLogger(Client.class.getName()).log(Level.INFO, "Received request {0}", message);
-            listener.onClientMessage(this, message);
+            try {
+                listener.onClientMessage(this, message);
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             Logger.getLogger(Client.class.getName()).log(Level.WARNING, "Received null Client message");
             throw new IOException("Null client response");
@@ -176,8 +180,11 @@ public class Client implements Runnable {
     }
 
     void stop() {
-        listener.onClientDisconnected(this);
-        stopSilent();
+        try {
+            listener.onClientDisconnected(this);
+        } finally {
+            stopSilent();
+        }
     }
 
     void stopSilent() {

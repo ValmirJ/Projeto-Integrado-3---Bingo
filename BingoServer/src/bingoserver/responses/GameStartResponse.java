@@ -17,6 +17,10 @@ public class GameStartResponse extends Response {
     private BingoCard card;
 
     public GameStartResponse(BingoCard card) {
+        if (card == null) {
+            throw new NullPointerException("card cannot be null");
+        }
+
         this.card = card;
     }
 

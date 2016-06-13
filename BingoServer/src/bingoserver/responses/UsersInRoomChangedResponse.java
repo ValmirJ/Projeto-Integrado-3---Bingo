@@ -19,6 +19,10 @@ public class UsersInRoomChangedResponse extends Response {
     private final List<User> users;
 
     public UsersInRoomChangedResponse(List<User> users) {
+        if (users == null) {
+            throw new NullPointerException("users cannot be null");
+        }
+
         this.users = users;
     }
 

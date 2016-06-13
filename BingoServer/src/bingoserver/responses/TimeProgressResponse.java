@@ -12,12 +12,13 @@ import org.json.simple.JSONObject;
  * @author 15096134
  */
 public abstract class TimeProgressResponse extends Response {
-    private int time;
-    
+
+    private final int time;
+
     public TimeProgressResponse(int time) {
         this.time = time;
     }
-    
+
     @Override
     public JSONObject responseJson() {
         JSONObject obj = new JSONObject();

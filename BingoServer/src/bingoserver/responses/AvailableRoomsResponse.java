@@ -22,6 +22,10 @@ public class AvailableRoomsResponse extends Response {
     private final HashMap<Room, List<User>> rooms;
 
     public AvailableRoomsResponse(HashMap<Room, List<User>> rooms) {
+        if (rooms == null) {
+            throw new NullPointerException("rooms cannot be null");
+        }
+
         this.rooms = rooms;
     }
 

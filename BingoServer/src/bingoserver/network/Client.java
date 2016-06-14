@@ -49,6 +49,7 @@ public class Client implements Runnable {
         }
 
         private void send(String data, ObjectOutputStream output) throws IOException {
+            Logger.getLogger(Client.class.getName()).log(Level.INFO, "Sending response {0}", data);
             output.writeUTF(data);
             output.flush();
         }

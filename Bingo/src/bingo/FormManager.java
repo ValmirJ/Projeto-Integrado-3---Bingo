@@ -41,7 +41,7 @@ public class FormManager {
 
     public TelaSalas getTelaSalas() {
         if(this.telaSalas == null)
-            this.telaSalas = new TelaSalas(this.telaInicial.getRa());
+            this.telaSalas = new TelaSalas(this.clientManager, this.telaInicial.getRa());
         
         return telaSalas;
     }

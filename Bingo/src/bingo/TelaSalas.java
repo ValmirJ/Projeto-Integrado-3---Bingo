@@ -5,6 +5,13 @@
  */
 package bingo;
 
+import bingo.network.ClientManager;
+import bingo.responses.CreateRoomResponse;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import models.Room;
+import models.User;
+
 /**
  *
  * @author 14023691
@@ -12,13 +19,35 @@ package bingo;
 public class TelaSalas extends javax.swing.JFrame {
 
     private String ra;
+    private ArrayList<Room> rooms;
+    private ClientManager clientManager;
+    private DefaultListModel roomsModel = new DefaultListModel();
+    private DefaultListModel usersModel = new DefaultListModel();
     
-    public TelaSalas(String ra) {
+    public TelaSalas(ClientManager clientManager, String ra) {
         initComponents();
         this.ra = ra;
         this.setTitle(ra);
+        this.clientManager = clientManager;
+        
+        LIST_Rooms.setModel(roomsModel);
     }
 
+    private void clearAvailableRooms() {
+        roomsModel.removeAllElements();
+    }
+    private void clearUsersInRoom() {
+        usersModel.removeAllElements();
+    }
+    
+    public void addItensToAvailableRooms(ArrayList<Room> rooms) {
+        this.clearAvailableRooms();
+        this.rooms = rooms;
+        for(Room r : rooms) {
+            roomsModel.addElement(r);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,29 +58,25 @@ public class TelaSalas extends javax.swing.JFrame {
     private void initComponents() {
 
         PN_LSTSala = new javax.swing.JScrollPane();
-        LST_Salas = new javax.swing.JList<>();
+        LIST_Users = new javax.swing.JList<>();
         PN_LSTJgd = new javax.swing.JScrollPane();
-        LST_Jgd = new javax.swing.JList<>();
+        LIST_Rooms = new javax.swing.JList<>();
         LBL_Salas = new javax.swing.JLabel();
         LBL_Jgd = new javax.swing.JLabel();
         BUT_Iniciar = new javax.swing.JButton();
+        BTN_CreateRoom = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LST_Salas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        LST_Salas.setEnabled(false);
-        PN_LSTSala.setViewportView(LST_Salas);
+        LIST_Users.setEnabled(false);
+        PN_LSTSala.setViewportView(LIST_Users);
 
-        LST_Jgd.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        LIST_Rooms.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                LIST_RoomsValueChanged(evt);
+            }
         });
-        PN_LSTJgd.setViewportView(LST_Jgd);
+        PN_LSTJgd.setViewportView(LIST_Rooms);
 
         LBL_Salas.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         LBL_Salas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -66,6 +91,13 @@ public class TelaSalas extends javax.swing.JFrame {
         BUT_Iniciar.setText("Iniciar");
         BUT_Iniciar.setToolTipText("");
 
+        BTN_CreateRoom.setLabel("Criar Nova Sala");
+        BTN_CreateRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_CreateRoomActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,10 +108,15 @@ public class TelaSalas extends javax.swing.JFrame {
                     .addComponent(LBL_Salas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PN_LSTJgd, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(BUT_Iniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BUT_Iniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(BTN_CreateRoom)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LBL_Jgd, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                    .addComponent(LBL_Jgd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PN_LSTSala))
                 .addGap(33, 33, 33))
         );
@@ -92,26 +129,44 @@ public class TelaSalas extends javax.swing.JFrame {
                     .addComponent(LBL_Jgd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PN_LSTJgd, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PN_LSTSala, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(BUT_Iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(205, 205, 205))))
+                        .addGap(18, 18, 18)
+                        .addComponent(BTN_CreateRoom)
+                        .addGap(158, 158, 158))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PN_LSTJgd, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                            .addComponent(PN_LSTSala))
+                        .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void LIST_RoomsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_LIST_RoomsValueChanged
+        this.clearUsersInRoom();
+        Room room =  (Room) roomsModel.get(evt.getFirstIndex());
+        ArrayList<User> users = room.getUsers();
+        for(User u : users) {
+            this.usersModel.addElement(u);
+        }
+        LIST_Users.setModel(usersModel);
+    }//GEN-LAST:event_LIST_RoomsValueChanged
+
+    private void BTN_CreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CreateRoomActionPerformed
+        CreateRoomResponse createRequest = new CreateRoomResponse();
+        this.clientManager.sendMessage(createRequest);
+    }//GEN-LAST:event_BTN_CreateRoomActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTN_CreateRoom;
     private javax.swing.JButton BUT_Iniciar;
     private javax.swing.JLabel LBL_Jgd;
     private javax.swing.JLabel LBL_Salas;
-    private javax.swing.JList<String> LST_Jgd;
-    private javax.swing.JList<String> LST_Salas;
+    private javax.swing.JList<String> LIST_Rooms;
+    private javax.swing.JList<String> LIST_Users;
     private javax.swing.JScrollPane PN_LSTJgd;
     private javax.swing.JScrollPane PN_LSTSala;
     // End of variables declaration//GEN-END:variables

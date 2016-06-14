@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -63,7 +64,18 @@ public class Bingo implements ClientListener {
             try {
                 Interactor interactor = (Interactor) interactionClass.newInstance();
                 interactor.setFormManager(formController);
-                interactor.perform(requestResponse.getRequestJson());
+                SwingUtilities.invokeLater(new Runnable(){ 
+                    @Override
+                    public void run() {
+                        try {
+                            interactor.perform(requestResponse.getRequestJson());
+                        } catch (Exception ex) {
+                            Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
+                });
+                
             }
             catch(Exception e) {
                 Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, e);

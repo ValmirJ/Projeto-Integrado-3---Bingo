@@ -16,6 +16,7 @@ public class FormManager {
     private TelaJogo telaJogo;
     private TelaResultado telaResultado;
     private TelaSalas telaSalas;
+    private SalaDeEspera telaSalaDeEspera;
     private ClientManager clientManager;
 
     public TelaInicial getTelaInicial() {
@@ -44,6 +45,13 @@ public class FormManager {
             this.telaSalas = new TelaSalas(this.clientManager, this.telaInicial.getRa());
         
         return telaSalas;
+    }
+  
+    public SalaDeEspera getTelaSalaDeEspera() {
+        if(this.telaSalaDeEspera == null)
+            this.telaSalaDeEspera = new SalaDeEspera();
+        
+        return this.telaSalaDeEspera;
     }
     
     public FormManager(ClientManager cl) {

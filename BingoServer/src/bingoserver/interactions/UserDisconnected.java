@@ -43,19 +43,22 @@ public class UserDisconnected extends UserInteractor {
         getRepositoryManager().getUserCardRepository().removeUserFromRoom(user, room);
         List<User> users = roomRepo.usersInRoom(room);
 
-        if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
-            roomRepo.removeRoom(room);
-            
-            getResponseManager().respondToUsers(new TooLessUsersInRoomResponse(), users);
-            
-            if (room.getState() == Room.RoomState.initialized) {
-                HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
-                getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
-            }
-        } else {
-            if (room.getState() == Room.RoomState.initialized) {
+        if (room.getState() == Room.RoomState.initialized) {
+            if (users.isEmpty()) {
+                roomRepo.removeRoom(room);
+            } else {
                 getResponseManager().respondToUsers(new UsersInRoomChangedResponse(users), users);
             }
+            
+            HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
+            getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));   
+            
+            return;
+        }
+        
+        if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
+            roomRepo.removeRoom(room);
+            getResponseManager().respondToUsers(new TooLessUsersInRoomResponse(), users);
         }
     }
 }

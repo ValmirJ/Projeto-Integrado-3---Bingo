@@ -8,8 +8,11 @@ package bingoserver.interactions;
 import bingoserver.models.Room;
 import bingoserver.models.User;
 import bingoserver.repositories.RoomRepository;
+import bingoserver.repositories.UserRepository;
+import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.TooLessUsersInRoomResponse;
 import bingoserver.responses.UsersInRoomChangedResponse;
+import java.util.HashMap;
 import java.util.List;
 import org.json.simple.JSONObject;
 
@@ -27,26 +30,32 @@ public class UserDisconnected extends UserInteractor {
             return;
         }
 
+        UserRepository userRepo = getRepositoryManager().getUserRepository();
+        userRepo.removeUser(user);
+        
         RoomRepository roomRepo = getRepositoryManager().getRoomRepository();
-
         Room room = roomRepo.findRoomByUser(user);
 
         if (room == null) {
             return;
         }
 
+        roomRepo.removeUserFromRoom(room, user);
         List<User> users = roomRepo.usersInRoom(room);
 
-        if (room.getState() != Room.RoomState.initialized
-                && users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
+        if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
             roomRepo.removeRoom(room);
+            
             getResponseManager().respondToUsers(new TooLessUsersInRoomResponse(), users);
-            return;
-        }
-
-        if (room.getState() == Room.RoomState.initialized) {
-            getResponseManager().respondToUsers(new UsersInRoomChangedResponse(users), users);
+            
+            if (room.getState() == Room.RoomState.initialized) {
+                HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
+                getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
+            }
+        } else {
+            if (room.getState() == Room.RoomState.initialized) {
+                getResponseManager().respondToUsers(new UsersInRoomChangedResponse(users), users);
+            }
         }
     }
-
 }

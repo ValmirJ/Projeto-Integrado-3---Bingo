@@ -27,7 +27,7 @@ public class Bingo extends UserInteractor {
 
     @Override
     public void perform(JSONObject params) throws Exception {
-        List<Integer> numbers = new ArrayList<Integer>();
+        List<Integer> numbers = new ArrayList<>();
 
         JSONArray numbersJson = (JSONArray) params.get("numbers");
         for (Object numberObj : numbersJson) {
@@ -71,5 +71,4 @@ public class Bingo extends UserInteractor {
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
-    
 }

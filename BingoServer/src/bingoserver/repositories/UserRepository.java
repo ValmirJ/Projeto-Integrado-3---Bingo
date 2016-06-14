@@ -44,4 +44,8 @@ public class UserRepository {
         users.add(u);
         return u;
     }
+    
+    public void removeUser(User user) {
+        users.remove(user);
+    }
 }

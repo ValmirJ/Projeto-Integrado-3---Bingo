@@ -184,4 +184,12 @@ public class RoomRepository {
 
         return rooms;
     }
+
+    public void removeUserFromRoom(Room room, User user) {
+        for (Room r : this.rooms) {
+            if (r.equals(room)) {
+                r.removeUserCardByUser(user);
+            }
+        }
+    }
 }

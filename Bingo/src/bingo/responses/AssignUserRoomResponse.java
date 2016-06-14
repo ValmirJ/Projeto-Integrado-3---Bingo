@@ -13,9 +13,20 @@ import org.json.simple.JSONObject;
  */
 public class AssignUserRoomResponse extends Response {
 
+    int idSala;
+    
+    public AssignUserRoomResponse(int idSala) {
+        this.idSala = idSala;
+    }
+    
     @Override
     public JSONObject responseJson() {
         //send id of room
+       JSONObject obj = new JSONObject();
+       obj.put("type", "entrar-na-sala");
+       obj.put("id-sala", idSala);
+       
+       return obj;
     }
     
 }

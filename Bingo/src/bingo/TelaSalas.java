@@ -6,9 +6,11 @@
 package bingo;
 
 import bingo.network.ClientManager;
+import bingo.responses.AssignUserRoomResponse;
 import bingo.responses.CreateRoomResponse;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import models.Room;
 import models.User;
 
@@ -48,6 +50,10 @@ public class TelaSalas extends javax.swing.JFrame {
         }
     }
     
+    public void showRoomIsFull() {
+        JOptionPane.showMessageDialog(null, "Está sala está cheia, tente novamente em outra sala ou crie uma sala!");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,7 +69,7 @@ public class TelaSalas extends javax.swing.JFrame {
         LIST_Rooms = new javax.swing.JList<>();
         LBL_Salas = new javax.swing.JLabel();
         LBL_Jgd = new javax.swing.JLabel();
-        BUT_Iniciar = new javax.swing.JButton();
+        BUT_AssignToRoom = new javax.swing.JButton();
         BTN_CreateRoom = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,9 +93,14 @@ public class TelaSalas extends javax.swing.JFrame {
         LBL_Jgd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LBL_Jgd.setText("Jogadores em Sala");
 
-        BUT_Iniciar.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        BUT_Iniciar.setText("Iniciar");
-        BUT_Iniciar.setToolTipText("");
+        BUT_AssignToRoom.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        BUT_AssignToRoom.setText("Entrar na Sala");
+        BUT_AssignToRoom.setToolTipText("");
+        BUT_AssignToRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BUT_AssignToRoomActionPerformed(evt);
+            }
+        });
 
         BTN_CreateRoom.setLabel("Criar Nova Sala");
         BTN_CreateRoom.addActionListener(new java.awt.event.ActionListener() {
@@ -104,41 +115,34 @@ public class TelaSalas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LBL_Salas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PN_LSTJgd, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BUT_Iniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(BTN_CreateRoom)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LBL_Jgd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PN_LSTSala))
-                .addGap(33, 33, 33))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(PN_LSTSala)
+                        .addComponent(PN_LSTJgd)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(BTN_CreateRoom)
+                            .addGap(188, 188, 188)
+                            .addComponent(BUT_AssignToRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)))
+                    .addComponent(LBL_Jgd)
+                    .addComponent(LBL_Salas))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LBL_Salas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PN_LSTJgd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LBL_Jgd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PN_LSTSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LBL_Salas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LBL_Jgd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(BUT_Iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BTN_CreateRoom)
-                        .addGap(158, 158, 158))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(PN_LSTJgd, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                            .addComponent(PN_LSTSala))
-                        .addContainerGap())))
+                    .addComponent(BUT_AssignToRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(BTN_CreateRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -159,10 +163,16 @@ public class TelaSalas extends javax.swing.JFrame {
         this.clientManager.sendMessage(createRequest);
     }//GEN-LAST:event_BTN_CreateRoomActionPerformed
 
+    private void BUT_AssignToRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUT_AssignToRoomActionPerformed
+        int idSala = ((Room)this.roomsModel.get(LIST_Rooms.getSelectedIndex())).getId();
+        AssignUserRoomResponse assignResponse = new AssignUserRoomResponse(idSala);
+        this.clientManager.sendMessage(assignResponse);
+    }//GEN-LAST:event_BUT_AssignToRoomActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_CreateRoom;
-    private javax.swing.JButton BUT_Iniciar;
+    private javax.swing.JButton BUT_AssignToRoom;
     private javax.swing.JLabel LBL_Jgd;
     private javax.swing.JLabel LBL_Salas;
     private javax.swing.JList<String> LIST_Rooms;

@@ -22,7 +22,16 @@ public class AssignUserToRoom extends Interactor {
     public void perform(JSONObject params) throws Exception {
         this.telaSalas = this.getFormManager().getTelaSalas();
         String typeResponse = (String)params.get("type");
-        if(typeResponse.equals("sala-cheia"))
+        if(typeResponse.equals("sala-cheia")) {
+            this.telaSalas.showRoomIsFull();
+        }
+        else {
+            if(typeResponse.equals("aceito-na-sala")) {
+                this.telaSalaDeEspera = this.getFormManager().getTelaSalaDeEspera();
+                this.telaSalas.setVisible(false);
+                this.telaSalaDeEspera.setVisible(true);
+            }
+        }
             
         
     }

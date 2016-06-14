@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONObject;
+import static java.lang.Math.toIntExact;
 
 /**
  *
@@ -34,7 +35,7 @@ public class AssignUserToRoom extends UserInteractor {
         Integer roomId;
 
         try {
-            roomId = (Integer) params.get("id-sala");
+            roomId = toIntExact((Long)params.get("id-sala"));
         } catch (ClassCastException ex) {
             roomId = null;
         }

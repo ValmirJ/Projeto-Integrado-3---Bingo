@@ -118,6 +118,7 @@ public class Room implements Cloneable {
 
     public Room(int id) {
         this.id = id;
+        this.state = RoomState.initialized;
     }
 
     @Override

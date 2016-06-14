@@ -56,7 +56,7 @@ public class AssignUserToRoom extends UserInteractor {
 
         Room desiredRoom = roomRepo.findRoomById(roomId);
 
-        if (desiredRoom == null || desiredRoom.getState() == Room.RoomState.initialized) {
+        if (desiredRoom == null || desiredRoom.getState() != Room.RoomState.initialized) {
             throw new Exception("User tried to get in a started or unavalable room");
         }
 

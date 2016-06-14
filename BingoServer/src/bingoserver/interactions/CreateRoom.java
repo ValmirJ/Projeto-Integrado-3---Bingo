@@ -39,12 +39,7 @@ public class CreateRoom extends UserInteractor {
         }
 
         BingoCard card = cardRepo.getRandomCard();
-        UserCard us = new UserCard(user, card);
-        Room createdRoom = roomRepo.createRoom(us);
-
-        /*if (card == null) {
-            throw new Exception(">>>>>>>> BEWARE!!!!! No cards available");
-        }*/ // NEVER WILL HAPPEN HU3
+        Room createdRoom = roomRepo.createRoom();
 
         ucRepo.addUserToRoomWithCard(user, createdRoom, card);
 
@@ -53,5 +48,4 @@ public class CreateRoom extends UserInteractor {
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
-
 }

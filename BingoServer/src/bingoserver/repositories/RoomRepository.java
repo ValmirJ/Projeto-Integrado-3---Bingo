@@ -22,12 +22,8 @@ public class RoomRepository {
     private int idCount = 0;
     List<Room> rooms = new ArrayList<>();
 
-    public Room createRoom(UserCard us) throws Exception {
-        if (us == null) {
-            throw new Exception("UserCard cannot be null");
-        }
-
-        Room newRoom = new Room(idCount++, us);
+    public Room createRoom() throws Exception {
+        Room newRoom = new Room(idCount++);
         rooms.add(newRoom);
         return newRoom;
     }
@@ -183,13 +179,5 @@ public class RoomRepository {
         }
 
         return rooms;
-    }
-
-    public void removeUserFromRoom(Room room, User user) {
-        for (Room r : this.rooms) {
-            if (r.equals(room)) {
-                r.removeUserCardByUser(user);
-            }
-        }
     }
 }

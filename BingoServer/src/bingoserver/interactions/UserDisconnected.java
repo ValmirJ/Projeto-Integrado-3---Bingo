@@ -40,7 +40,7 @@ public class UserDisconnected extends UserInteractor {
             return;
         }
 
-        roomRepo.removeUserFromRoom(room, user);
+        getRepositoryManager().getUserCardRepository().removeUserFromRoom(user, room);
         List<User> users = roomRepo.usersInRoom(room);
 
         if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {

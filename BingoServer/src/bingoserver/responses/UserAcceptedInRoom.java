@@ -12,13 +12,14 @@ import org.json.simple.JSONObject;
  * @author guilherme
  */
 public class UserAcceptedInRoom extends Response {
-
+    
+    public UserAcceptedInRoom() {
+    }
+    
     @Override
     public JSONObject responseJson() {
         JSONObject obj = new JSONObject();
         obj.put("type", "aceito-na-sala");
-
         return obj;
     }
-
 }

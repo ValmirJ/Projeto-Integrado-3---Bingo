@@ -15,6 +15,7 @@ import bingoserver.repositories.UserCardRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.CreatedRoomResponse;
+import bingoserver.responses.UsersInRoomChangedResponse;
 import java.util.HashMap;
 import java.util.List;
 import org.json.simple.JSONObject;
@@ -45,6 +46,9 @@ public class CreateRoom extends UserInteractor {
 
         getResponseManager().respondToUser(new CreatedRoomResponse(createdRoom.getId()), user);
 
+        List<User> usersInRoom = roomRepo.usersInRoom(createdRoom);
+        getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);
+        
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
         getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }

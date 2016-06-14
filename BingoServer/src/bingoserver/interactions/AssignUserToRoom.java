@@ -69,7 +69,7 @@ public class AssignUserToRoom extends UserInteractor {
         }
 
         ucRepo.addUserToRoomWithCard(user, desiredRoom, card);
-
+        
         getResponseManager().respondToUser(new UserAcceptedInRoom(), user);
 
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();

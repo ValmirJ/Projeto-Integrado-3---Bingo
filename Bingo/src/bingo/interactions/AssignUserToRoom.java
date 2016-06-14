@@ -13,18 +13,18 @@ import org.json.simple.JSONObject;
  *
  * @author valmir
  */
-public class CreateRoom extends Interactor {
-    
+public class AssignUserToRoom extends Interactor {
+
     private TelaSalas telaSalas;
     private SalaDeEspera telaSalaDeEspera;
     
     @Override
     public void perform(JSONObject params) throws Exception {
         this.telaSalas = this.getFormManager().getTelaSalas();
-        this.telaSalaDeEspera = this.getFormManager().getTelaSalaDeEspera();
+        String typeResponse = (String)params.get("type");
+        if(typeResponse.equals("sala-cheia"))
+            
         
-        this.telaSalas.setVisible(false);
-        this.telaSalaDeEspera.setVisible(true);    
     }
     
 }

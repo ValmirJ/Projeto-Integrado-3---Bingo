@@ -7,6 +7,7 @@ package bingo.requests;
 
 //import bingoserver.interactions.AssignUserToRoom;
 import bingo.GameDelegate;
+import bingo.interactions.AssignUserToRoom;
 import bingo.interactions.ConnectWithRa;
 import bingo.interactions.CreateRoom;
 import bingo.interactions.Interactor;
@@ -35,6 +36,8 @@ public class RequestBuilder {
         mappings.put("ra-invalido", ConnectWithRa.class);
         mappings.put("salas-disponiveis", ListRooms.class);
         mappings.put("sala-criada", CreateRoom.class);
+        mappings.put("aceito-na-sala", AssignUserToRoom.class);
+        mappings.put("sala-cheia", AssignUserToRoom.class);
     }
 
     public String toString() {

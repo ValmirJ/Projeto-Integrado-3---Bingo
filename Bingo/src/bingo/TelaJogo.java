@@ -6,18 +6,35 @@
 package bingo;
 
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JButton;
+import models.Card;
 
 /**
  *
  * @author 14023691
  */
 public class TelaJogo extends javax.swing.JFrame implements Tela{
-
+    private JButton[][] btns;
+    private List<Integer> marks = new ArrayList<>();
+    
     /**
      * Creates new form TelaJogo
      */
     public TelaJogo() {
         initComponents();
+        btns = new JButton[][] {
+            {jButton6, jButton7, jButton8, jButton9, jButton10},
+            {jButton11,jButton12,jButton13,jButton14,jButton15},
+            {jButton16,jButton17,null,     jButton18,jButton19},
+            {jButton20,jButton21,jButton22,jButton23,jButton24},
+            {jButton25,jButton26,jButton27,jButton28,jButton29}, 
+        };
+        
+        
     }
 
     /**
@@ -62,8 +79,18 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton6.setFocusPainted(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setFocusPainted(false);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setFocusPainted(false);
 
@@ -72,12 +99,22 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         jButton10.setFocusPainted(false);
 
         jButton11.setFocusPainted(false);
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton12.setFocusPainted(false);
 
         jButton13.setFocusPainted(false);
 
         jButton14.setFocusPainted(false);
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         jButton15.setFocusPainted(false);
 
@@ -265,12 +302,65 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     @Override
     public void showGenericError() {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
+    }
+    
+    public void setCard(Card card) {
+        jTextArea1.setText("");
+        for (int i=0;i<6;i++){
+            for(int j=0;j<6;j++){
+                if (btns[i][j] != null) {
+                    final Integer n = card.getNumber(i, j);
+                    btns[i][j].setText(n.toString());
+                    
+                    btns[i][j].addActionListener(new ActionListener(){
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (marks.contains(n)) {
+                                marks.remove(n);
+                            } else {
+                                marks.add(n);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+    
+    public void addNextNumber(Integer n){
+        String prev = jTextArea1.getText();
+        
+        if (prev.isEmpty()) {
+            jTextArea1.setText(n.toString());
+        } else {
+            jTextArea1.setText(prev + ", " + n.toString());
+        }
+    }
+    
+    public void setTime(Integer time) {
+        jLabel3.setText(time.toString());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

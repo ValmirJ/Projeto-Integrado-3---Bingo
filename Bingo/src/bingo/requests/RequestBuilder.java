@@ -11,12 +11,14 @@ import bingo.interactions.AssignUserToRoom;
 import bingo.interactions.ConnectWithRa;
 import bingo.interactions.CreateRoom;
 import bingo.interactions.DisplayGenericError;
+import bingo.interactions.FinalInterval;
 import bingo.interactions.Interactor;
+import bingo.interactions.IntervalBegin;
+import bingo.interactions.IntervalChange;
 import bingo.interactions.ListRooms;
 import bingo.interactions.UpdateListUsersInRoom;
-//import bingoserver.interactions.CreateRoom;
-//import bingoserver.interactions.UnassignUserFromRoom;
-//import bingoserver.interactions.UserInteractor;
+import bingo.interactions.NewNumber;
+import bingo.interactions.StartGame;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,12 @@ public class RequestBuilder {
         mappings.put("sala-cheia", AssignUserToRoom.class);
         mappings.put("usuarios-conectados-na-sua-sala", UpdateListUsersInRoom.class);
         mappings.put("erro-ao-processar-comando", DisplayGenericError.class);
+        mappings.put("inicio-de-jogo", StartGame.class);
+        mappings.put("interval-begin", IntervalBegin.class);
+        mappings.put("interval-decrase", IntervalChange.class);
+        mappings.put("final-interval-begin", FinalInterval.class);
+        mappings.put("new-number", NewNumber.class);
+        mappings.put("you-lose", null);
     }
 
     public String toString() {

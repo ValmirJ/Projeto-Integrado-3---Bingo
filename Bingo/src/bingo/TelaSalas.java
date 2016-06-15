@@ -80,8 +80,11 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LIST_Users.setEnabled(false);
+        LIST_Users.setSelectedIndex(0);
         PN_LSTSala.setViewportView(LIST_Users);
 
+        LIST_Rooms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        LIST_Rooms.setSelectedIndex(0);
         LIST_Rooms.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 LIST_RoomsValueChanged(evt);
@@ -155,7 +158,7 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
 
     private void LIST_RoomsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_LIST_RoomsValueChanged
         this.clearUsersInRoom();
-        Room room =  (Room) roomsModel.get(evt.getFirstIndex());
+        Room room =  (Room) roomsModel.get(LIST_Rooms.getSelectedIndex());
         ArrayList<User> users = room.getUsers();
         for(User u : users) {
             this.usersModel.addElement(u);

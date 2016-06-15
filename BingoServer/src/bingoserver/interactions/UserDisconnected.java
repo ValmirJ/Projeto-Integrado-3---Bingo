@@ -10,6 +10,7 @@ import bingoserver.models.User;
 import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
+import bingoserver.responses.EverybodyHasGoneResponse;
 import bingoserver.responses.TooLessUsersInRoomResponse;
 import bingoserver.responses.UsersInRoomChangedResponse;
 import java.util.HashMap;
@@ -58,7 +59,10 @@ public class UserDisconnected extends UserInteractor {
         
         if (users.size() < Settings.MINIMUM_USERS_IN_ROOM) {
             roomRepo.removeRoom(room);
-            getResponseManager().respondToUsers(new TooLessUsersInRoomResponse(), users);
+            getResponseManager().respondToUsers(new EverybodyHasGoneResponse(), users);
+            
+            for (User userToHold : users)
+                userRepo.holdUser(userToHold);
         }
     }
 }

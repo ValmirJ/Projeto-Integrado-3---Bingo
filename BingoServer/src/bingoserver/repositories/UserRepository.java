@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class UserRepository {
 
+    private final List<User> holdUsers = new ArrayList<>();
     private final List<User> users = new ArrayList<>();
     private int idCount = 0;
 
@@ -35,6 +36,12 @@ public class UserRepository {
                 return u;
             }
         }
+        
+        for (User u : holdUsers) {
+            if (u.getRa().equals(ra)) {
+                return u;
+            }
+        }
 
         return null;
     }
@@ -47,5 +54,18 @@ public class UserRepository {
     
     public void removeUser(User user) {
         users.remove(user);
+        holdUsers.remove(user);
+    }
+    
+    public void holdUser(User user) {
+        if (users.remove(user)) {
+            holdUsers.add(user);
+        }
+    }
+    
+    public void unholdUser(User user) {
+        if (holdUsers.remove(user)) {
+            users.add(user);
+        }
     }
 }

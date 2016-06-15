@@ -68,7 +68,8 @@ public class Bingo extends UserInteractor {
             }
         }
         
-        HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
-        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
+        for (User toHold : users) {
+            userRepo.holdUser(toHold);
+        }
     }
 }

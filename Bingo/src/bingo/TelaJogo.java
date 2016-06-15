@@ -5,6 +5,7 @@
  */
 package bingo;
 
+import bingo.network.ClientManager;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,23 +19,24 @@ import models.Card;
  * @author 14023691
  */
 public class TelaJogo extends javax.swing.JFrame implements Tela{
-    private JButton[][] btns;
-    private List<Integer> marks = new ArrayList<>();
+    private final JButton[][] btns;
+    private final List<Integer> marks = new ArrayList<>();
+    private ClientManager clientManager;
     
     /**
      * Creates new form TelaJogo
      */
-    public TelaJogo() {
+    public TelaJogo(ClientManager clientManagaer) {
+        this.clientManager = clientManagaer;
+        
         initComponents();
         btns = new JButton[][] {
             {jButton6, jButton7, jButton8, jButton9, jButton10},
             {jButton11,jButton12,jButton13,jButton14,jButton15},
             {jButton16,jButton17,null,     jButton18,jButton19},
             {jButton20,jButton21,jButton22,jButton23,jButton24},
-            {jButton25,jButton26,jButton27,jButton28,jButton29}, 
+            {jButton25,jButton31,jButton27,jButton28,jButton29}, 
         };
-        
-        
     }
 
     /**
@@ -79,18 +81,8 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton6.setFocusPainted(false);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
         jButton7.setFocusPainted(false);
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
 
         jButton8.setFocusPainted(false);
 
@@ -99,22 +91,12 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         jButton10.setFocusPainted(false);
 
         jButton11.setFocusPainted(false);
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
 
         jButton12.setFocusPainted(false);
 
         jButton13.setFocusPainted(false);
 
         jButton14.setFocusPainted(false);
-        jButton14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton14ActionPerformed(evt);
-            }
-        });
 
         jButton15.setFocusPainted(false);
 
@@ -157,6 +139,11 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         jButton26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton26.setText("BINGO!");
         jButton26.setFocusPainted(false);
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(2);
@@ -302,21 +289,9 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton14ActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        clientManager.sendMessage(new bingo.responses.Bingo());
+    }//GEN-LAST:event_jButton26ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,8 +303,8 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
     
     public void setCard(Card card) {
         jTextArea1.setText("");
-        for (int i=0;i<6;i++){
-            for(int j=0;j<6;j++){
+        for (int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
                 if (btns[i][j] != null) {
                     final Integer n = card.getNumber(i, j);
                     btns[i][j].setText(n.toString());

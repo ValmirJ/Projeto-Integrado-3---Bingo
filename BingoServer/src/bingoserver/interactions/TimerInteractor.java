@@ -157,7 +157,7 @@ public class TimerInteractor extends Interactor {
                 try {
                     List<User> users = roomRepo.usersInRoom(room);
                     roomRepo.removeRoom(room);
-                    sendLoseResponse(roomRepo, users);
+                    sendLoseResponse(users);
                 } catch (Exception ex) {
                     Logger.getLogger(TimerInteractor.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -165,10 +165,10 @@ public class TimerInteractor extends Interactor {
         }
     }
 
-    private void sendLoseResponse(RoomRepository roomRepo, List<User> users) {
+    private void sendLoseResponse(List<User> users) {
+        for (User user : users)
+            getRepositoryManager().getUserRepository().holdUser(user);
+        
         getResponseManager().respondToUsers(new YouLoseResponse(), users);
-
-        HashMap<Room, List<User>> openRooms = roomRepo.currentOpenRoomsWithUsers();
-        getResponseManager().respondToUsers(new AvailableRoomsResponse(openRooms), getRepositoryManager().getUserRepository().usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 }

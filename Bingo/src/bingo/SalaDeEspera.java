@@ -7,6 +7,7 @@ package bingo;
 
 import bingo.network.ClientManager;
 import bingo.responses.StartGameResponse;
+import bingo.responses.UnassignFromRoom;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -75,6 +76,11 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
         });
 
         BTN_ExitRoom.setText("Sair da Sala");
+        BTN_ExitRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ExitRoomActionPerformed(evt);
+            }
+        });
 
         PN_LSTJgd.setViewportView(LIST_UsersInRoom);
 
@@ -117,6 +123,10 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
         clientManager.sendMessage(new StartGameResponse());
     }//GEN-LAST:event_BTN_StartGameActionPerformed
 
+    private void BTN_ExitRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ExitRoomActionPerformed
+        clientManager.sendMessage(new UnassignFromRoom());
+    }//GEN-LAST:event_BTN_ExitRoomActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -128,4 +138,8 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
     private javax.swing.JScrollPane PN_LSTJgd;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    public void warnNotEnoughtUsers() {
+        JOptionPane.showMessageDialog(null, "Não há usuários suficientes!");
+    }
 }

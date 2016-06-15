@@ -95,7 +95,7 @@ public class BingoCard {
 
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers[0].length; j++) {
-                if (i != 2 && j != 2) {
+                if (i != 2 || j != 2) {
                     JSONObject numberJson = new JSONObject();
 
                     numberJson.put("row", i);

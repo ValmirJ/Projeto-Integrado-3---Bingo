@@ -8,9 +8,11 @@ package bingo.requests;
 //import bingoserver.interactions.AssignUserToRoom;
 import bingo.GameDelegate;
 import bingo.interactions.AssignUserToRoom;
+import bingo.interactions.BingoWinned;
 import bingo.interactions.ConnectWithRa;
 import bingo.interactions.CreateRoom;
 import bingo.interactions.DisplayGenericError;
+import bingo.interactions.EverybodyHasGone;
 import bingo.interactions.FinalInterval;
 import bingo.interactions.Interactor;
 import bingo.interactions.IntervalBegin;
@@ -18,7 +20,10 @@ import bingo.interactions.IntervalChange;
 import bingo.interactions.ListRooms;
 import bingo.interactions.UpdateListUsersInRoom;
 import bingo.interactions.NewNumber;
+import bingo.interactions.NotEnoughtPlayers;
+import bingo.interactions.RemovedFromRoom;
 import bingo.interactions.StartGame;
+import bingo.interactions.YouLose;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +45,9 @@ public class RequestBuilder {
         mappings.put("ra-invalido", ConnectWithRa.class);
         mappings.put("salas-disponiveis", ListRooms.class);
         mappings.put("sala-criada", CreateRoom.class);
+        mappings.put("sala-sem-jogadores", NotEnoughtPlayers.class);
         mappings.put("aceito-na-sala", AssignUserToRoom.class);
+        mappings.put("removido-da-sala", RemovedFromRoom.class);
         mappings.put("sala-cheia", AssignUserToRoom.class);
         mappings.put("usuarios-conectados-na-sua-sala", UpdateListUsersInRoom.class);
         mappings.put("erro-ao-processar-comando", DisplayGenericError.class);
@@ -49,7 +56,11 @@ public class RequestBuilder {
         mappings.put("interval-decrase", IntervalChange.class);
         mappings.put("final-interval-begin", FinalInterval.class);
         mappings.put("new-number", NewNumber.class);
-        mappings.put("you-lose", null);
+        
+        mappings.put("you-lose", YouLose.class);
+        mappings.put("everybody-has-gone", EverybodyHasGone.class);
+        mappings.put("bingo-winned", BingoWinned.class);
+        
     }
 
     public String toString() {

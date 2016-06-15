@@ -32,7 +32,7 @@ public class ConnectWithRa extends Interactor{
             if(typeReturned.equals("ra-invalido"))
                 telaInicial.showInvalidRa();
             else {
-                    telaInicial.setVisible(false);
+                    getFormManager().hideCurrent();
                     this.telaSalas = this.getFormManager().getTelaSalas();
                     this.telaSalas.setVisible(true);
             }

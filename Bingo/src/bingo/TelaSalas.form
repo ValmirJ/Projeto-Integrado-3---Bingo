@@ -129,7 +129,7 @@
         <Property name="text" type="java.lang.String" value="Jogadores em Sala"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="BUT_AssignToRoom">
+    <Component class="bingo.ButtonWithLoader" name="BUT_AssignToRoom">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Century Gothic" size="18" style="1"/>
@@ -141,7 +141,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BUT_AssignToRoomActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="BTN_CreateRoom">
+    <Component class="bingo.ButtonWithLoader" name="BTN_CreateRoom">
       <Properties>
         <Property name="label" type="java.lang.String" value="Criar Nova Sala"/>
       </Properties>

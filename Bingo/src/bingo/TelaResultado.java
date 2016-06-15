@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author 14023691
  */
-public class TelaResultado extends javax.swing.JFrame implements Tela {
+public class TelaResultado extends bingo.MyJFrame implements Tela {
     private ClientManager clientManager;
     /**
      * Creates new form TelaResultado
@@ -33,7 +33,7 @@ public class TelaResultado extends javax.swing.JFrame implements Tela {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButton1 = new bingo.ButtonWithLoader();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,23 +86,23 @@ public class TelaResultado extends javax.swing.JFrame implements Tela {
     public void showGenericError() {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
-    
+
     public void markYouWin() {
         jLabel1.setText("Você Ganhou!");
     }
-    
+
     public void markYouLose() {
         jLabel1.setText("Você Perdeu!");
     }
-    
+
     public void markEverybodyHasGone() {
         jLabel1.setText("Todos os outros jogadores desistiram!");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private bingo.ButtonWithLoader jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    
+
 
 }

@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author 14023691
  */
-public class TelaInicial extends javax.swing.JFrame implements Tela{
+public class TelaInicial extends bingo.MyJFrame implements Tela{
 
     /**
      * Creates new form TelaInicial
@@ -32,15 +32,15 @@ public class TelaInicial extends javax.swing.JFrame implements Tela{
         initComponents();
         this.clientManager = clientManager;
     }
-        
+
     public void showRaAlreadyUsed() {
         JOptionPane.showMessageDialog(null, "RA já está em uso, tente novamente");
     }
-    
+
     public void showInvalidRa() {
         JOptionPane.showMessageDialog(null, "Digite um RA válido!");
     }
-    
+
     public String getRa() {
         return TXT_Ra.getText();
     }
@@ -58,7 +58,7 @@ public class TelaInicial extends javax.swing.JFrame implements Tela{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BUT_Prox = new javax.swing.JButton();
+        BUT_Prox = new bingo.ButtonWithLoader();
         TXT_Ra = new javax.swing.JTextField();
         LBL_Nome = new javax.swing.JLabel();
 
@@ -85,7 +85,7 @@ public class TelaInicial extends javax.swing.JFrame implements Tela{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(228, 228, 228)
-                        .addComponent(BUT_Prox)
+                        .addComponent(BUT_Prox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(33, Short.MAX_VALUE)
@@ -102,7 +102,7 @@ public class TelaInicial extends javax.swing.JFrame implements Tela{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TXT_Ra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BUT_Prox)
+                .addComponent(BUT_Prox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
 
@@ -114,17 +114,18 @@ public class TelaInicial extends javax.swing.JFrame implements Tela{
         if(!ra.isEmpty()){
             ConnectResponse response = new ConnectResponse(ra);
             this.clientManager.sendMessage(response);
+            BUT_Prox.showLoader();
         }
         else {
             this.showInvalidRa();
-        }     
+        }
     }//GEN-LAST:event_BUT_ProxActionPerformed
 
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BUT_Prox;
+    private bingo.ButtonWithLoader BUT_Prox;
     private javax.swing.JLabel LBL_Nome;
     private javax.swing.JTextField TXT_Ra;
     // End of variables declaration//GEN-END:variables

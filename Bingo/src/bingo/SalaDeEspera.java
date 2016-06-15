@@ -17,8 +17,8 @@ import models.User;
  *
  * @author valmir
  */
-public class SalaDeEspera extends javax.swing.JFrame implements Tela {
-    
+public class SalaDeEspera extends bingo.MyJFrame implements Tela {
+
     private ClientManager clientManager;
     private DefaultListModel usersModel = new DefaultListModel();
     /**
@@ -29,24 +29,24 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
         initComponents();
         LIST_UsersInRoom.setModel(usersModel);
     }
-    
+
     private void clearListUsers() {
         this.usersModel.clear();
-    } 
-    
+    }
+
     public void updateListUsers(ArrayList<User> users) {
         this.clearListUsers();
-        
+
         for(User u: users) {
             this.usersModel.addElement(u);
-        }    
+        }
     }
-    
+
     @Override
     public void showGenericError() {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
-    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,8 +58,8 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        BTN_StartGame = new javax.swing.JButton();
-        BTN_ExitRoom = new javax.swing.JButton();
+        BTN_StartGame = new bingo.ButtonWithLoader();
+        BTN_ExitRoom = new bingo.ButtonWithLoader();
         PN_LSTJgd = new javax.swing.JScrollPane();
         LIST_UsersInRoom = new javax.swing.JList<>();
 
@@ -132,8 +132,8 @@ public class SalaDeEspera extends javax.swing.JFrame implements Tela {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BTN_ExitRoom;
-    private javax.swing.JButton BTN_StartGame;
+    private bingo.ButtonWithLoader BTN_ExitRoom;
+    private bingo.ButtonWithLoader BTN_StartGame;
     private javax.swing.JList<String> LIST_UsersInRoom;
     private javax.swing.JScrollPane PN_LSTJgd;
     private javax.swing.JLabel jLabel1;

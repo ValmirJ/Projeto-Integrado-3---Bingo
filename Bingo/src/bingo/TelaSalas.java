@@ -18,20 +18,20 @@ import models.User;
  *
  * @author 14023691
  */
-public class TelaSalas extends javax.swing.JFrame implements Tela {
+public class TelaSalas extends bingo.MyJFrame implements Tela {
 
     private String ra;
     private ArrayList<Room> rooms;
     private ClientManager clientManager;
     private DefaultListModel roomsModel = new DefaultListModel();
     private DefaultListModel usersModel = new DefaultListModel();
-    
+
     public TelaSalas(ClientManager clientManager, String ra) {
         initComponents();
         this.ra = ra;
         this.setTitle(ra);
         this.clientManager = clientManager;
-        
+
         LIST_Rooms.setModel(roomsModel);
     }
 
@@ -41,7 +41,7 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
     private void clearUsersInRoom() {
         usersModel.removeAllElements();
     }
-    
+
     public void addItensToAvailableRooms(ArrayList<Room> rooms) {
         this.clearAvailableRooms();
         this.rooms = rooms;
@@ -49,16 +49,16 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
             roomsModel.addElement(r);
         }
     }
-    
+
     public void showRoomIsFull() {
         JOptionPane.showMessageDialog(null, "Está sala está cheia, tente novamente em outra sala ou crie uma sala!");
     }
-    
+
     @Override
     public void showGenericError() {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,8 +74,8 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
         LIST_Rooms = new javax.swing.JList<>();
         LBL_Salas = new javax.swing.JLabel();
         LBL_Jgd = new javax.swing.JLabel();
-        BUT_AssignToRoom = new javax.swing.JButton();
-        BTN_CreateRoom = new javax.swing.JButton();
+        BUT_AssignToRoom = new bingo.ButtonWithLoader();
+        BTN_CreateRoom = new bingo.ButtonWithLoader();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,18 +169,20 @@ public class TelaSalas extends javax.swing.JFrame implements Tela {
     private void BTN_CreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CreateRoomActionPerformed
         CreateRoomResponse createRequest = new CreateRoomResponse();
         this.clientManager.sendMessage(createRequest);
+        BTN_CreateRoom.showLoader();
     }//GEN-LAST:event_BTN_CreateRoomActionPerformed
 
     private void BUT_AssignToRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUT_AssignToRoomActionPerformed
         int idSala = ((Room)this.roomsModel.get(LIST_Rooms.getSelectedIndex())).getId();
         AssignUserRoomResponse assignResponse = new AssignUserRoomResponse(idSala);
         this.clientManager.sendMessage(assignResponse);
+        BUT_AssignToRoom.showLoader();
     }//GEN-LAST:event_BUT_AssignToRoomActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BTN_CreateRoom;
-    private javax.swing.JButton BUT_AssignToRoom;
+    private bingo.ButtonWithLoader BTN_CreateRoom;
+    private bingo.ButtonWithLoader BUT_AssignToRoom;
     private javax.swing.JLabel LBL_Jgd;
     private javax.swing.JLabel LBL_Salas;
     private javax.swing.JList<String> LIST_Rooms;

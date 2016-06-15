@@ -63,7 +63,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="bingo.ButtonWithLoader" name="jButton1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver Salas"/>
       </Properties>

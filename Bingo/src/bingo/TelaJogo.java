@@ -11,31 +11,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
 import models.Card;
 
 /**
  *
  * @author 14023691
  */
-public class TelaJogo extends javax.swing.JFrame implements Tela{
-    private final JButton[][] btns;
+public class TelaJogo extends bingo.MyJFrame implements Tela{
+    private final ButtonWithLoader[][] btns;
     private final List<Integer> marks = new ArrayList<>();
     private ClientManager clientManager;
-    
+
     /**
      * Creates new form TelaJogo
      */
     public TelaJogo(ClientManager clientManagaer) {
         this.clientManager = clientManagaer;
-        
+
         initComponents();
-        btns = new JButton[][] {
+        btns = new ButtonWithLoader[][] {
             {jButton6, jButton7, jButton8, jButton9, jButton10},
             {jButton11,jButton12,jButton13,jButton14,jButton15},
             {jButton16,jButton17,null,     jButton18,jButton19},
             {jButton20,jButton21,jButton22,jButton23,jButton24},
-            {jButton25,jButton31,jButton27,jButton28,jButton29}, 
+            {jButton25,jButton31,jButton27,jButton28,jButton29},
         };
     }
 
@@ -48,35 +47,35 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
-        jButton23 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
-        jButton25 = new javax.swing.JButton();
-        jButton26 = new javax.swing.JButton();
+        jButton6 = new bingo.ButtonWithLoader();
+        jButton7 = new bingo.ButtonWithLoader();
+        jButton8 = new bingo.ButtonWithLoader();
+        jButton9 = new bingo.ButtonWithLoader();
+        jButton10 = new bingo.ButtonWithLoader();
+        jButton11 = new bingo.ButtonWithLoader();
+        jButton12 = new bingo.ButtonWithLoader();
+        jButton13 = new bingo.ButtonWithLoader();
+        jButton14 = new bingo.ButtonWithLoader();
+        jButton15 = new bingo.ButtonWithLoader();
+        jButton16 = new bingo.ButtonWithLoader();
+        jButton17 = new bingo.ButtonWithLoader();
+        jButton18 = new bingo.ButtonWithLoader();
+        jButton19 = new bingo.ButtonWithLoader();
+        jButton20 = new bingo.ButtonWithLoader();
+        jButton21 = new bingo.ButtonWithLoader();
+        jButton22 = new bingo.ButtonWithLoader();
+        jButton23 = new bingo.ButtonWithLoader();
+        jButton24 = new bingo.ButtonWithLoader();
+        jButton25 = new bingo.ButtonWithLoader();
+        jButton26 = new bingo.ButtonWithLoader();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jButton27 = new javax.swing.JButton();
-        jButton28 = new javax.swing.JButton();
-        jButton29 = new javax.swing.JButton();
-        jButton30 = new javax.swing.JButton();
-        jButton31 = new javax.swing.JButton();
+        jButton27 = new bingo.ButtonWithLoader();
+        jButton28 = new bingo.ButtonWithLoader();
+        jButton29 = new bingo.ButtonWithLoader();
+        jButton30 = new bingo.ButtonWithLoader();
+        jButton31 = new bingo.ButtonWithLoader();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -300,7 +299,7 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
     public void showGenericError() {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
-    
+
     public void setCard(Card card) {
         jTextArea1.setText("");
         for (int i=0;i<5;i++){
@@ -308,7 +307,7 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
                 if (btns[i][j] != null) {
                     final Integer n = card.getNumber(i, j);
                     btns[i][j].setText(n.toString());
-                    
+
                     btns[i][j].addActionListener(new ActionListener(){
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -323,48 +322,48 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
             }
         }
     }
-    
+
     public void addNextNumber(Integer n){
         String prev = jTextArea1.getText();
-        
+
         if (prev.isEmpty()) {
             jTextArea1.setText(n.toString());
         } else {
             jTextArea1.setText(prev + ", " + n.toString());
         }
     }
-    
+
     public void setTime(Integer time) {
         jLabel3.setText(time.toString());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton25;
-    private javax.swing.JButton jButton26;
-    private javax.swing.JButton jButton27;
-    private javax.swing.JButton jButton28;
-    private javax.swing.JButton jButton29;
-    private javax.swing.JButton jButton30;
-    private javax.swing.JButton jButton31;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private bingo.ButtonWithLoader jButton10;
+    private bingo.ButtonWithLoader jButton11;
+    private bingo.ButtonWithLoader jButton12;
+    private bingo.ButtonWithLoader jButton13;
+    private bingo.ButtonWithLoader jButton14;
+    private bingo.ButtonWithLoader jButton15;
+    private bingo.ButtonWithLoader jButton16;
+    private bingo.ButtonWithLoader jButton17;
+    private bingo.ButtonWithLoader jButton18;
+    private bingo.ButtonWithLoader jButton19;
+    private bingo.ButtonWithLoader jButton20;
+    private bingo.ButtonWithLoader jButton21;
+    private bingo.ButtonWithLoader jButton22;
+    private bingo.ButtonWithLoader jButton23;
+    private bingo.ButtonWithLoader jButton24;
+    private bingo.ButtonWithLoader jButton25;
+    private bingo.ButtonWithLoader jButton26;
+    private bingo.ButtonWithLoader jButton27;
+    private bingo.ButtonWithLoader jButton28;
+    private bingo.ButtonWithLoader jButton29;
+    private bingo.ButtonWithLoader jButton30;
+    private bingo.ButtonWithLoader jButton31;
+    private bingo.ButtonWithLoader jButton6;
+    private bingo.ButtonWithLoader jButton7;
+    private bingo.ButtonWithLoader jButton8;
+    private bingo.ButtonWithLoader jButton9;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

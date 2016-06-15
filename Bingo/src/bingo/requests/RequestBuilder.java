@@ -10,6 +10,7 @@ import bingo.GameDelegate;
 import bingo.interactions.AssignUserToRoom;
 import bingo.interactions.ConnectWithRa;
 import bingo.interactions.CreateRoom;
+import bingo.interactions.DisplayGenericError;
 import bingo.interactions.Interactor;
 import bingo.interactions.ListRooms;
 import bingo.interactions.UpdateListUsersInRoom;
@@ -40,6 +41,7 @@ public class RequestBuilder {
         mappings.put("aceito-na-sala", AssignUserToRoom.class);
         mappings.put("sala-cheia", AssignUserToRoom.class);
         mappings.put("usuarios-conectados-na-sua-sala", UpdateListUsersInRoom.class);
+        mappings.put("erro-ao-processar-comando", DisplayGenericError.class);
     }
 
     public String toString() {

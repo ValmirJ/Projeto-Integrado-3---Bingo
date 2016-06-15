@@ -9,13 +9,14 @@ import bingo.network.ClientManager;
 import bingo.responses.StartGameResponse;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import models.User;
 
 /**
  *
  * @author valmir
  */
-public class SalaDeEspera extends javax.swing.JFrame {
+public class SalaDeEspera extends javax.swing.JFrame implements Tela {
     
     private ClientManager clientManager;
     private DefaultListModel usersModel = new DefaultListModel();
@@ -38,6 +39,11 @@ public class SalaDeEspera extends javax.swing.JFrame {
         for(User u: users) {
             this.usersModel.addElement(u);
         }    
+    }
+    
+    @Override
+    public void showGenericError() {
+        JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
     
 

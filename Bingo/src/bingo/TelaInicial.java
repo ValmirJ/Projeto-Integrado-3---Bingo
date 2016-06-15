@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author 14023691
  */
-public class TelaInicial extends javax.swing.JFrame {
+public class TelaInicial extends javax.swing.JFrame implements Tela{
 
     /**
      * Creates new form TelaInicial
@@ -45,6 +45,10 @@ public class TelaInicial extends javax.swing.JFrame {
         return TXT_Ra.getText();
     }
 
+    @Override
+    public void showGenericError() {
+        JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,4 +128,5 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JLabel LBL_Nome;
     private javax.swing.JTextField TXT_Ra;
     // End of variables declaration//GEN-END:variables
+
 }

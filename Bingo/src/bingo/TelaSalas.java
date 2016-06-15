@@ -18,7 +18,7 @@ import models.User;
  *
  * @author 14023691
  */
-public class TelaSalas extends javax.swing.JFrame {
+public class TelaSalas extends javax.swing.JFrame implements Tela {
 
     private String ra;
     private ArrayList<Room> rooms;
@@ -52,6 +52,11 @@ public class TelaSalas extends javax.swing.JFrame {
     
     public void showRoomIsFull() {
         JOptionPane.showMessageDialog(null, "Está sala está cheia, tente novamente em outra sala ou crie uma sala!");
+    }
+    
+    @Override
+    public void showGenericError() {
+        JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
     
     /**

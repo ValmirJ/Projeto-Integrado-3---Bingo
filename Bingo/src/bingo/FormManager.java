@@ -57,4 +57,23 @@ public class FormManager {
     public FormManager(ClientManager cl) {
         this.clientManager = cl;
     }
+    
+    public Tela getCurrentForm() {
+        if(this.telaInicial.isVisible())
+            return this.telaInicial;
+        
+        if(this.telaSalas.isVisible())
+            return this.telaSalas;
+        
+        if(this.telaSalaDeEspera.isVisible())
+            return this.telaSalaDeEspera;
+        
+        if(this.telaJogo.isVisible())
+            return this.telaJogo;
+        
+        if(this.telaResultado.isVisible())
+            return this.telaResultado;
+        
+        return null;
+    }
 }

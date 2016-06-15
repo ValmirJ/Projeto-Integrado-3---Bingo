@@ -7,21 +7,39 @@ package bingo;
 
 import bingo.network.ClientManager;
 import bingo.responses.StartGameResponse;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import models.User;
 
 /**
  *
  * @author valmir
  */
 public class SalaDeEspera extends javax.swing.JFrame {
-
+    
     private ClientManager clientManager;
+    private DefaultListModel usersModel = new DefaultListModel();
     /**
      * Creates new form WaitingRoom
      */
     public SalaDeEspera(ClientManager clientManager) {
         this.clientManager = clientManager;
         initComponents();
+        LIST_UsersInRoom.setModel(usersModel);
     }
+    
+    private void clearListUsers() {
+        this.usersModel.clear();
+    } 
+    
+    public void updateListUsers(ArrayList<User> users) {
+        this.clearListUsers();
+        
+        for(User u: users) {
+            this.usersModel.addElement(u);
+        }    
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,10 +50,11 @@ public class SalaDeEspera extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        LIST_UsersInRoom = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
         BTN_StartGame = new javax.swing.JButton();
         BTN_ExitRoom = new javax.swing.JButton();
+        PN_LSTJgd = new javax.swing.JScrollPane();
+        LIST_UsersInRoom = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sala de Espera");
@@ -51,18 +70,20 @@ public class SalaDeEspera extends javax.swing.JFrame {
 
         BTN_ExitRoom.setText("Sair da Sala");
 
+        PN_LSTJgd.setViewportView(LIST_UsersInRoom);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PN_LSTJgd)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(LIST_UsersInRoom)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(BTN_ExitRoom)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 328, Short.MAX_VALUE)
                         .addComponent(BTN_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -73,9 +94,9 @@ public class SalaDeEspera extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LIST_UsersInRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(PN_LSTJgd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTN_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTN_ExitRoom))
@@ -93,43 +114,12 @@ public class SalaDeEspera extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SalaDeEspera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SalaDeEspera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SalaDeEspera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SalaDeEspera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SalaDeEspera(null).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_ExitRoom;
     private javax.swing.JButton BTN_StartGame;
-    private javax.swing.JScrollPane LIST_UsersInRoom;
+    private javax.swing.JList<String> LIST_UsersInRoom;
+    private javax.swing.JScrollPane PN_LSTJgd;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

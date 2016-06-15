@@ -12,6 +12,7 @@ import bingo.interactions.ConnectWithRa;
 import bingo.interactions.CreateRoom;
 import bingo.interactions.Interactor;
 import bingo.interactions.ListRooms;
+import bingo.interactions.UpdateListUsersInRoom;
 //import bingoserver.interactions.CreateRoom;
 //import bingoserver.interactions.UnassignUserFromRoom;
 //import bingoserver.interactions.UserInteractor;
@@ -38,6 +39,7 @@ public class RequestBuilder {
         mappings.put("sala-criada", CreateRoom.class);
         mappings.put("aceito-na-sala", AssignUserToRoom.class);
         mappings.put("sala-cheia", AssignUserToRoom.class);
+        mappings.put("usuarios-conectados-na-sua-sala", UpdateListUsersInRoom.class);
     }
 
     public String toString() {

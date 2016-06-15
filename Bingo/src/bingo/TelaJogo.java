@@ -290,7 +290,7 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
-        clientManager.sendMessage(new bingo.responses.Bingo());
+        clientManager.sendMessage(new bingo.responses.Bingo(marks));
     }//GEN-LAST:event_jButton26ActionPerformed
 
     /**
@@ -369,4 +369,8 @@ public class TelaJogo extends javax.swing.JFrame implements Tela{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    public void warnInvalidBingo() {
+        JOptionPane.showMessageDialog(null, "Fanfarrero!");
+    }
 }

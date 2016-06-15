@@ -17,6 +17,7 @@ import bingo.interactions.FinalInterval;
 import bingo.interactions.Interactor;
 import bingo.interactions.IntervalBegin;
 import bingo.interactions.IntervalChange;
+import bingo.interactions.InvalidBingo;
 import bingo.interactions.ListRooms;
 import bingo.interactions.UpdateListUsersInRoom;
 import bingo.interactions.NewNumber;
@@ -60,6 +61,7 @@ public class RequestBuilder {
         mappings.put("you-lose", YouLose.class);
         mappings.put("everybody-has-gone", EverybodyHasGone.class);
         mappings.put("bingo-winned", BingoWinned.class);
+        mappings.put("bingo-invalido", InvalidBingo.class);
         
     }
 

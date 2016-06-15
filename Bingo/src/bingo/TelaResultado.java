@@ -18,7 +18,7 @@ public class TelaResultado extends javax.swing.JFrame implements Tela {
     /**
      * Creates new form TelaResultado
      */
-    public TelaResultado(ClientManager manager) {
+    public TelaResultado(ClientManager clientManager) {
         initComponents();
         this.clientManager = clientManager;
     }

@@ -9,15 +9,14 @@ import bingoserver.models.Room;
 import bingoserver.models.User;
 import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserRepository;
-import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.BingoWinnedResponse;
 import bingoserver.responses.InvalidBingo;
 import bingoserver.responses.YouLoseResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import static java.lang.Math.toIntExact;
 
 /**
  *
@@ -31,7 +30,7 @@ public class Bingo extends UserInteractor {
 
         JSONArray numbersJson = (JSONArray) params.get("numbers");
         for (Object numberObj : numbersJson) {
-            Integer number = (Integer) numberObj;
+            Integer number = toIntExact((Long) numberObj);
             if (number != null) {
                 numbers.add(number);
             }

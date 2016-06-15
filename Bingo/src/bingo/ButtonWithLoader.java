@@ -5,10 +5,12 @@
  */
 package bingo;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author guilherme
  */
-public class ButtonWithLoader {
+public class ButtonWithLoader extends JButton {
     
 }

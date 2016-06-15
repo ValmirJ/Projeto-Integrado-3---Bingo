@@ -36,7 +36,7 @@ public class UnassignUserFromRoom extends UserInteractor {
             throw new Exception("User not assigned in a room");
         }
         
-        if (room.getState() == Room.RoomState.initialized) {
+        if (room.getState() != Room.RoomState.initialized) {
             // Ignore
             return;
         }

@@ -17,13 +17,19 @@ import bingoserver.models.UserCard;
 public class UserCardRepository {
 
     public void addUserToRoomWithCard(User user, Room room, BingoCard card) throws Exception {
-        if(room == null)
-            throw new Exception("Room cannot be null");
-        UserCard us = new UserCard(user, card); 
-        room.addUserCard(us);
+        addUserToRoomWithCard(user, room, card, false);
     }
 
     public void removeUserFromRoom(User user, Room room) {
         room.removeUserCardByUser(user);
+    }
+
+    public void addUserToRoomWithCard(User user, Room room, BingoCard card, boolean isOwner) throws Exception {
+        if(room == null)
+            throw new Exception("Room cannot be null");
+        
+        UserCard us = new UserCard(user, card); 
+        us.setRoomOwner(isOwner);
+        room.addUserCard(us);
     }
 }

@@ -42,7 +42,7 @@ public class CreateRoom extends UserInteractor {
         BingoCard card = cardRepo.getRandomCard();
         Room createdRoom = roomRepo.createRoom();
 
-        ucRepo.addUserToRoomWithCard(user, createdRoom, card);
+        ucRepo.addUserToRoomWithCard(user, createdRoom, card, true);
 
         getResponseManager().respondToUser(new CreatedRoomResponse(createdRoom.getId()), user);
 

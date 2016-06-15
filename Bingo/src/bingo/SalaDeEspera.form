@@ -73,6 +73,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Come&#xe7;ar o Jogo"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_StartGameActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_ExitRoom">
       <Properties>

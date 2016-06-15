@@ -49,7 +49,7 @@ public class FormManager {
   
     public SalaDeEspera getTelaSalaDeEspera() {
         if(this.telaSalaDeEspera == null)
-            this.telaSalaDeEspera = new SalaDeEspera();
+            this.telaSalaDeEspera = new SalaDeEspera(this.clientManager);
         
         return this.telaSalaDeEspera;
     }

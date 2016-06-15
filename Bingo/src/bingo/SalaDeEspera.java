@@ -5,16 +5,21 @@
  */
 package bingo;
 
+import bingo.network.ClientManager;
+import bingo.responses.StartGameResponse;
+
 /**
  *
  * @author valmir
  */
 public class SalaDeEspera extends javax.swing.JFrame {
 
+    private ClientManager clientManager;
     /**
      * Creates new form WaitingRoom
      */
-    public SalaDeEspera() {
+    public SalaDeEspera(ClientManager clientManager) {
+        this.clientManager = clientManager;
         initComponents();
     }
 
@@ -38,6 +43,11 @@ public class SalaDeEspera extends javax.swing.JFrame {
         jLabel1.setText("Usuários na Sala");
 
         BTN_StartGame.setText("Começar o Jogo");
+        BTN_StartGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_StartGameActionPerformed(evt);
+            }
+        });
 
         BTN_ExitRoom.setText("Sair da Sala");
 
@@ -75,6 +85,11 @@ public class SalaDeEspera extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BTN_StartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_StartGameActionPerformed
+        // TODO add your handling code here:
+        clientManager.sendMessage(new StartGameResponse());
+    }//GEN-LAST:event_BTN_StartGameActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -106,7 +121,7 @@ public class SalaDeEspera extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SalaDeEspera().setVisible(true);
+                new SalaDeEspera(null).setVisible(true);
             }
         });
     }

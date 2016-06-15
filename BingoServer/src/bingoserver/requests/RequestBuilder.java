@@ -12,6 +12,7 @@ import bingoserver.interactions.CreateRoom;
 import bingoserver.interactions.StartRoom;
 import bingoserver.interactions.UnassignUserFromRoom;
 import bingoserver.interactions.UserInteractor;
+import bingoserver.interactions.Bingo;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ public class RequestBuilder {
         mappings.put("entrar-na-sala", AssignUserToRoom.class);
         mappings.put("sair-da-sala", UnassignUserFromRoom.class);
         mappings.put("iniciar-sala", StartRoom.class);
+        mappings.put("bingo", Bingo.class);
     }
 
     public String toString() {

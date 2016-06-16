@@ -31,4 +31,15 @@ public class ClientManager {
     public void sendMessage(Response res) {
         oneClient.send(res.responseData());
     }  
+
+    public Thread getShutdownHook() {
+        return new Thread() {
+            @Override
+            public void run() {
+                if (oneClient != null) {
+                    oneClient.stopSilent();
+                }
+            }
+        };
+    }
 }

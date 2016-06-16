@@ -140,37 +140,8 @@ public class Client implements Runnable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Client)) {
-            return false;
-        }
-
-        Client other = (Client) obj;
-        if (!(this.socket.equals(other.socket))) {
-            return false;
-        }
-        if (!(this.listener.equals(other.listener))) {
-            return false;
-        }
-
-        if (!(this.responder.equals(other.responder))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
     public String toString() {
         String str = "Socket: " + this.socket.toString();
-
         return str;
     }
 

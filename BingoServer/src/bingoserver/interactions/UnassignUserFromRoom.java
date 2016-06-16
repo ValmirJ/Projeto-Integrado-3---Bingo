@@ -41,16 +41,23 @@ public class UnassignUserFromRoom extends UserInteractor {
             return;
         }
 
-        ucRepo.removeUserFromRoom(user, room);
-
-        getResponseManager().respondToUser(new UserRemovedFromRoomResponse(), user);
-
-        List<User> usersInRoom = roomRepo.usersInRoom(room);
-
-        if (usersInRoom.isEmpty()) {
+        List<User> users = roomRepo.usersInRoom(room);
+        
+        if (roomRepo.roomOwnedBy(user) != null) {
             roomRepo.removeRoom(room);
+            getResponseManager().respondToUsers(new UserRemovedFromRoomResponse(), users);
         } else {
-            getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);
+            ucRepo.removeUserFromRoom(user, room);
+
+            getResponseManager().respondToUser(new UserRemovedFromRoomResponse(), user);
+
+            List<User> usersInRoom = roomRepo.usersInRoom(room);
+
+            if (usersInRoom.isEmpty()) {
+                roomRepo.removeRoom(room);
+            } else {
+                getResponseManager().respondToUsers(new UsersInRoomChangedResponse(usersInRoom), usersInRoom);
+            }
         }
 
         HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();

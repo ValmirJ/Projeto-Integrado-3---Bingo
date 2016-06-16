@@ -12,6 +12,7 @@ import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.EverybodyHasGoneResponse;
 import bingoserver.responses.TooLessUsersInRoomResponse;
+import bingoserver.responses.UserRemovedFromRoomResponse;
 import bingoserver.responses.UsersInRoomChangedResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,12 @@ public class UserDisconnected extends UserInteractor {
             if (users.isEmpty()) {
                 roomRepo.removeRoom(room);
             } else {
-                getResponseManager().respondToUsers(new UsersInRoomChangedResponse(users), users);
+                if (roomRepo.roomOwnedBy(user) != null) {
+                    roomRepo.removeRoom(room);
+                    getResponseManager().respondToUsers(new UserRemovedFromRoomResponse(), users);
+                } else {
+                    getResponseManager().respondToUsers(new UsersInRoomChangedResponse(users), users);
+                }
             }
             
             HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();

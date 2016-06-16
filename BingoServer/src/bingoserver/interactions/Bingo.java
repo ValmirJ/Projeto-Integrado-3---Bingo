@@ -31,9 +31,7 @@ public class Bingo extends UserInteractor {
         JSONArray numbersJson = (JSONArray) params.get("numbers");
         for (Object numberObj : numbersJson) {
             Integer number = toIntExact((Long) numberObj);
-            if (number != null) {
-                numbers.add(number);
-            }
+            numbers.add(number);
         }
         
         User user = getSessionUser();
@@ -63,7 +61,7 @@ public class Bingo extends UserInteractor {
         
         for (User looser : users) {
             if (!looser.equals(user)) {
-                getResponseManager().respondToUser(new YouLoseResponse(), user);
+                getResponseManager().respondToUser(new YouLoseResponse(), looser);
             }
         }
         

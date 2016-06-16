@@ -11,11 +11,12 @@ import org.json.simple.JSONObject;
  *
  * @author guilherme
  */
-public class FinalInterval extends Interactor {
+public class FinalInterval extends IntervalChange {
 
     @Override
     public void perform(JSONObject params) throws Exception {
         this.getFormManager().getTelaJogo().finishIntervalToFindNumbers();
+         super.perform(params);
     }
     
     

@@ -23,7 +23,7 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
     private final ButtonWithLoader[][] btns;
     private final List<Integer> marks = new ArrayList<>();
     private ClientManager clientManager;
-    private boolean onInterval = false;
+    private boolean onInterval = true;
 
     /**
      * Creates new form TelaJogo
@@ -372,13 +372,12 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
     }
     
     public void intervalToFindNumbers() {
-        LBL_Info.setText("Verifique sua cartela");
         this.onInterval = true;
     }
     
     public void finishIntervalToFindNumbers() {
         LBL_Info.setText("Todos números foram sorteados!\n O jogo terminará em 5 segundos");
-        this.onInterval = true;
+        this.onInterval = false;
     }
     
     public boolean getOnInterval() {
@@ -418,6 +417,7 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
 
     public void addNextNumber(Integer n){
         this.onInterval = false;
+        LBL_Info.setText("Verifique sua cartela");
         String prev = jTextArea1.getText();
 
         if (prev.isEmpty()) {

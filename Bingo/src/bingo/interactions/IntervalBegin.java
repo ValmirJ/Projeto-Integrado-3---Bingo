@@ -12,13 +12,14 @@ import org.json.simple.JSONObject;
  *
  * @author guilherme
  */
-public class IntervalBegin extends Interactor {
+public class IntervalBegin extends IntervalChange {
 
     private TelaJogo telaJogo;
     @Override
     public void perform(JSONObject params) throws Exception {
         this.telaJogo = this.getFormManager().getTelaJogo();
         this.telaJogo.intervalToFindNumbers();
+        super.perform(params);
     }
     
 }

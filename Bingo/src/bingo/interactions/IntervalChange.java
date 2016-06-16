@@ -21,7 +21,7 @@ public class IntervalChange extends Interactor {
     public void perform(JSONObject params) throws Exception {
         Integer time = toIntExact((Long) params.get("time"));
         this.telaJogo = this.getFormManager().getTelaJogo();
-        if(!telaJogo.getOnInterval())
+        if(telaJogo.getOnInterval())
             getFormManager().getTelaJogo().setTime(time);
     }
     

@@ -2,8 +2,8 @@
 =============================
 
 ## Pre-requisitos:
-1. Server:
-   *Um banco do MySQL.
+* Server:
+   * Um banco do MySQL.
 
 ## Iniciando o Servidor:
 

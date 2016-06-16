@@ -51,7 +51,7 @@ public class BingoServer implements ClientListener {
                     // O onClockTick será enfileirado.
                     // Por isso pode existir uma latência até a tarefa ser executada.
                     // Consideramos a latência como 5ms
-                    Thread.sleep(100);
+                    Thread.sleep(999);
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(BingoServer.class.getName()).log(Level.SEVERE, null, ex);

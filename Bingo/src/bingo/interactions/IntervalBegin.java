@@ -5,10 +5,20 @@
  */
 package bingo.interactions;
 
+import bingo.TelaJogo;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author guilherme
  */
-public class IntervalBegin extends IntervalChange {
+public class IntervalBegin extends Interactor {
+
+    private TelaJogo telaJogo;
+    @Override
+    public void perform(JSONObject params) throws Exception {
+        this.telaJogo = this.getFormManager().getTelaJogo();
+        this.telaJogo.intervalToFindNumbers();
+    }
     
 }

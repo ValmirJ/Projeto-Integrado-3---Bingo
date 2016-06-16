@@ -5,6 +5,7 @@
  */
 package bingo.interactions;
 
+import bingo.TelaJogo;
 import org.json.simple.JSONObject;
 import static java.lang.Math.toIntExact;
 
@@ -14,10 +15,14 @@ import static java.lang.Math.toIntExact;
  */
 public class IntervalChange extends Interactor {
 
+    private TelaJogo telaJogo;
+    
     @Override
     public void perform(JSONObject params) throws Exception {
         Integer time = toIntExact((Long) params.get("time"));
-        getFormManager().getTelaJogo().setTime(time);
+        this.telaJogo = this.getFormManager().getTelaJogo();
+        if(!telaJogo.getOnInterval())
+            getFormManager().getTelaJogo().setTime(time);
     }
     
 }

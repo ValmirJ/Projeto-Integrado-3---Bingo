@@ -28,8 +28,11 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
      */
     private ClientManager clientManager;
 
-    public TelaInicial(ClientManager clientManager) {
+    public TelaInicial(ClientManager clientManager) {  
         initComponents();
+        this.setLocationRelativeTo(null);
+        ImageIcon iconImage = new ImageIcon("src/assets/Clover.png");
+        LBL_Image.setIcon(iconImage);
         this.clientManager = clientManager;
     }
 
@@ -63,12 +66,17 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
         BUT_Prox = new bingo.ButtonWithLoader();
         TXT_Ra = new javax.swing.JTextField();
         LBL_Nome = new javax.swing.JLabel();
+        LBL_Image = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        BUT_Prox.setText("Próximo");
+        BUT_Prox.setActionCommand("Entrar");
+        BUT_Prox.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        BUT_Prox.setLabel("Entrar");
         BUT_Prox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BUT_ProxActionPerformed(evt);
@@ -78,6 +86,11 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
         TXT_Ra.setName(""); // NOI18N
 
         LBL_Nome.setText("RA");
+
+        LBL_Image.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setText("BingoGame");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,12 +108,24 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
                             .addComponent(LBL_Nome)
                             .addComponent(TXT_Ra, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(167, 167, 167))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(LBL_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(LBL_Nome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(LBL_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LBL_Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TXT_Ra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -128,8 +153,10 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private bingo.ButtonWithLoader BUT_Prox;
+    private javax.swing.JLabel LBL_Image;
     private javax.swing.JLabel LBL_Nome;
     private javax.swing.JTextField TXT_Ra;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -42,7 +42,7 @@ public class ButtonWithLoader extends JButton {
     
     private Icon getLoadIcon() {
         if (loadIcon == null) {
-            loadIcon = new ImageIcon(getClass().getResource("loading.gif"));
+            loadIcon = new ImageIcon("src/assets/loading.gif");
         }
         
         return loadIcon;

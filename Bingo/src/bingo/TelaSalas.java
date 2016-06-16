@@ -28,6 +28,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
 
     public TelaSalas(ClientManager clientManager, String ra) {
         initComponents();
+        this.setLocationRelativeTo(null);  
         this.ra = ra;
         this.setTitle(ra);
         this.clientManager = clientManager;
@@ -79,6 +80,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
         BTN_CreateRoom = new bingo.ButtonWithLoader();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         LIST_Users.setEnabled(false);
         LIST_Users.setSelectedIndex(0);
@@ -102,9 +104,9 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
         LBL_Jgd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LBL_Jgd.setText("Jogadores em Sala");
 
-        BUT_AssignToRoom.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         BUT_AssignToRoom.setText("Entrar na Sala");
         BUT_AssignToRoom.setToolTipText("");
+        BUT_AssignToRoom.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         BUT_AssignToRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BUT_AssignToRoomActionPerformed(evt);
@@ -129,7 +131,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
                         .addComponent(PN_LSTSala)
                         .addComponent(PN_LSTJgd)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(BTN_CreateRoom)
+                            .addComponent(BTN_CreateRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(188, 188, 188)
                             .addComponent(BUT_AssignToRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)))
                     .addComponent(LBL_Jgd)
@@ -139,7 +141,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addComponent(LBL_Salas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PN_LSTJgd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,11 +149,11 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
                 .addComponent(LBL_Jgd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PN_LSTSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BUT_AssignToRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(BTN_CreateRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(BUT_AssignToRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BTN_CreateRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26))
         );
 
         pack();

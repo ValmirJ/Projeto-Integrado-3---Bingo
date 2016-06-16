@@ -27,6 +27,7 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
     public SalaDeEspera(ClientManager clientManager) {
         this.clientManager = clientManager;
         initComponents();
+        this.setLocationRelativeTo(null);  
         LIST_UsersInRoom.setModel(usersModel);
     }
 
@@ -47,6 +48,9 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
         JOptionPane.showMessageDialog(null, "Algo muito errado deu errado!");
     }
 
+    public void setEnabledStartButtonToOwner() {
+        BTN_StartGame.setEnabled(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,10 +69,12 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sala de Espera");
+        setResizable(false);
 
         jLabel1.setText("Usuários na Sala");
 
         BTN_StartGame.setText("Começar o Jogo");
+        BTN_StartGame.setEnabled(false);
         BTN_StartGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_StartGameActionPerformed(evt);
@@ -96,7 +102,7 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BTN_ExitRoom)
+                        .addComponent(BTN_ExitRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 328, Short.MAX_VALUE)
                         .addComponent(BTN_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -111,7 +117,7 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTN_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BTN_ExitRoom))
+                    .addComponent(BTN_ExitRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 

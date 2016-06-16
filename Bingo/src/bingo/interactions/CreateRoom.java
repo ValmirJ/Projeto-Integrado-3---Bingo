@@ -24,7 +24,8 @@ public class CreateRoom extends Interactor {
         this.telaSalaDeEspera = this.getFormManager().getTelaSalaDeEspera();
         
         this.telaSalas.setVisible(false);
-        this.telaSalaDeEspera.setVisible(true);    
+        this.telaSalaDeEspera.setVisible(true);  
+        this.telaSalaDeEspera.setEnabledStartButtonToOwner();
     }
     
 }

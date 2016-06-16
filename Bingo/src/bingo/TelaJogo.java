@@ -81,61 +81,75 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_0.setBackground(new java.awt.Color(245, 245, 245));
         BTN_0.setFocusPainted(false);
         BTN_0.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_0.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_1.setBackground(new java.awt.Color(245, 245, 245));
         BTN_1.setFocusPainted(false);
         BTN_1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_1.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_2.setBackground(new java.awt.Color(245, 245, 245));
         BTN_2.setFocusPainted(false);
         BTN_2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_2.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_3.setBackground(new java.awt.Color(245, 245, 245));
         BTN_3.setFocusPainted(false);
         BTN_3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_3.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_4.setBackground(new java.awt.Color(245, 245, 245));
         BTN_4.setFocusPainted(false);
         BTN_4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_4.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_5.setBackground(new java.awt.Color(245, 245, 245));
         BTN_5.setFocusPainted(false);
         BTN_5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_5.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_8.setBackground(new java.awt.Color(245, 245, 245));
         BTN_8.setFocusPainted(false);
         BTN_8.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_8.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_9.setBackground(new java.awt.Color(245, 245, 245));
         BTN_9.setFocusPainted(false);
         BTN_9.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_9.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_6.setBackground(new java.awt.Color(245, 245, 245));
         BTN_6.setFocusPainted(false);
         BTN_6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_6.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_7.setBackground(new java.awt.Color(245, 245, 245));
         BTN_7.setFocusPainted(false);
         BTN_7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_7.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_11.setBackground(new java.awt.Color(245, 245, 245));
         BTN_11.setToolTipText("");
         BTN_11.setFocusPainted(false);
         BTN_11.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_11.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_10.setBackground(new java.awt.Color(245, 245, 245));
         BTN_10.setToolTipText("");
         BTN_10.setFocusPainted(false);
         BTN_10.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_10.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_14.setBackground(new java.awt.Color(245, 245, 245));
         BTN_14.setToolTipText("");
         BTN_14.setFocusPainted(false);
         BTN_14.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_14.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_12_Null.setBackground(new java.awt.Color(245, 245, 245));
         BTN_12_Null.setBorder(null);
@@ -144,32 +158,39 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
         BTN_12_Null.setEnabled(false);
         BTN_12_Null.setFocusPainted(false);
         BTN_12_Null.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        BTN_12_Null.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_13.setBackground(new java.awt.Color(245, 245, 245));
         BTN_13.setToolTipText("");
         BTN_13.setFocusPainted(false);
         BTN_13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_13.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_16.setBackground(new java.awt.Color(245, 245, 245));
         BTN_16.setFocusPainted(false);
         BTN_16.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_16.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_15.setBackground(new java.awt.Color(245, 245, 245));
         BTN_15.setToolTipText("");
         BTN_15.setFocusPainted(false);
         BTN_15.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_15.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_19.setBackground(new java.awt.Color(245, 245, 245));
         BTN_19.setFocusPainted(false);
         BTN_19.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_19.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_17.setBackground(new java.awt.Color(245, 245, 245));
         BTN_17.setFocusPainted(false);
         BTN_17.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_17.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_18.setBackground(new java.awt.Color(245, 245, 245));
         BTN_18.setFocusPainted(false);
         BTN_18.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_18.setMinimumSize(new java.awt.Dimension(40, 40));
 
         jButton26.setText("BINGO!");
         jButton26.setFocusPainted(false);
@@ -193,22 +214,27 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
         BTN_20.setToolTipText("");
         BTN_20.setFocusPainted(false);
         BTN_20.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_20.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_21.setBackground(new java.awt.Color(245, 245, 245));
         BTN_21.setFocusPainted(false);
         BTN_21.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_21.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_22.setBackground(new java.awt.Color(245, 245, 245));
         BTN_22.setFocusPainted(false);
         BTN_22.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_22.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_23.setBackground(new java.awt.Color(245, 245, 245));
         BTN_23.setFocusPainted(false);
         BTN_23.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_23.setMinimumSize(new java.awt.Dimension(40, 40));
 
         BTN_24.setBackground(new java.awt.Color(245, 245, 245));
         BTN_24.setFocusPainted(false);
         BTN_24.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        BTN_24.setMinimumSize(new java.awt.Dimension(40, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -310,14 +336,15 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
                     .addComponent(BTN_11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTN_10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BTN_19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BTN_18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BTN_17, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTN_16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BTN_15, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BTN_15, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(BTN_19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BTN_18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BTN_24, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTN_23, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTN_22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,6 +359,7 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        
         clientManager.sendMessage(new bingo.responses.Bingo(marks));
     }//GEN-LAST:event_jButton26ActionPerformed
 
@@ -422,5 +450,6 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
 
     public void warnInvalidBingo() {
         JOptionPane.showMessageDialog(null, "Fanfarrero!");
+        this.hideLoaders();
     }
 }

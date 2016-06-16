@@ -27,4 +27,14 @@ public class MyJFrame extends JFrame {
             }
         }
     }
+    
+    public void hideLoaders() {
+        Component[] components = getContentPane().getComponents();
+            
+        for (Component component : components) {
+            if (component instanceof ButtonWithLoader) {
+                ((ButtonWithLoader) component).hideLoader();
+            }
+        }
+    }
 }

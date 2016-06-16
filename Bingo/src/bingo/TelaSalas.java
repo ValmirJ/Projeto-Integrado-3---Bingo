@@ -52,6 +52,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
 
     public void showRoomIsFull() {
         JOptionPane.showMessageDialog(null, "Está sala está cheia, tente novamente em outra sala ou crie uma sala!");
+        this.hideLoaders();
     }
 
     @Override
@@ -158,12 +159,16 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
 
     private void LIST_RoomsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_LIST_RoomsValueChanged
         this.clearUsersInRoom();
-        Room room =  (Room) roomsModel.get(LIST_Rooms.getSelectedIndex());
-        ArrayList<User> users = room.getUsers();
-        for(User u : users) {
-            this.usersModel.addElement(u);
+        int index = LIST_Rooms.getSelectedIndex();
+        
+        if(index >= 0) {
+            Room room =  (Room) roomsModel.get(index);
+            ArrayList<User> users = room.getUsers();
+            for(User u : users) {
+                this.usersModel.addElement(u);
+            }
+            LIST_Users.setModel(usersModel);
         }
-        LIST_Users.setModel(usersModel);
     }//GEN-LAST:event_LIST_RoomsValueChanged
 
     private void BTN_CreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CreateRoomActionPerformed

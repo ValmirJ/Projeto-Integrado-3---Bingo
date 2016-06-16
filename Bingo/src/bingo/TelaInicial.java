@@ -35,10 +35,12 @@ public class TelaInicial extends bingo.MyJFrame implements Tela{
 
     public void showRaAlreadyUsed() {
         JOptionPane.showMessageDialog(null, "RA já está em uso, tente novamente");
+        this.hideLoaders();
     }
 
     public void showInvalidRa() {
         JOptionPane.showMessageDialog(null, "Digite um RA válido!");
+        this.hideLoaders();
     }
 
     public String getRa() {

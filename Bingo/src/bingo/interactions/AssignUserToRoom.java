@@ -5,6 +5,7 @@
  */
 package bingo.interactions;
 
+import bingo.MyJFrame;
 import bingo.SalaDeEspera;
 import bingo.TelaSalas;
 import org.json.simple.JSONObject;

@@ -5,6 +5,7 @@
  */
 package bingo.interactions;
 
+import bingo.MyJFrame;
 import bingo.Tela;
 import org.json.simple.JSONObject;
 
@@ -19,8 +20,10 @@ public class DisplayGenericError extends Interactor {
     @Override
     public void perform(JSONObject params) throws Exception {
         this.tela = this.getFormManager().getCurrentForm();
-        if(tela != null)
+        if(tela != null) {
             tela.showGenericError();
+            ((MyJFrame)this.tela).hideLoaders();
+        }
     }
     
 }

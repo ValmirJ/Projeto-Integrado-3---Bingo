@@ -119,11 +119,12 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_StartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_StartGameActionPerformed
-        // TODO add your handling code here:
+        ((ButtonWithLoader)evt.getSource()).showLoader();
         clientManager.sendMessage(new StartGameResponse());
     }//GEN-LAST:event_BTN_StartGameActionPerformed
 
     private void BTN_ExitRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ExitRoomActionPerformed
+        ((ButtonWithLoader)evt.getSource()).showLoader();
         clientManager.sendMessage(new UnassignFromRoom());
     }//GEN-LAST:event_BTN_ExitRoomActionPerformed
 
@@ -141,5 +142,6 @@ public class SalaDeEspera extends bingo.MyJFrame implements Tela {
 
     public void warnNotEnoughtUsers() {
         JOptionPane.showMessageDialog(null, "Não há usuários suficientes!");
+        this.hideLoaders();
     }
 }

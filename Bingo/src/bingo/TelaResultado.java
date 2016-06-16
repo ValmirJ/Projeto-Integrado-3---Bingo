@@ -20,6 +20,7 @@ public class TelaResultado extends bingo.MyJFrame implements Tela {
      */
     public TelaResultado(ClientManager clientManager) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.clientManager = clientManager;
     }
 

@@ -33,7 +33,7 @@ public class Bingo implements ClientListener {
 
     private void execute() {
         try {
-            final Socket socket = new Socket("127.0.0.1", 10001);
+            final Socket socket = new Socket("172.16.13.39", 10001);
             socket.setTcpNoDelay(true);
             this.clientManager = new ClientManager(socket, this);
             this.formController = new FormManager(clientManager);

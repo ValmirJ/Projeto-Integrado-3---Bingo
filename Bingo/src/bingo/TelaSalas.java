@@ -9,6 +9,7 @@ import bingo.network.ClientManager;
 import bingo.responses.AssignUserRoomResponse;
 import bingo.responses.CreateRoomResponse;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import models.Room;
@@ -163,13 +164,18 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
         this.clearUsersInRoom();
         int index = LIST_Rooms.getSelectedIndex();
         
-        if(index >= 0) {
-            Room room =  (Room) roomsModel.get(index);
-            ArrayList<User> users = room.getUsers();
-            for(User u : users) {
-                this.usersModel.addElement(u);
+        try {
+            if(index >= 0) {
+                Room room =  (Room) roomsModel.get(index);
+                ArrayList<User> users = room.getUsers();
+                for(User u : users) {
+                    this.usersModel.addElement(u);
+                }
+                LIST_Users.setModel(usersModel);
             }
-            LIST_Users.setModel(usersModel);
+        }
+        catch(IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_LIST_RoomsValueChanged
 

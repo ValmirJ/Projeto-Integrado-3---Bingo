@@ -174,7 +174,7 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
                 LIST_Users.setModel(usersModel);
             }
         }
-        catch(IndexOutOfBoundsException e) {
+        catch(ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_LIST_RoomsValueChanged
@@ -186,10 +186,15 @@ public class TelaSalas extends bingo.MyJFrame implements Tela {
     }//GEN-LAST:event_BTN_CreateRoomActionPerformed
 
     private void BUT_AssignToRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUT_AssignToRoomActionPerformed
-        int idSala = ((Room)this.roomsModel.get(LIST_Rooms.getSelectedIndex())).getId();
-        AssignUserRoomResponse assignResponse = new AssignUserRoomResponse(idSala);
-        this.clientManager.sendMessage(assignResponse);
-        BUT_AssignToRoom.showLoader();
+        try {
+            int idSala = ((Room)this.roomsModel.get(LIST_Rooms.getSelectedIndex())).getId();
+            AssignUserRoomResponse assignResponse = new AssignUserRoomResponse(idSala);
+            this.clientManager.sendMessage(assignResponse);
+            BUT_AssignToRoom.showLoader();
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            e.getStackTrace();
+        }
     }//GEN-LAST:event_BUT_AssignToRoomActionPerformed
 
 

@@ -386,12 +386,15 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
 
     public void setCard(Card card) {
         jTextArea1.setText("");
+        marks.clear();
+        
         for (int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 if (btns[i][j] != null) {
                     final Integer n = card.getNumber(i, j);
                     btns[i][j].setText(n.toString());
-
+                    btns[i][j].setBackground(Color.decode("#f5f5f5"));
+                    
                     btns[i][j].addActionListener(new ActionListener(){
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -429,6 +432,11 @@ public class TelaJogo extends bingo.MyJFrame implements Tela{
 
     public void setTime(Integer time) {
         LBL_Info.setText("Sorteando novo número em " + time.toString());
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,6 +44,7 @@ public class Bingo implements ClientListener {
             Logger.getLogger(Bingo.class.getName()).log(Level.SEVERE, null, e);
         }
 
+        Runtime.getRuntime().addShutdownHook(clientManager.getShutdownHook());
     }
 
     @Override

@@ -8,7 +8,6 @@ package bingoserver.repositories;
 import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
-import bingoserver.models.UserCard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +44,10 @@ public class RoomRepository {
     public Room roomOwnedBy(User user) throws Exception {
         Room room = findRoomByUser(user);
 
+        if (room == null) {
+            return null;
+        }
+        
         if (room.getRoomOwner() == user) {
             return room;
         }

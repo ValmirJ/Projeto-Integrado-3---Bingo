@@ -11,7 +11,6 @@ import bingoserver.repositories.RoomRepository;
 import bingoserver.repositories.UserRepository;
 import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.EverybodyHasGoneResponse;
-import bingoserver.responses.TooLessUsersInRoomResponse;
 import bingoserver.responses.UserRemovedFromRoomResponse;
 import bingoserver.responses.UsersInRoomChangedResponse;
 import java.util.HashMap;
@@ -42,6 +41,7 @@ public class UserDisconnected extends UserInteractor {
             return;
         }
 
+        boolean isOwner = roomRepo.roomOwnedBy(user) != null;
         getRepositoryManager().getUserCardRepository().removeUserFromRoom(user, room);
         List<User> users = roomRepo.usersInRoom(room);
 
@@ -49,7 +49,7 @@ public class UserDisconnected extends UserInteractor {
             if (users.isEmpty()) {
                 roomRepo.removeRoom(room);
             } else {
-                if (roomRepo.roomOwnedBy(user) != null) {
+                if (isOwner) {
                     roomRepo.removeRoom(room);
                     getResponseManager().respondToUsers(new UserRemovedFromRoomResponse(), users);
                 } else {

@@ -10,9 +10,12 @@ import bingoserver.models.BingoCard;
 import bingoserver.models.Room;
 import bingoserver.models.User;
 import bingoserver.repositories.RoomRepository;
+import bingoserver.repositories.UserRepository;
+import bingoserver.responses.AvailableRoomsResponse;
 import bingoserver.responses.GameStartResponse;
 import bingoserver.responses.Response;
 import bingoserver.responses.TooLessUsersInRoomResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,5 +57,9 @@ public class StartRoom extends UserInteractor {
                 Logger.getLogger(GameDelegate.class.getName()).log(Level.SEVERE, "Found user without card!");
             }
         }
+        
+        UserRepository userRepo = getRepositoryManager().getUserRepository();
+        HashMap<Room, List<User>> rooms = roomRepo.currentOpenRoomsWithUsers();
+        getResponseManager().respondToUsers(new AvailableRoomsResponse(rooms), userRepo.usersWithoutRoom(roomRepo.getUsersInAnyRoom()));
     }
 }

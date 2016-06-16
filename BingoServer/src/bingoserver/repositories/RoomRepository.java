@@ -91,7 +91,8 @@ public class RoomRepository {
     public HashMap<Room, List<User>> currentOpenRoomsWithUsers() {
         HashMap<Room, List<User>> openRooms = new HashMap<>();
         for (Room r : rooms) {
-            openRooms.put(r, r.getUsers());
+            if (r.getState() == Room.RoomState.initialized)
+                openRooms.put(r, r.getUsers());
         }
         return openRooms;
     }
